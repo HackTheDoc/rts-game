@@ -119,5 +119,6 @@ void Window::openOptionsMenu() {
 }
 
 void Window::openCredits() {
-    std::cout << "not yet implemented" << std::endl;
+    manager->addWindowState(WindowState::Type::CREDITS, new Credits());
+    manager->setCurrentWindowState(WindowState::Type::CREDITS);
 }

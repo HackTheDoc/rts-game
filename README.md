@@ -25,4 +25,4 @@ There is currently no public release of the game.
 
 # Contact
 
-If you are interested in this project or any other, feel free to join my [discord](discord.gg/Ya8NWJMcqx) or to email me at `hackthedoc@gmail.com`.
+If you are interested in this project or any other, feel free to join my [discord](https://discord.gg/69pNy6xXKm) or to email me at `hackthedoc@gmail.com`.
