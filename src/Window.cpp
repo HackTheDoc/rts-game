@@ -1,5 +1,6 @@
 #include "include/Window.h"
 
+#include "include/Save.h"
 #include "include/WindowStates/WindowStates.h"
 
 #include <iostream>
@@ -51,7 +52,20 @@ int Window::init() {
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     Manager::SetRenderDrawColor(hue::background);
 
+    // load config
+    
+    const Struct::Config config = Save::LoadConfig();
+
+    Text::language = (Language)config.language;
+
+    SetWindowMode(config.window_mode);
+
+    Save::Auto = config.autosave;
+
+    //KeyMap::Key = config.controls;
+
     // init components
+
     manager = new Manager();
 
     openMainMenu();
@@ -121,4 +135,41 @@ void Window::openOptionsMenu() {
 void Window::openCredits() {
     manager->addWindowState(WindowState::Type::CREDITS, new Credits());
     manager->setCurrentWindowState(WindowState::Type::CREDITS);
+}
+
+/* ----- OTHER ----- */
+
+void Window::SetWindowMode(const Uint32 mode) {
+    SDL_SetWindowFullscreen(window, mode);
+    SDL_GetWindowSize(window, &screen.w, &screen.h);
+
+    fullscreen = (mode == SDL_WINDOW_FULLSCREEN_DESKTOP);
+
+    if (!fullscreen)
+        screen = { 0, 0, 1280, 720 };
+
+    if (!Window::isRunning)
+        return;
+
+    manager->reloadFonts();
+
+    /*
+    WindowState* ws = manager->getCurrentState();
+    OptionsMenu* om = static_cast<OptionsMenu*>(ws);
+    om->reload();
+    */
+
+    Save::SaveConfig();
+}
+
+void Window::SetLanguage(const Language lg) {
+    Text::language = lg;
+
+    /*
+    WindowState* ws = manager->getCurrentState();
+    OptionsMenu* om = static_cast<OptionsMenu*>(ws);
+    om->reload();
+    */
+
+    Save::SaveConfig();
 }

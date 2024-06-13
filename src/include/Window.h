@@ -41,6 +41,12 @@ public:
 
     void openCredits();
 
+    /* ----- OTHER ----- */
+
+    static void SetWindowMode(const Uint32 mode);
+
+    static void SetLanguage(const Language lg);
+
 private:
     /// @brief the actual window
     static SDL_Window *window;
