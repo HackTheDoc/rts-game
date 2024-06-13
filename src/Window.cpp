@@ -129,7 +129,8 @@ void Window::openGame() {
 }
 
 void Window::openOptionsMenu() {
-    std::cout << "not yet implemented" << std::endl;
+    manager->addWindowState(WindowState::Type::OPTIONS_MENU, new OptionsMenu());
+    manager->setCurrentWindowState(WindowState::Type::OPTIONS_MENU);
 }
 
 void Window::openCredits() {
@@ -153,11 +154,9 @@ void Window::SetWindowMode(const Uint32 mode) {
 
     manager->reloadFonts();
 
-    /*
     WindowState* ws = manager->getCurrentState();
     OptionsMenu* om = static_cast<OptionsMenu*>(ws);
     om->reload();
-    */
 
     Save::SaveConfig();
 }
@@ -165,11 +164,9 @@ void Window::SetWindowMode(const Uint32 mode) {
 void Window::SetLanguage(const Language lg) {
     Text::language = lg;
 
-    /*
     WindowState* ws = manager->getCurrentState();
     OptionsMenu* om = static_cast<OptionsMenu*>(ws);
     om->reload();
-    */
 
     Save::SaveConfig();
 }
