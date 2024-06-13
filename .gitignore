@@ -1,0 +1,13 @@
+.vscode/
+
+build/
+
+obj/
+
+temp/
+
+tiled/
+
+*.d
+
+todo.md
