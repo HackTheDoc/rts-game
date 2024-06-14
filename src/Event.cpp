@@ -209,21 +209,63 @@ void Event::handleMainMenuEvents() {
     case SDLK_r:
         raise(OPEN_MAIN_MENU);
         break;
+    case SDLK_g:
+        raise(OPEN_GAME);
+        break;
+    case SDLK_o:
+        raise(OPEN_OPTIONS);
+        break;
+    case SDLK_c:
+        raise(OPEN_CREDITS);
+        break;
     default:
         break;
     }
 }
 
 void Event::handleOptionsMenuEvents() {
-    
+    if (e.type != SDL_KEYUP || !(SDL_GetModState() & KMOD_CTRL))
+        return;
+
+    switch (e.key.keysym.sym) {
+    case SDLK_q:
+        raise(OPEN_MAIN_MENU);
+        break;
+    case SDLK_g:
+        raise(OPEN_GENERAL_SETTINGS);
+        break;
+    case SDLK_c:
+        raise(OPEN_CONTROLS_SETTINGS);
+        break;
+    default:
+        break;
+    }
 }
 
 void Event::handleCreditsEvents() {
-    
+    if (e.type != SDL_KEYUP || !(SDL_GetModState() & KMOD_CTRL))
+        return;
+
+    switch (e.key.keysym.sym) {
+    case SDLK_q:
+        raise(OPEN_MAIN_MENU);
+        break;
+    default:
+        break;
+    }
 }
 
 void Event::handleGameEvents() {
-    
+    if (e.type != SDL_KEYUP || !(SDL_GetModState() & KMOD_CTRL))
+        return;
+
+    switch (e.key.keysym.sym) {
+    case SDLK_q:
+        raise(OPEN_MAIN_MENU);
+        break;
+    default:
+        break;
+    }    
 }
 
 void Event::handlePauseMenuEvents() {

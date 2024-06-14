@@ -123,7 +123,8 @@ void Window::openMainMenu() {
 }
 
 void Window::openGame() {
-    std::cout << "not yet implemented" << std::endl;
+    manager->addWindowState(WindowState::Type::GAME, new Game());
+    manager->setCurrentWindowState(WindowState::Type::GAME);
 }
 
 /* ----- OPTIONS ----- */
