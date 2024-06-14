@@ -56,8 +56,6 @@ int Window::init() {
     
     const Struct::Config config = Save::LoadConfig();
 
-    Text::language = (Language)config.language;
-
     SetWindowMode(config.window_mode);
 
     Save::Auto = config.autosave;
@@ -115,7 +113,7 @@ void Window::kill() {
     SDL_Quit();
 }
 
-/* ----- MAIN MENU ----- */
+/* ----- MAIN ----- */
 
 void Window::openMainMenu() {
     manager->clearWindowStates();
@@ -128,10 +126,28 @@ void Window::openGame() {
     std::cout << "not yet implemented" << std::endl;
 }
 
+/* ----- OPTIONS ----- */
+
 void Window::openOptionsMenu() {
     manager->addWindowState(WindowState::Type::OPTIONS_MENU, new OptionsMenu());
     manager->setCurrentWindowState(WindowState::Type::OPTIONS_MENU);
 }
+
+void Window::openGeneralOptions() {
+    WindowState* ws = manager->getCurrentState();
+    OptionsMenu* om = static_cast<OptionsMenu*>(ws);
+
+    om->usePage("general");
+}
+
+void Window::openControlsOptions() {
+    WindowState* ws = manager->getCurrentState();
+    OptionsMenu* om = static_cast<OptionsMenu*>(ws);
+
+    om->usePage("controls");
+}
+
+/* ----- CREDITS ----- */
 
 void Window::openCredits() {
     manager->addWindowState(WindowState::Type::CREDITS, new Credits());
@@ -153,16 +169,6 @@ void Window::SetWindowMode(const Uint32 mode) {
         return;
 
     manager->reloadFonts();
-
-    WindowState* ws = manager->getCurrentState();
-    OptionsMenu* om = static_cast<OptionsMenu*>(ws);
-    om->reload();
-
-    Save::SaveConfig();
-}
-
-void Window::SetLanguage(const Language lg) {
-    Text::language = lg;
 
     WindowState* ws = manager->getCurrentState();
     OptionsMenu* om = static_cast<OptionsMenu*>(ws);

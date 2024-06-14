@@ -2,7 +2,6 @@
 
 #include "Manager.h"
 #include "Event.h"
-#include "Text.h"
 
 class Window {
 public:
@@ -36,6 +35,8 @@ public:
     /* ----- OPTIONS ----- */
 
     void openOptionsMenu();
+    void openGeneralOptions();
+    void openControlsOptions();
 
     /* ----- CREDITS ----- */
 
@@ -44,8 +45,6 @@ public:
     /* ----- OTHER ----- */
 
     static void SetWindowMode(const Uint32 mode);
-
-    static void SetLanguage(const Language lg);
 
 private:
     /// @brief the actual window

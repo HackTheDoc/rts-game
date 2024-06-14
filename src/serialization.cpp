@@ -37,7 +37,6 @@ namespace serialize {
 
         var(outfile, config.autosave);
 
-        var(outfile, config.language);
         var(outfile, config.window_mode);
 
         const size_t mcsize = config.controls.size();
@@ -96,7 +95,6 @@ namespace deserialize {
 
         var(infile, cstruct.autosave);
 
-        var(infile, cstruct.language);
         var(infile, cstruct.window_mode);
 
         size_t mcsize;

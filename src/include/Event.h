@@ -14,8 +14,6 @@ public:
     enum ID {
         UNKNOWN,
 
-        SET_LANGUAGE_TO_ENGLISH,
-        SET_LANGUAGE_TO_FRENCH,
         SET_WINDOW_TO_FULLSCREEN,
         SET_WINDOW_TO_DEFAULT,
 

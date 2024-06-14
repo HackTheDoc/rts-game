@@ -10,6 +10,4 @@
 
 #include "UIActivator.h"
 
-#include "UILanguageSelector.h"
-
 #include "UIWindowModeSelector.h"

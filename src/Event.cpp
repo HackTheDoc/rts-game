@@ -160,17 +160,11 @@ bool Event::raised(const Event::ID id) {
 
 void Event::raise(const Event::ID id) {
     switch (id) {
-    case SET_LANGUAGE_TO_ENGLISH:
-        //Window::SetLanguage(Language::ENGLISH);
-        break;
-    case SET_LANGUAGE_TO_FRENCH:
-        //Window::SetLanguage(Language::FRENCH);
-        break;
     case SET_WINDOW_TO_FULLSCREEN:
-        //Window::SetWindowMode(SDL_WINDOW_FULLSCREEN_DESKTOP);
+        Window::SetWindowMode(SDL_WINDOW_FULLSCREEN_DESKTOP);
         break;
     case SET_WINDOW_TO_DEFAULT:
-        //Window::SetWindowMode(0);
+        Window::SetWindowMode(0);
         break;
     case QUIT:
         Window::isRunning = false;
@@ -185,10 +179,10 @@ void Event::raise(const Event::ID id) {
         window->openOptionsMenu();
         break;
     case OPEN_GENERAL_SETTINGS:
-        //window->openGeneralOptions();
+        window->openGeneralOptions();
         break;
     case OPEN_CONTROLS_SETTINGS:
-        //window->openControlsOptions();
+        window->openControlsOptions();
         break;
     case OPEN_CREDITS:
         window->openCredits();

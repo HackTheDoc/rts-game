@@ -14,21 +14,14 @@ void OptionsMenu::createGeneralPage() {
         border.y + 32 * (Window::fullscreen + 1)
     );
 
-    UILanguageSelector* lgs = new UILanguageSelector();
-    lgs->place(
-        (Window::screen.w - lgs->width()) / 2,
-        wms->y() + wms->height() + 32 * (Window::fullscreen + 1)
-    );
-
     UIActivator* sma = new UIActivator("Save Mode:", &Save::Auto);
     sma->place(
         (Window::screen.w - sma->width()) / 2,
-        lgs->y() + lgs->height() + 32 * (Window::fullscreen + 1)
+        wms->y() + wms->height() + 32 * (Window::fullscreen + 1)
     );
 
     page["general"] = {
         {"wms", wms},
-        {"lgs", lgs},
         {"sma", sma},
     };
 }
@@ -41,18 +34,11 @@ void OptionsMenu::reloadGeneralPage() {
         border.y + 32 * (Window::fullscreen + 1)
     );
 
-    UILanguageSelector* lgs = static_cast<UILanguageSelector*>(page["general"]["lgs"]);
-    lgs->reload();
-    lgs->place(
-        (Window::screen.w - lgs->width()) / 2,
-        wms->y() + wms->height() + 32 * (Window::fullscreen + 1)
-    );
-
     UIActivator* sma = static_cast<UIActivator*>(page["general"]["sma"]);
     sma->reload();
     sma->place(
         (Window::screen.w - sma->width()) / 2,
-        lgs->y() + lgs->height() + 32 * (Window::fullscreen + 1)
+        wms->y() + wms->height() + 32 * (Window::fullscreen + 1)
     );
 }
 
@@ -65,13 +51,13 @@ void OptionsMenu::reloadControlsPage() {
 }
 
 void OptionsMenu::init() {
-    btn_generalSection = new UIButton(Text::Get("GENERAL"), Event::ID::OPEN_GENERAL_SETTINGS, "h3", hue::font);
+    btn_generalSection = new UIButton("GENERAL", Event::ID::OPEN_GENERAL_SETTINGS, "h3", hue::font);
     btn_generalSection->place(
         (Window::screen.w / 2 - btn_generalSection->width()) / 2,
         8 * (Window::fullscreen + 1)
     );
 
-    btn_controlsSection = new UIButton(Text::Get("CONTROLS"), Event::ID::OPEN_CONTROLS_SETTINGS, "h3", hue::font);
+    btn_controlsSection = new UIButton("CONTROLS", Event::ID::OPEN_CONTROLS_SETTINGS, "h3", hue::font);
     btn_controlsSection->place(
         (3 * Window::screen.w / 2 - btn_controlsSection->width()) / 2,
         8 * (Window::fullscreen + 1)
@@ -132,13 +118,13 @@ void OptionsMenu::clean() {
 }
 
 void OptionsMenu::reload() {
-    btn_generalSection->setText(Text::Get("GENERAL"), "h3", hue::white);
+    btn_generalSection->setText("GENERAL", "h3", hue::white);
     btn_generalSection->place(
         (Window::screen.w / 2 - btn_generalSection->width()) / 2,
         8 * (Window::fullscreen + 1)
     );
 
-    btn_controlsSection->setText(Text::Get("CONTROLS"), "h3", hue::white);
+    btn_controlsSection->setText("CONTROLS", "h3", hue::white);
     btn_controlsSection->place(
         (3 * Window::screen.w / 2 - btn_controlsSection->width()) / 2,
         8 * (Window::fullscreen + 1)

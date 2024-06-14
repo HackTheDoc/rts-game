@@ -7,9 +7,9 @@ UIActivator::UIActivator(const std::string& t, bool* v) {
     tag = t;
     var = v;
 
-    title = new UILabel(Text::Get(tag), "default bold", hue::font);
+    title = new UILabel(tag, "default bold", hue::font);
 
-    value = new UILabel(Text::Get(vstring[*var]), "default", hue::font);
+    value = new UILabel(vstring[*var], "default", hue::font);
 
     rect.w = title->width() + value->width() + 4 * (Window::fullscreen + 1);
     rect.h = std::max(title->height(), value->height());
@@ -31,7 +31,7 @@ void UIActivator::update() {
     if (SDL_PointInRect(&m, &rect) && Window::event.mouseClickLeft()) {
         *var = !*var;
 
-        value->setText(Text::Get(vstring[*var]), "default", hue::font);
+        value->setText(vstring[*var], "default", hue::font);
         value->place(
             title->x() + title->width() + 4 * (Window::fullscreen + 1),
             rect.y + (rect.h - value->height()) / 2
@@ -62,9 +62,9 @@ void UIActivator::place(const int x, const int y) {
 }
 
 void UIActivator::reload() {
-    title->setText(Text::Get(tag), "default bold", hue::font);
+    title->setText(tag, "default bold", hue::font);
 
-    value->setText(Text::Get(vstring[*var]), "default", hue::font);
+    value->setText(vstring[*var], "default", hue::font);
 
     rect.w = title->width() + value->width() + 4 * (Window::fullscreen + 1);
     rect.h = std::max(title->height(), value->height());

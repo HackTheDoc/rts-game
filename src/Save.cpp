@@ -16,7 +16,6 @@ std::string Save::pathToSaveFolder = "./data/";
 void Save::CreateConfig() {
     Struct::Config config{
     .autosave = true,
-    .language = Language::ENGLISH,
     .window_mode = 0,
     .controls = {
             {SDLK_z         , EventID::MOVE_CAMERA_UP            },
@@ -33,8 +32,6 @@ void Save::SaveConfig() {
     Struct::Config config = LoadConfig();
 
     config.autosave = Save::Auto;
-
-    config.language = Text::language;
 
     config.window_mode = 0;
     if (Window::fullscreen)

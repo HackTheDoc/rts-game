@@ -8,7 +8,7 @@ Credits::~Credits() {}
 
 void Credits::init() {
     // title + author
-    lbl_title = new UILabel(Text::Get("Developped By"), "h4", hue::white);
+    lbl_title = new UILabel("Developped By", "h4", hue::white);
     lbl_title->place(
         16 * (Window::fullscreen + 1),
         8*(Window::fullscreen+1)
@@ -49,7 +49,7 @@ void Credits::init() {
         offsetY + lbl_email->height() + 24*(Window::fullscreen+1)
     );
 
-    lbl_socials = new UILabel(Text::Get("Socials:"), "big bold", hue::white);
+    lbl_socials = new UILabel("Socials:", "big bold", hue::white);
     lbl_socials->place(
         (containerWidth - lbl_socials->width()) / 2,
         offsetY - lk_discord->height() - lk_github->height() - lbl_socials->height() - 40*(Window::fullscreen+1)

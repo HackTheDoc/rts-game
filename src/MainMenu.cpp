@@ -22,25 +22,25 @@ void MainMenu::init() {
 
     const int offsetY = (Window::screen.h + lbl_title->height()) / 2;
 
-    btn_options = new UIButton(Text::Get("Options"), Event::ID::OPEN_OPTIONS, "h3", hue::font, UIButton::Type::RIGHT_CURSOR);
+    btn_options = new UIButton("Options", Event::ID::OPEN_OPTIONS, "h3", hue::font, UIButton::Type::RIGHT_CURSOR);
     btn_options->place(
         16 * (Window::fullscreen + 1),
         offsetY - btn_options->height() - 8 * (Window::fullscreen + 1)
     );
 
-    btn_play = new UIButton(Text::Get("Play"), Event::ID::OPEN_GAME, "h3", hue::font, UIButton::Type::RIGHT_CURSOR);
+    btn_play = new UIButton("Play", Event::ID::OPEN_GAME, "h3", hue::font, UIButton::Type::RIGHT_CURSOR);
     btn_play->place(
         16 * (Window::fullscreen + 1),
         offsetY - btn_options->height() - btn_play->height() - 24 * (Window::fullscreen + 1)
     );
 
-    btn_credits = new UIButton(Text::Get("Credits"), Event::ID::OPEN_CREDITS, "h3", hue::font, UIButton::Type::RIGHT_CURSOR);
+    btn_credits = new UIButton("Credits", Event::ID::OPEN_CREDITS, "h3", hue::font, UIButton::Type::RIGHT_CURSOR);
     btn_credits->place(
         16 * (Window::fullscreen + 1),
         offsetY + 8 * (Window::fullscreen + 1)
     );
 
-    btn_quit = new UIButton(Text::Get("Quit"), Event::ID::QUIT, "h3", hue::font, UIButton::Type::RIGHT_CURSOR);
+    btn_quit = new UIButton("Quit", Event::ID::QUIT, "h3", hue::font, UIButton::Type::RIGHT_CURSOR);
     btn_quit->place(
         16 * (Window::fullscreen + 1),
         offsetY + btn_credits->height() + 24 * (Window::fullscreen + 1)

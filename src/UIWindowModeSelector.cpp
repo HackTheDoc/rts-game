@@ -58,15 +58,15 @@ void UIWindowModeSelector::destroy() {
 }
 
 void UIWindowModeSelector::reload() {
-    lbl_title->setText(Text::Get("Window Mode:"), "default bold", hue::font);
+    lbl_title->setText("Window Mode:", "default bold", hue::font);
 
     rect = { 0,0, lbl_title->width(), lbl_title->height() };
 
-    choice[0].second->setText(Text::Get("Windowed"), "default", hue::font);
+    choice[0].second->setText("Windowed", "default", hue::font);
     rect.w = std::max(rect.w, choice[0].second->width());
     rect.h = std::max(rect.h, lbl_title->height() + choice[0].second->height());
 
-    choice[1].second->setText(Text::Get("Fullscreen"), "default", hue::font);
+    choice[1].second->setText("Fullscreen", "default", hue::font);
     rect.w = std::max(rect.w, choice[1].second->width());
     rect.h = std::max(rect.h, lbl_title->height() + choice[1].second->height());
 
