@@ -2,7 +2,8 @@
 
 #include "include/Window.h"
 
-SDL_Rect Game::camera = { 0, 0, 0, 0 };
+Camera Game::camera;
+Cursor Game::cursor;
 
 Game::Game() : map(nullptr) {}
 
@@ -11,14 +12,20 @@ Game::~Game() {}
 void Game::init() {
     Window::manager->loadGameTextures();
 
-    camera = Window::screen;
+    Manager::SetRenderDrawColor(hue::water);
+
+    camera.width = Window::screen.w;
+    camera.height = Window::screen.h;
 
     map = new Map();
     map->init("test map");
 }
 
 void Game::update() {
+    camera.update();
+
     map->update();
+    
 }
 
 void Game::render() {
@@ -26,9 +33,13 @@ void Game::render() {
 }
 
 void Game::clean() {
+    camera.reset();
+    
     map->destroy();
     delete map;
     map = nullptr;
 
     Window::manager->clearGameTextures();
+
+    Manager::SetRenderDrawColor(hue::background);
 }

@@ -38,10 +38,10 @@ public:
 
         //      FREE
 
-        MOVE_CAMERA_UP,
-        MOVE_CAMERA_DOWN,
-        MOVE_CAMERA_LEFT,
-        MOVE_CAMERA_RIGHT,
+        MOVE_UP,
+        MOVE_DOWN,
+        MOVE_LEFT,
+        MOVE_RIGHT,
     };
 
     /// @brief classic SDL_Event object
@@ -66,9 +66,7 @@ public:
     bool mouseClickRight();
 
     /// @brief check wether a specific event been raised or not
-    /// @param id
-    /// @return
-    bool raised(const Event::ID id);
+    bool raised(const Event::ID id, const SDL_EventType etype = SDL_KEYDOWN);
 
     /// @brief raise a specific event
     /// @param id 

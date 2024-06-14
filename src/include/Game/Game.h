@@ -1,12 +1,16 @@
 #pragma once
 
+#include "Cursor.h"
+#include "Camera.h"
+
 #include "Map/Map.h"
 
 #include "../WindowStates/WindowState.h"
 
 class Game : public WindowState {
 public:
-    static SDL_Rect camera;
+    static Cursor cursor;
+    static Camera camera;
 
     Game();
     ~Game();

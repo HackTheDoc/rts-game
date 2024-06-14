@@ -24,8 +24,6 @@ void Map::update() {
 }
 
 void Map::render() {
-    Manager::DrawFilledRect(&Window::screen, hue::water);
-
     renderLayer(LayerID::FOAM);
     renderLayer(LayerID::SAND);
     renderLayer(LayerID::STONE);
@@ -41,6 +39,14 @@ void Map::destroy() {
     m_name = "undefined";
     m_height = 0;
     m_width = 0;
+}
+
+int Map::width() {
+    return m_width * Tile::SIZE;
+}
+
+int Map::height() {
+    return m_height * Tile::SIZE;
 }
 
 void Map::addTile(const LayerID lid, const int x, const int y, const Tile::Type ttype) {

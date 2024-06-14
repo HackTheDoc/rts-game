@@ -18,6 +18,8 @@ public:
     static SDL_Color SetRenderDrawColor(const SDL_Color& c);
 
     static void SetViewport(const SDL_Rect* v);
+    
+    static void SetScale(const float sw, const float sh);
 
     /* ---------- FONT MANAGER ---------- */
 

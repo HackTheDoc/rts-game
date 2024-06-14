@@ -1,5 +1,6 @@
 #include "include/Window.h"
 
+#include "include/KeyMap.h"
 #include "include/Save.h"
 #include "include/WindowStates/WindowStates.h"
 
@@ -16,6 +17,9 @@ SDL_Rect Window::screen = { 0, 0, 1280, 720 };
 
 Manager* Window::manager = nullptr;
 Event Window::event;
+
+float Window::deltaTime = 0.0f;
+Uint32 Window::lastTick = 0;
 
 Window::Window() {}
 
@@ -60,7 +64,7 @@ int Window::init() {
 
     Save::Auto = config.autosave;
 
-    //KeyMap::Key = config.controls;
+    KeyMap::Key = config.controls;
 
     // init components
 
@@ -68,12 +72,18 @@ int Window::init() {
 
     openMainMenu();
 
+    lastTick = SDL_GetTicks();
+
     isRunning = true;
 
     return true;
 }
 
 void Window::update() {
+    Uint32 currentTick = SDL_GetTicks();
+    deltaTime = (currentTick - lastTick) / 1000.0f;
+    lastTick = currentTick;
+
     manager->updateCurrentWindowState();
 }
 
@@ -125,6 +135,12 @@ void Window::openMainMenu() {
 void Window::openGame() {
     manager->addWindowState(WindowState::Type::GAME, new Game());
     manager->setCurrentWindowState(WindowState::Type::GAME);
+}
+
+void Window::quitGame() {    
+    Manager::SetScale(1.0f, 1.0f);
+
+    openMainMenu();
 }
 
 /* ----- OPTIONS ----- */

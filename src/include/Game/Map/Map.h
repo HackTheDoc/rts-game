@@ -26,6 +26,9 @@ public:
     void render();
     void destroy();
 
+    int width();
+    int height();
+
 private:
     std::string m_name;
     std::array<Layer, NUMBER_OF_LAYER-1> layers;

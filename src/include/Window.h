@@ -15,6 +15,8 @@ public:
     static Manager* manager;
     static Event event;
 
+    static float deltaTime;
+
     Window();
     ~Window();
 
@@ -31,6 +33,7 @@ public:
     /* ----- GAME ----- */
 
     void openGame();
+    void quitGame();
 
     /* ----- OPTIONS ----- */
 
@@ -47,6 +50,8 @@ public:
     static void SetWindowMode(const Uint32 mode);
 
 private:
+    static Uint32 lastTick;
+
     /// @brief the actual window
     static SDL_Window *window;
 };

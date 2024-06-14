@@ -7,7 +7,7 @@
 
 /* ---------- TILE CLASS ---------- */
 
-const int Tile::SIZE = 64;
+const int Tile::SIZE = 128;
 
 Tile::Tile(const Type t) {
     switch (t) {
@@ -254,8 +254,8 @@ Tile::Tile(const Type t) {
 Tile::~Tile() {}
 
 void Tile::update() {
-    rect.x = position.x - Game::camera.x;
-    rect.y = position.y - Game::camera.y;
+    rect.x = position.x - Game::camera.pos.x;
+    rect.y = position.y - Game::camera.pos.y;
 }
 
 void Tile::draw() {
@@ -293,6 +293,6 @@ void Foam::update() {
     const int currentFrame = (int)((SDL_GetTicks64() / Animation::SPEED) % FRAMES);
     srcRect.x = srcRect.w * currentFrame;
 
-    rect.x = position.x - Game::camera.x;
-    rect.y = position.y - Game::camera.y;
+    rect.x = position.x - Game::camera.pos.x;
+    rect.y = position.y - Game::camera.pos.y;
 }

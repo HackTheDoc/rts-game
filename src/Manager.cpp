@@ -33,6 +33,10 @@ void Manager::SetViewport(const SDL_Rect* v) {
     SDL_RenderSetViewport(Window::renderer, v);
 }
 
+void Manager::SetScale(const float sw, const float sh) {
+    SDL_RenderSetScale(Window::renderer, sw, sh);
+}
+
 /* ---------- FONT MANAGER ---------- */
 
 TTF_Font* Manager::getFont(const std::string& id) {

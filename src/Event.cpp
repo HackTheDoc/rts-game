@@ -2,6 +2,7 @@
 
 #include "include/Game/Game.h"
 #include "include/Window.h"
+#include "include/KeyMap.h"
 #include <iostream>
 
 std::string to_string(const Event::ID eid) {
@@ -155,8 +156,9 @@ bool Event::mouseClickRight() {
     return e.type == SDL_MOUSEBUTTONUP && e.button.button == SDL_BUTTON_RIGHT;
 }
 
-bool Event::raised(const Event::ID id) {
-    return false; // KeyMap::Key[k] == id;
+bool Event::raised(const Event::ID id, const SDL_EventType etype) {
+    SDL_KeyCode k = SDL_KeyCode(e.key.keysym.sym);
+    return KeyMap::Key[k] == id;
 }
 
 void Event::raise(const Event::ID id) {
@@ -175,7 +177,10 @@ void Event::raise(const Event::ID id) {
         break;
     case OPEN_GAME:
         window->openGame();
-        break;    
+        break;  
+    case QUIT_GAME:
+        window->quitGame();
+        break; 
     case OPEN_OPTIONS:
         window->openOptionsMenu();
         break;
@@ -257,30 +262,18 @@ void Event::handleCreditsEvents() {
 }
 
 void Event::handleGameEvents() {
-    if (e.type == SDL_KEYDOWN) {
-        switch (e.key.keysym.sym) {
-        case SDLK_q:
-            Game::camera.x -= Tile::SIZE;
-            break;
-        case SDLK_d:
-            Game::camera.x += Tile::SIZE;
-            break;
-        case SDLK_s:
-            Game::camera.y += Tile::SIZE;
-            break;
-        case SDLK_z:
-            Game::camera.y -= Tile::SIZE;
-            break;
-        default:
-            break;
-        }    
+    if (e.type == SDL_MOUSEWHEEL) {
+        if (e.wheel.y > 0)
+            Game::camera.applyZoom(1);
+        else if (e.wheel.y < 0)
+            Game::camera.applyZoom(-1);
     }
 
     if (e.type == SDL_KEYUP) {
         switch (e.key.keysym.sym) {
         case SDLK_q:
             if (SDL_GetModState() & KMOD_CTRL)
-                raise(OPEN_MAIN_MENU);
+                raise(QUIT_GAME);
             break;
         default:
             break;
