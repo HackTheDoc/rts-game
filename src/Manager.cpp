@@ -96,7 +96,25 @@ SDL_Texture* Manager::getTexture(const std::string& id) {
 }
 
 void Manager::loadGameTextures() {
+    textures["water"] = LoadTexture("assets/terrain/water.png");
+    textures["foam"] = LoadTexture("assets/terrain/foam.png");
+
+    textures["ground"] = LoadTexture("assets/terrain/ground_tilesheet.png");
+    textures["stone"] = LoadTexture("assets/terrain/stone_tilesheet.png");
+}
+
+void Manager::clearGameTextures() {
+    SDL_DestroyTexture(textures["water"]);
+    textures.erase("water");
     
+    SDL_DestroyTexture(textures["foam"]);
+    textures.erase("foam");
+    
+    SDL_DestroyTexture(textures["ground"]);
+    textures.erase("ground");
+    
+    SDL_DestroyTexture(textures["stone"]);
+    textures.erase("stone");
 }
 
 void Manager::clearTextures() {

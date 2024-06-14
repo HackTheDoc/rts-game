@@ -19,4 +19,6 @@ namespace hue {
     const SDL_Color border                  = { 248, 248, 242, 255 }; // #f8f8f2
 
     const SDL_Color background              = {  22,  23,  29, 255 }; // #16171d
-}
+
+    const SDL_Color water                   = {  71, 171, 169, 255 }; // #47ABA9
+};

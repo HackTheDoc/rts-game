@@ -32,8 +32,10 @@ public:
 
     /// @brief game related textures only
     void loadGameTextures();
-
+    
     /// @brief game related textures only
+    void clearGameTextures();
+
     void clearTextures();
 
     static SDL_Texture* LoadTexture(const char* filepath);

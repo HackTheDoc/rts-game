@@ -1,9 +1,13 @@
 #pragma once
 
+#include "Map/Map.h"
+
 #include "../WindowStates/WindowState.h"
 
 class Game : public WindowState {
 public:
+    static SDL_Rect camera;
+
     Game();
     ~Game();
 
@@ -11,4 +15,7 @@ public:
     void update() override;
     void render() override;
     void clean() override;
+
+private:
+    Map* map;
 };

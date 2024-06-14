@@ -1,5 +1,6 @@
 #include "include/Event.h"
 
+#include "include/Game/Game.h"
 #include "include/Window.h"
 #include <iostream>
 
@@ -256,16 +257,35 @@ void Event::handleCreditsEvents() {
 }
 
 void Event::handleGameEvents() {
-    if (e.type != SDL_KEYUP || !(SDL_GetModState() & KMOD_CTRL))
-        return;
+    if (e.type == SDL_KEYDOWN) {
+        switch (e.key.keysym.sym) {
+        case SDLK_q:
+            Game::camera.x -= Tile::SIZE;
+            break;
+        case SDLK_d:
+            Game::camera.x += Tile::SIZE;
+            break;
+        case SDLK_s:
+            Game::camera.y += Tile::SIZE;
+            break;
+        case SDLK_z:
+            Game::camera.y -= Tile::SIZE;
+            break;
+        default:
+            break;
+        }    
+    }
 
-    switch (e.key.keysym.sym) {
-    case SDLK_q:
-        raise(OPEN_MAIN_MENU);
-        break;
-    default:
-        break;
-    }    
+    if (e.type == SDL_KEYUP) {
+        switch (e.key.keysym.sym) {
+        case SDLK_q:
+            if (SDL_GetModState() & KMOD_CTRL)
+                raise(OPEN_MAIN_MENU);
+            break;
+        default:
+            break;
+        }    
+    }
 }
 
 void Event::handlePauseMenuEvents() {
