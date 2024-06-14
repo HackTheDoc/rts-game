@@ -10,6 +10,8 @@
 
 #include "hue.h"
 
+class Vector2D;
+
 class Manager {
 public:
     Manager();

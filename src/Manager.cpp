@@ -2,6 +2,9 @@
 
 #include "include/Window.h"
 
+#include "include/Game/Components/Vector2D.h"
+#include "include/Game/Map/Tile.h"
+
 #include <vector>
 #include <sstream>
 #include <iostream>
@@ -100,14 +103,26 @@ SDL_Texture* Manager::getTexture(const std::string& id) {
 }
 
 void Manager::loadGameTextures() {
+    /* ----- TILESETS ----- */
+
     textures["water"] = LoadTexture("assets/terrain/water.png");
     textures["foam"] = LoadTexture("assets/terrain/foam.png");
 
     textures["ground"] = LoadTexture("assets/terrain/ground_tilesheet.png");
     textures["stone"] = LoadTexture("assets/terrain/stone_tilesheet.png");
+
+    /* ----- SPRITESHEETS ----- */
+
+    textures["purple pawn"] = LoadTexture("assets/troops/pawn/pawn_purple.png");
+
+    /* ----- OTHERS ----- */
+
+    textures["selection"] = LoadTexture("assets/troops/selection.png");
 }
 
 void Manager::clearGameTextures() {
+    /* ----- TILESETS ----- */
+
     SDL_DestroyTexture(textures["water"]);
     textures.erase("water");
     
@@ -119,6 +134,16 @@ void Manager::clearGameTextures() {
     
     SDL_DestroyTexture(textures["stone"]);
     textures.erase("stone");
+
+    /* ----- SPRITESHEETS ----- */
+
+    SDL_DestroyTexture(textures["purple pawn"]);
+    textures.erase("purple pawn");
+
+    /* ----- OTHERS ----- */
+
+    SDL_DestroyTexture(textures["selection"]);
+    textures.erase("selection");
 }
 
 void Manager::clearTextures() {

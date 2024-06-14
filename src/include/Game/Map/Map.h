@@ -5,6 +5,8 @@
 
 #include "Tile.h"
 
+#include "../Entities/Entities.h"
+
 using Layer = std::vector<Tile*>;
 using RawLayer = std::vector<std::vector<int>>;
 
@@ -34,6 +36,8 @@ private:
     std::array<Layer, NUMBER_OF_LAYER-1> layers;
     std::vector<Foam*> foamLayer;
     int m_height, m_width;
+
+    std::vector<Entity*> entities;
 
     void addTile(const LayerID lid, const int x, const int y, const Tile::Type ttype);
 

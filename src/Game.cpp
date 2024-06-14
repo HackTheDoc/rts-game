@@ -23,6 +23,7 @@ void Game::init() {
 
 void Game::update() {
     camera.update();
+    cursor.update();
 
     map->update();
     
@@ -34,6 +35,7 @@ void Game::render() {
 
 void Game::clean() {
     camera.reset();
+    cursor.reset();
     
     map->destroy();
     delete map;

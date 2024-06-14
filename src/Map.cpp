@@ -21,6 +21,9 @@ void Map::update() {
     updateLayer(LayerID::SAND);
     updateLayer(LayerID::STONE);
     updateLayer(LayerID::GRASS);
+
+    for (Entity* e : entities)
+        e->update();
 }
 
 void Map::render() {
@@ -28,9 +31,18 @@ void Map::render() {
     renderLayer(LayerID::SAND);
     renderLayer(LayerID::STONE);
     renderLayer(LayerID::GRASS);
+
+    for (Entity* e : entities)
+        e->draw();
 }
 
 void Map::destroy() {
+    for (Entity* e : entities) {
+        e->kill();
+        delete e;
+    }
+    entities.clear();
+
     destroyLayer(LayerID::FOAM);
     destroyLayer(LayerID::SAND);
     destroyLayer(LayerID::STONE);
@@ -200,4 +212,12 @@ void Map::createTestMap() {
         foamLayer,
     };
     create(33, 17, rmap);
+
+    Entity* p1 = new Entity();
+    p1->placeAt(15, 5);
+    entities.push_back(p1);
+
+    Entity* p2 = new Entity();
+    p2->placeAt(18, 8);
+    entities.push_back(p2);
 }
