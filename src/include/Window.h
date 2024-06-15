@@ -3,6 +3,8 @@
 #include "Manager.h"
 #include "Event.h"
 
+using KeyMap = std::map<Event::ID, SDL_Scancode>;
+
 class Window {
 public:
     static const std::string TITLE;
@@ -12,6 +14,7 @@ public:
     static SDL_Renderer* renderer;
     static SDL_Rect screen;
 
+    static KeyMap controls;
     static Manager* manager;
     static Event event;
 

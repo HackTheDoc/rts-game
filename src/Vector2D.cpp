@@ -1,5 +1,7 @@
 #include "include/Game/Components/Vector2D.h"
 
+#include <SDL2/SDL.h>
+
 Vector2D::Vector2D() {
     x = 0;
     y = 0;
@@ -95,4 +97,9 @@ bool operator!=(const Vector2D& v1, const Vector2D& v2) {
 std::ostream& operator<<(std::ostream& stream, const Vector2D& vec) {
     stream << "(" << vec.x << ", " << vec.y << ")";
     return stream;
+}
+
+bool PointInRect(const Vector2D* p, const SDL_Rect* r) {
+    return  p->x >= r->x && p->x <= r->x + r->w &&
+            p->y >= r->y && p->y <= r->y + r->h;
 }

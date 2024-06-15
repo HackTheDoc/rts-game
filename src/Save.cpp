@@ -2,7 +2,6 @@
 #include "include/serialization.h"
 
 #include "include/Window.h"
-#include "include/KeyMap.h"
 
 #include <fstream>
 #include <filesystem>
@@ -19,10 +18,11 @@ void Save::CreateConfig() {
     .autosave = true,
     .window_mode = 0,
     .controls = {
-            {SDLK_z         , EventID::MOVE_UP            },
-            {SDLK_s         , EventID::MOVE_DOWN          },
-            {SDLK_q         , EventID::MOVE_LEFT          },
-            {SDLK_d         , EventID::MOVE_RIGHT         },
+            { EventID::MOVE_UP          , SDL_SCANCODE_W        },
+            { EventID::MOVE_DOWN        , SDL_SCANCODE_S        },
+            { EventID::MOVE_LEFT        , SDL_SCANCODE_A        },
+            { EventID::MOVE_RIGHT       , SDL_SCANCODE_D        },
+            { EventID::SELECT_MULTIPLE  , SDL_SCANCODE_LSHIFT   },
         }
     };
 
@@ -38,7 +38,7 @@ void Save::SaveConfig() {
     if (Window::fullscreen)
         config.window_mode = SDL_WINDOW_FULLSCREEN_DESKTOP;
 
-    config.controls = KeyMap::Key;
+    config.controls = Window::controls;
 
     serialize::config(config);
 }

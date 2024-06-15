@@ -11,9 +11,8 @@ namespace hue {
     const SDL_Color yellow                  = { 241, 250, 140, 255 }; // #f1fa8c
 
     const SDL_Color blur                    = {  40,  42,  54, 192 }; // #282a36
-    const SDL_Color blur_dark               = {  22,  23,  29, 216 }; // #16171d
+    const SDL_Color blur_yellow             = { 241, 250, 140, 128 }; // #f1fa8c
     const SDL_Color blur_white              = { 248, 248, 242, 192 }; // #f8f8f2
-    const SDL_Color blur_red                = { 255,  85,  85, 176 }; // #ff5555
 
     const SDL_Color font                    = { 248, 248, 242, 255 }; // #f8f8f2
     const SDL_Color border                  = { 248, 248, 242, 255 }; // #f8f8f2

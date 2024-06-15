@@ -43,8 +43,8 @@ namespace serialize {
         outfile.write(reinterpret_cast<const char*>(&mcsize), sizeof(size_t));
 
         for (const auto& [key, value] : config.controls) {
-            outfile.write(reinterpret_cast<const char*>(&key), sizeof(SDL_KeyCode));
-            outfile.write(reinterpret_cast<const char*>(&value), sizeof(Event::ID));
+            outfile.write(reinterpret_cast<const char*>(&key), sizeof(Event::ID));
+            outfile.write(reinterpret_cast<const char*>(&value), sizeof(SDL_Scancode));
         }
 
         outfile.close();
@@ -101,10 +101,10 @@ namespace deserialize {
         infile.read(reinterpret_cast<char*>(&mcsize), sizeof(size_t));
 
         for (size_t i = 0; i < mcsize; ++i) {
-            SDL_KeyCode key;
-            infile.read(reinterpret_cast<char*>(&key), sizeof(SDL_KeyCode));
-            Event::ID value;
-            infile.read(reinterpret_cast<char*>(&value), sizeof(Event::ID));
+            Event::ID key;
+            infile.read(reinterpret_cast<char*>(&key), sizeof(Event::ID));
+            SDL_Scancode value;
+            infile.read(reinterpret_cast<char*>(&value), sizeof(SDL_Scancode));
 
             cstruct.controls[key] = value;
         }

@@ -5,7 +5,10 @@
 Camera Game::camera;
 Cursor Game::cursor;
 
-Game::Game() : map(nullptr) {}
+Map* Game::map = nullptr;
+std::vector<Entity*> Game::selectedEntities{};
+
+Game::Game() {}
 
 Game::~Game() {}
 
@@ -31,6 +34,7 @@ void Game::update() {
 
 void Game::render() {
     map->render();
+    cursor.draw();
 }
 
 void Game::clean() {
@@ -44,4 +48,45 @@ void Game::clean() {
     Window::manager->clearGameTextures();
 
     Manager::SetRenderDrawColor(hue::background);
+}
+
+void Game::ReleaseSelectedEntities() {
+    for (Entity* e : selectedEntities)
+        e->selected = false;
+    selectedEntities.clear();
+}
+
+void Game::SelectEntities() {
+    if (!Window::event.raised(Event::ID::SELECT_MULTIPLE))
+        Game::ReleaseSelectedEntities();
+
+    // format selection rect
+    SDL_Rect r = cursor.selectionRect;
+    if (cursor.selectionRect.w < 0) {
+        r.x = cursor.selectionRect.x + cursor.selectionRect.w;
+        r.w = -cursor.selectionRect.w;
+    }
+    if (cursor.selectionRect.h < 0) {
+        r.y = cursor.selectionRect.y + cursor.selectionRect.h;
+        r.h = -cursor.selectionRect.h;
+    }
+        
+    std::vector<Entity*> newlySelectedEntities = map->getEntitiesInRect(r);
+    for (Entity* e :  newlySelectedEntities) {
+        e->selected = true;
+        selectedEntities.push_back(e);
+    }
+}
+
+void Game::SelectEntityAt(const Vector2D* pos) {
+    if (!Window::event.raised(Event::ID::SELECT_MULTIPLE))
+        Game::ReleaseSelectedEntities();
+
+    std::optional<Entity*> e = map->getEntitiesAt(pos);
+    
+    if (e.has_value()) {
+        e.value()->selected = true;
+        selectedEntities.push_back(e.value());
+    }
+
 }

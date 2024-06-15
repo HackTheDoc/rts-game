@@ -36,12 +36,12 @@ public:
 
         // GAME RELATED
 
-        //      FREE
-
         MOVE_UP,
         MOVE_DOWN,
         MOVE_LEFT,
         MOVE_RIGHT,
+
+        SELECT_MULTIPLE
     };
 
     /// @brief classic SDL_Event object
@@ -58,15 +58,16 @@ public:
     void handleKeyboardInputs();
 
     /// @brief check for a mouse left click
+    /// @param clickType format = [SDL_MOUSEBUTTONUP, SDL_MOUSEBUTTONDOWN]
     /// @return
-    bool mouseClickLeft();
+    bool mouseClickLeft(const SDL_EventType clickType = SDL_MOUSEBUTTONUP);
 
     /// @brief check for a mouse right click
     /// @return
     bool mouseClickRight();
 
     /// @brief check wether a specific event been raised or not
-    bool raised(const Event::ID id, const SDL_EventType etype = SDL_KEYDOWN);
+    bool raised(const Event::ID eid);
 
     /// @brief raise a specific event
     /// @param id 

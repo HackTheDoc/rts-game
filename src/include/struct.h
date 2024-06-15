@@ -6,12 +6,13 @@
 #include "Event.h"
 
 using EventID = Event::ID;
+using KeyMap = std::map<Event::ID, SDL_Scancode>;
 
 namespace Struct {
     struct Config {
         bool autosave;
         Uint32 window_mode;
-        std::map<SDL_KeyCode, EventID> controls;
+        KeyMap controls;
     };
 
 }; // namespace Struct

@@ -7,11 +7,15 @@
 class Cursor {
 public:
     Vector2D pos;
+    
+    bool selecting;
+    SDL_Rect selectionRect;
 
     Cursor();
     ~Cursor();
 
     void update();
+    void draw();
 
     void reset();
 

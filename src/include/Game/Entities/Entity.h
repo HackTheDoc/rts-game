@@ -7,6 +7,7 @@
 class Entity {
 public:
     bool selected;
+
     Vector2D position;
     int width, height;
 

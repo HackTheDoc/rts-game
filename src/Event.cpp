@@ -2,7 +2,7 @@
 
 #include "include/Game/Game.h"
 #include "include/Window.h"
-#include "include/KeyMap.h"
+
 #include <iostream>
 
 std::string to_string(const Event::ID eid) {
@@ -148,17 +148,17 @@ void Event::handleKeyboardInputs() {
     }
 }
 
-bool Event::mouseClickLeft() {
-    return e.type == SDL_MOUSEBUTTONUP && e.button.button == SDL_BUTTON_LEFT;
+bool Event::mouseClickLeft(const SDL_EventType clickType) {
+    return e.type == clickType && e.button.button == SDL_BUTTON_LEFT;
 }
 
 bool Event::mouseClickRight() {
     return e.type == SDL_MOUSEBUTTONUP && e.button.button == SDL_BUTTON_RIGHT;
 }
 
-bool Event::raised(const Event::ID id, const SDL_EventType etype) {
-    SDL_KeyCode k = SDL_KeyCode(e.key.keysym.sym);
-    return KeyMap::Key[k] == id;
+bool Event::raised(const Event::ID eid) {
+    const Uint8* kstate = SDL_GetKeyboardState(NULL);
+    return kstate[Window::controls[eid]];
 }
 
 void Event::raise(const Event::ID id) {

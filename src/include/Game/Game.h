@@ -19,7 +19,12 @@ public:
     void update() override;
     void render() override;
     void clean() override;
+    
+    static void ReleaseSelectedEntities();
+    static void SelectEntities();
+    static void SelectEntityAt(const Vector2D* pos);
 
 private:
-    Map* map;
+    static Map* map;
+    static std::vector<Entity*> selectedEntities;
 };

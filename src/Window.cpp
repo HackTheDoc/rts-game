@@ -1,6 +1,5 @@
 #include "include/Window.h"
 
-#include "include/KeyMap.h"
 #include "include/Save.h"
 #include "include/WindowStates/WindowStates.h"
 
@@ -14,6 +13,8 @@ bool Window::fullscreen = false;
 
 SDL_Renderer* Window::renderer = nullptr;
 SDL_Rect Window::screen = { 0, 0, 1280, 720 };
+
+KeyMap Window::controls{};
 
 Manager* Window::manager = nullptr;
 Event Window::event;
@@ -64,7 +65,7 @@ int Window::init() {
 
     Save::Auto = config.autosave;
 
-    KeyMap::Key = config.controls;
+    controls = config.controls;
 
     // init components
 

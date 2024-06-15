@@ -1,6 +1,7 @@
 #include "include/Game/Map/Map.h"
 
 #include "include/Window.h"
+#include "include/Game/Components/Collision.h"
 
 Map::Map() {
     m_name = "undefined";
@@ -59,6 +60,23 @@ int Map::width() {
 
 int Map::height() {
     return m_height * Tile::SIZE;
+}
+
+std::vector<Entity*> Map::getEntitiesInRect(const SDL_Rect& rect) {
+    std::vector<Entity*> temp;
+
+    for (Entity* e : entities)
+        if (Collision::AABB(e->collider, rect))
+            temp.push_back(e);
+
+    return temp;
+}
+
+std::optional<Entity*> Map::getEntitiesAt(const Vector2D* pos) {
+    for (Entity* e : entities)
+        if (PointInRect(pos, &e->collider->rect))
+            return e;
+    return {};
 }
 
 void Map::addTile(const LayerID lid, const int x, const int y, const Tile::Type ttype) {

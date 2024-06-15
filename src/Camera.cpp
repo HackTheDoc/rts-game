@@ -5,8 +5,6 @@
 #include <iostream>
 #include <algorithm>
 
-#include <iostream>
-
 const float Camera::SPEED =48.0f;
 const float Camera::ZOOM_SPEED = 0.1f;
 const float Camera::ZOOM_MARGIN = 0.1f;
@@ -25,7 +23,6 @@ Camera::Camera() {
 Camera::~Camera() {}
 
 void Camera::update() {
-    std::cout << zoom << std::endl;
     const int inputX = Window::event.raised(Event::ID::MOVE_RIGHT) - Window::event.raised(Event::ID::MOVE_LEFT);
     const int inputY = Window::event.raised(Event::ID::MOVE_DOWN)  - Window::event.raised(Event::ID::MOVE_UP);
 

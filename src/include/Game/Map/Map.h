@@ -2,6 +2,7 @@
 
 #include <array>
 #include <vector>
+#include <optional>
 
 #include "Tile.h"
 
@@ -30,6 +31,9 @@ public:
 
     int width();
     int height();
+
+    std::vector<Entity*> getEntitiesInRect(const SDL_Rect& rect);
+    std::optional<Entity*> getEntitiesAt(const Vector2D* pos);
 
 private:
     std::string m_name;

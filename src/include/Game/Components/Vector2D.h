@@ -34,3 +34,7 @@ public:
     friend bool operator!=(const Vector2D& v1, const Vector2D& v2);
     friend std::ostream& operator<<(std::ostream& stream, const Vector2D& vec);
 };
+
+struct SDL_Rect;
+
+bool PointInRect(const Vector2D* p, const SDL_Rect* r);

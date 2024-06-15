@@ -22,13 +22,6 @@ Entity::~Entity() {}
 void Entity::update() {
     sprite->update();
     collider->update();
-
-    if (Window::event.mouseClickLeft()) {
-        if (Game::cursor.inRect(&collider->rect))
-            selected = true;
-        else
-            selected = false;
-    }
 }
 
 void Entity::draw() {
