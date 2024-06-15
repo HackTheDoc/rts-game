@@ -7,4 +7,6 @@ class Archer : public Entity {
 public:
     Archer(const std::string& f);
     ~Archer();
+
+    Struct::Entity getStructure() override;
 };

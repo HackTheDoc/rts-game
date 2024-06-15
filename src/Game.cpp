@@ -1,6 +1,7 @@
 #include "include/Game/Game.h"
 
 #include "include/Window.h"
+#include "include/Save.h"
 
 Camera Game::camera;
 Cursor Game::cursor;
@@ -20,8 +21,12 @@ void Game::init() {
     camera.width = Window::screen.w;
     camera.height = Window::screen.h;
 
+    const Struct::Game g = Save::Load();
+
+    camera.load(g.camera);
+
     map = new Map();
-    map->init("test map");
+    map->init(g.map);
 }
 
 void Game::update() {
@@ -89,4 +94,8 @@ void Game::SelectEntityAt(const Vector2D* pos) {
         selectedEntities.push_back(e.value());
     }
 
+}
+
+Struct::Game Game::GetStructure() {
+    return {camera.getStructure(), map->getStructure()};
 }

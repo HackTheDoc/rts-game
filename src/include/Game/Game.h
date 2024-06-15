@@ -7,6 +7,10 @@
 
 #include "../WindowStates/WindowState.h"
 
+namespace Struct {
+    struct Game;
+}
+
 class Game : public WindowState {
 public:
     static Cursor cursor;
@@ -23,6 +27,8 @@ public:
     static void ReleaseSelectedEntities();
     static void SelectEntities();
     static void SelectEntityAt(const Vector2D* pos);
+
+    static Struct::Game GetStructure();
 
 private:
     static Map* map;

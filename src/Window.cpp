@@ -139,6 +139,9 @@ void Window::openGame() {
 }
 
 void Window::quitGame() {
+    if (Save::Auto)
+        Save::Update();
+
     openMainMenu();
 }
 

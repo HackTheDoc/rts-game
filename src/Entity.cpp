@@ -2,9 +2,12 @@
 
 #include "include/Game/Game.h"
 #include "include/Window.h"
+#include "include/struct.h"
 
 Entity::Entity() {
     selected = false;
+
+    faction = "unknown";
     
     position.Zero();
     
@@ -38,10 +41,11 @@ void Entity::kill() {
     collider = nullptr;
 }
 
-void Entity::placeAt(const int x, const int y) {
-    setPosition(x*Tile::SIZE, y*Tile::SIZE);
+void Entity::placeAt(const Vector2D& pos) {
+    position = pos;
 }
 
-void Entity::setPosition(const int x, const int y) {
-    position = {x,y};
+Struct::Entity Entity::getStructure() {
+    const Struct::Pawn p{faction, position, selected};
+    return {p};
 }

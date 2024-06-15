@@ -4,8 +4,19 @@
 #include "../Components/Sprite.h"
 #include "../Components/EntityCollider.h"
 
+namespace Struct {
+    struct Entity;
+}
+
 class Entity {
 public:
+    enum Type : char {
+        UNKNOWN,
+        PAWN,
+        WARRIOR,
+        ARCHER
+    };
+
     // blue, red, yellow, purple
     std::string faction;
     
@@ -23,8 +34,9 @@ public:
     virtual void draw();
     virtual void kill();
 
-    void placeAt(const int x, const int y);
-    void setPosition(const int x, const int y);
+    void placeAt(const Vector2D& pos);
+
+    virtual Struct::Entity getStructure();
 
 protected:
     Sprite* sprite;

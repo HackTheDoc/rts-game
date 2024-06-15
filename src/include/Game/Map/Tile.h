@@ -4,6 +4,10 @@
 
 #include "../Components/Vector2D.h"
 
+namespace Struct {
+    struct Tile;
+}
+
 class Tile {
 public:
     static const int SIZE;
@@ -75,6 +79,7 @@ public:
         STONE_WALL_MID,
         STONE_WALL_RIGHT,
     };
+    Type type;
     
     Vector2D position;
     SDL_Rect rect;
@@ -82,11 +87,13 @@ public:
     Tile(const Type t = Type::WATER);
     ~Tile();
 
-    virtual void place(const int x, const int y);
+    void place(const Vector2D& pos);
     
     virtual void update();
     void draw();
     void destroy();
+
+    Struct::Tile getStructure();
 
 protected:
     SDL_Texture* texture;
@@ -97,8 +104,6 @@ class Foam : public Tile {
 public:
     Foam();
     ~Foam();
-
-    void place(const int x, const int y) override;
 
     void update() override;
 

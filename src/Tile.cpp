@@ -4,12 +4,15 @@
 
 #include "include/Game/Game.h"
 #include "include/Window.h"
+#include "include/struct.h"
 
 /* ---------- TILE CLASS ---------- */
 
 const int Tile::SIZE = 128;
 
 Tile::Tile(const Type t) {
+    type = t;
+
     switch (t) {
     /* ----- WATER TILES ----- */
 
@@ -248,7 +251,7 @@ Tile::Tile(const Type t) {
 
     rect = { 0, 0, Tile::SIZE, Tile::SIZE };
 
-    place(0, 0);
+    place({0,0});
 }
 
 Tile::~Tile() {}
@@ -270,25 +273,27 @@ void Tile::destroy() {
     srcRect = rect = {0,0,0,0};
 }
 
-void Tile::place(const int x, const int y) {
-    position = {x,y};
+void Tile::place(const Vector2D& pos) {
+    position = pos;
+}
+
+Struct::Tile Tile::getStructure() {
+    return {position, type};
 }
 
 /* ---------- FLOAM CLASS ---------- */
 
 Foam::Foam() {
+    type = Tile::Type::FOAM;
+    
     texture = Window::manager->getTexture("foam");
     srcRect = { 0, 0, 192, 192};
     const int s = Tile::SIZE * 3;
     rect = { 0, 0, s, s};
-    place(0,0);
+    place({0,0});
 }
 
 Foam::~Foam() {}
-
-void Foam::place(const int x, const int y) {
-    position = {x-1, y-1};
-}
 
 void Foam::update() {
     const int currentFrame = (int)((SDL_GetTicks64() / Animation::SPEED) % FRAMES);

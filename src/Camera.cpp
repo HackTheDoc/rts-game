@@ -1,6 +1,7 @@
 #include "include/Game/Camera.h"
 
 #include "include/Window.h"
+#include "include/struct.h"
 
 #include <iostream>
 #include <algorithm>
@@ -22,6 +23,11 @@ Camera::Camera() {
 
 Camera::~Camera() {}
 
+void Camera::load(const Struct::Camera& c) {
+    pos = c.pos;
+    zoom = c.zoom;
+}
+
 void Camera::update() {
     const int inputX = Window::event.raised(Event::ID::MOVE_RIGHT) - Window::event.raised(Event::ID::MOVE_LEFT);
     const int inputY = Window::event.raised(Event::ID::MOVE_DOWN)  - Window::event.raised(Event::ID::MOVE_UP);
@@ -40,4 +46,8 @@ void Camera::applyZoom(const int s) {
 void Camera::reset() {
     pos.Zero();
     zoom = 1.0f;
+}
+
+Struct::Camera Camera::getStructure() {
+    return {pos, zoom};
 }

@@ -1,6 +1,7 @@
 #include "include/Game/Map/Map.h"
 
 #include "include/Window.h"
+#include "include/struct.h"
 #include "include/Game/Components/Collision.h"
 
 Map::Map() {
@@ -11,10 +12,18 @@ Map::Map() {
 
 Map::~Map() {}
 
-void Map::init(const std::string& mname) {
-    m_name = mname;
-    
-    createTestMap(); // to be modified later
+void Map::init(const Struct::Map& m) {
+    m_name = m.name;
+    m_width = m.width;
+    m_height = m.height;
+
+    loadLayer(FOAM, m.layers[FOAM]);
+    loadLayer(SAND, m.layers[SAND]);
+    loadLayer(STONE, m.layers[STONE]);
+    loadLayer(GRASS, m.layers[GRASS]);
+
+    for (const Struct::Entity& e : m.entities)
+        addEntity(e);
 }
 
 void Map::update() {
@@ -78,36 +87,25 @@ std::optional<Entity*> Map::getEntitiesAt(const Vector2D* pos) {
     return {};
 }
 
-void Map::addTile(const LayerID lid, const int x, const int y, const Tile::Type ttype) {
+void Map::addTile(const LayerID lid, const Vector2D& pos, const Tile::Type ttype) {
     if (ttype == Tile::Type::NONE) return;
 
     if (ttype == Tile::Type::FOAM) {
         Foam* t = new Foam();
-        t->place(x, y);
+        t->place(pos);
         layers[lid].push_back(t);
 
     }
     else {
         Tile* t = new Tile(ttype);
-        t->place(x, y);
+        t->place(pos);
         layers[lid].push_back(t);
     }
 }
 
-void Map::create(const int w, const int h, const std::array<RawLayer, NUMBER_OF_LAYER>& rmap) {
-    m_width = w;
-    m_height = h;
-
-    createLayer(LayerID::FOAM, rmap[LayerID::FOAM]);
-    createLayer(LayerID::SAND, rmap[LayerID::SAND]);
-    createLayer(LayerID::STONE, rmap[LayerID::STONE]);
-    createLayer(LayerID::GRASS, rmap[LayerID::GRASS]);
-}
-
-void Map::createLayer(const LayerID lid, const RawLayer& rlayer) {
-    for (int y = 0; y < m_height; y++)
-        for (int x = 0; x < m_width; x++)
-            addTile(lid, x, y, Tile::Type(rlayer[y][x]));
+void Map::loadLayer(const LayerID lid, const Struct::Layer& l) {
+    for (const Struct::Tile& t : l.tiles)
+        addTile(lid, t.pos, t.type);
 }
 
 void Map::updateLayer(const LayerID lid) {
@@ -126,104 +124,75 @@ void Map::destroyLayer(const LayerID lid) {
     layers[lid].clear();
 }
 
-void Map::createTestMap() {
-    const RawLayer foamLayer = {
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 2, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 2, 0, 0, 0, 0, 0, 2, 0, 2, 2, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 2, 2, 0, 0, 0, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 0, 2, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+Struct::Map Map::getStructure() {
+    Struct::Map m{
+        m_name,
+        m_width,
+        m_height,
+        {
+            getLayerStructure(LayerID::FOAM),
+            getLayerStructure(LayerID::SAND),
+            getLayerStructure(LayerID::STONE),
+            getLayerStructure(LayerID::GRASS)
+        },
+        {}
     };
 
-    const RawLayer sandLayer = {
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0, 21,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 22,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0, 24,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 25,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0, 27, 23, 23,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 25,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0, 24, 23, 23, 23, 23, 23,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 25,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0, 21, 23, 23, 23, 23, 23, 23,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 23, 28,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0, 24, 23, 23, 23, 23, 23, 23,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 25,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0, 24,  0,  0,  0,  0,  0, 23, 23, 23, 23,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 23, 22,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0, 24, 23, 23, 23, 23, 23, 23, 23, 23, 23,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 25,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0, 27, 26, 26, 26, 26, 23, 23, 23, 23, 28,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 25,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 27, 26, 26, 28,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 23, 23, 28,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0, 19,  0, 21, 22,  0,  0,  0,  0,  0, 19,  0,  0,  0,  0,  0, 23, 23, 23, 23, 23, 23, 28,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 27, 26, 30,  0, 31, 30,  0,  0,  0,  0,  0,  0,  0, 27, 26, 26, 26, 26, 28,  0, 19,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-    };
+    for (auto e : entities)
+        m.entities.push_back(e->getStructure());
 
-    const RawLayer stoneLayer = {
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0, 37, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 38,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0, 40,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 41,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0, 43, 39,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 41,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0, 52, 43, 42, 42, 42, 42, 39,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 41,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 52, 53, 53, 53, 53, 40,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 39, 44,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 40,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 39, 54,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0, 37, 36, 36, 36, 36, 36, 42, 42, 42, 39,  0,  0,  0,  0,  0,  0,  0,  0,  0, 41,  0,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0, 43, 42, 42, 42, 42, 44, 53, 53, 53, 43, 42, 42, 42, 39,  0,  0,  0,  0,  0, 39, 38,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0, 52, 53, 53, 53, 53, 54,  0,  0,  0, 52, 53, 53, 53, 40,  0,  0,  0,  0,  0,  0, 41,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 40,  0,  0,  0,  0, 39, 42, 44,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 37, 38,  0, 43, 42, 42, 42, 42, 44, 53, 54,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 43, 44,  0, 52, 53, 53, 53, 53, 54,  0,  0,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 52, 54,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-    };
+    return m;
+}
 
-    const RawLayer grassLayer = {
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  5,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  6,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  8,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  9,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0, 11,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  9,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 11, 10, 10, 10, 10,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  9,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  8,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7, 12,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  8,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  9,  0,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  5,  4,  4,  4,  4,  4, 10, 10, 10,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  9,  0,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0, 11, 10, 10, 10, 10, 12,  0,  0,  0, 11, 10, 10, 10,  7,  7,  7,  7,  7,  7,  7,  6,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  8,  7,  7,  7,  7,  7,  7,  9,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  8,  7,  7,  7,  7,  7, 10, 12,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  5,  6,  0, 11, 10, 10, 10, 10, 12,  0,  0,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 11, 12,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-        { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-    };
-
-    const std::array<RawLayer, NUMBER_OF_LAYER> rmap = {
-        foamLayer,
-        sandLayer,
-        stoneLayer,
-        grassLayer,
-    };
-    create(33, 17, rmap);
-
-    Pawn* p1 = new Pawn("blue");
-    p1->placeAt(15, 5);
-    entities.push_back(p1);
+Struct::Layer Map::getLayerStructure(const LayerID lid) {
+    Struct::Layer l;
+    l.tiles.resize(layers[lid].size());
     
-    Warrior* p2 = new Warrior("purple");
-    p2->placeAt(18, 8);
-    entities.push_back(p2);
+    for (size_t i = 0; i < layers[lid].size(); i++)
+        l.tiles[i] = layers[lid][i]->getStructure();
     
-    Archer* p3 = new Archer("red");
-    p3->placeAt(15, 8);
-    entities.push_back(p3);
+    return l;
+}
+
+void Map::addEntity(const Struct::Entity& e) {
+    struct EntityVisitor {
+        Map* map;
+
+        void operator()(const Struct::Pawn& p) {
+            map->addPawn(p.faction, p.pos, p.selected);
+        }
+        void operator()(const Struct::Warrior& w) {
+            map->addWarrior(w.faction, w.pos, w.selected);
+        }
+        void operator()(const Struct::Archer& a) {
+            map->addArcher(a.faction, a.pos, a.selected);
+        }
+    };
+
+    EntityVisitor visitor{this};
+    std::visit(visitor, e.e);
+}
+
+void Map::addPawn(const std::string& f, const Vector2D& pos, const bool selected) {
+    Pawn* p = new Pawn(f);
+    p->placeAt(pos);
+    p->selected = selected;
+    
+    entities.push_back(p);
+}
+
+void Map::addWarrior(const std::string& f, const Vector2D& pos, const bool selected) {
+    Warrior* w = new Warrior(f);
+    w->placeAt(pos);
+    w->selected = selected;
+    
+    entities.push_back(w);
+}
+
+void Map::addArcher(const std::string& f, const Vector2D& pos, const bool selected) {
+    Archer* a = new Archer(f);
+    a->placeAt(pos);
+    a->selected = selected;
+    
+    entities.push_back(a);
 }

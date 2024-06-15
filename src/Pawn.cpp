@@ -1,5 +1,7 @@
 #include "include/Game/Entities/Pawn.h"
 
+#include "include/struct.h"
+
 Pawn::Pawn(const std::string& f) {
     faction = f;
     
@@ -17,3 +19,8 @@ Pawn::Pawn(const std::string& f) {
 }
 
 Pawn::~Pawn() {}
+
+Struct::Entity Pawn::getStructure() {
+    const Struct::Pawn p{faction, position, selected};
+    return {p};
+}

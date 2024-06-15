@@ -9,7 +9,6 @@
 #include "../Entities/Entities.h"
 
 using Layer = std::vector<Tile*>;
-using RawLayer = std::vector<std::vector<int>>;
 
 enum LayerID {
     FOAM,
@@ -19,12 +18,18 @@ enum LayerID {
     NUMBER_OF_LAYER
 };
 
+namespace Struct {
+    struct Map;
+    struct Layer;
+    struct Entity;
+}
+
 class Map {
 public:
     Map();
     ~Map();
 
-    void init(const std::string& mname);
+    void init(const Struct::Map& m);
     void update();
     void render();
     void destroy();
@@ -32,8 +37,14 @@ public:
     int width();
     int height();
 
+    void addPawn(const std::string& f, const Vector2D& pos, const bool selected = false);
+    void addWarrior(const std::string& f, const Vector2D& pos, const bool selected = false);
+    void addArcher(const std::string& f, const Vector2D& pos, const bool selected = false);
+
     std::vector<Entity*> getEntitiesInRect(const SDL_Rect& rect);
     std::optional<Entity*> getEntitiesAt(const Vector2D* pos);
+
+    Struct::Map getStructure();
 
 private:
     std::string m_name;
@@ -42,14 +53,14 @@ private:
 
     std::vector<Entity*> entities;
 
-    void addTile(const LayerID lid, const int x, const int y, const Tile::Type ttype);
+    void addTile(const LayerID lid, const Vector2D& pos, const Tile::Type ttype);
 
-    void create(const int w, const int h, const std::array<RawLayer, NUMBER_OF_LAYER>& rmap);
-
-    void createLayer(const LayerID lid, const RawLayer& rlayer);
+    void loadLayer(const LayerID lid, const Struct::Layer& l);
     void updateLayer(const LayerID lid);
     void renderLayer(const LayerID lid);
     void destroyLayer(const LayerID lid);
 
-    void createTestMap();
+    Struct::Layer getLayerStructure(const LayerID lid);
+    
+    void addEntity(const Struct::Entity& e);
 };

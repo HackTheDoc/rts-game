@@ -1,5 +1,7 @@
 #include "include/Game/Entities/Warrior.h"
 
+#include "include/struct.h"
+
 Warrior::Warrior(const std::string& f) {
     faction = f;
     
@@ -17,3 +19,8 @@ Warrior::Warrior(const std::string& f) {
 }
 
 Warrior::~Warrior() {}
+
+Struct::Entity Warrior::getStructure() {
+    const Struct::Warrior w{faction, position, selected};
+    return {w};
+}

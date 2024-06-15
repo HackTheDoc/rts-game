@@ -2,6 +2,10 @@
 
 #include "Components/Vector2D.h"
 
+namespace Struct {
+    struct Camera;
+} // namespace Struct
+
 class Camera {
 public:
     float zoom;
@@ -12,11 +16,15 @@ public:
     Camera();
     ~Camera();
 
+    void load(const Struct::Camera& c);
+
     void update();
 
     void applyZoom(const int s);
 
     void reset();
+
+    Struct::Camera getStructure();
 
 private:
     static const float SPEED;
