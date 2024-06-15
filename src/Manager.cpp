@@ -113,11 +113,21 @@ void Manager::loadGameTextures() {
 
     /* ----- SPRITESHEETS ----- */
 
+    textures["blue pawn"] = LoadTexture("assets/troops/blue/pawn.png");
+    textures["blue warrior"] = LoadTexture("assets/troops/blue/warrior.png");
+    textures["blue archer"] = LoadTexture("assets/troops/blue/archer.png");
+    
+    textures["red pawn"] = LoadTexture("assets/troops/red/pawn.png");
+    textures["red warrior"] = LoadTexture("assets/troops/red/warrior.png");
+    textures["red archer"] = LoadTexture("assets/troops/red/archer.png");
+    
+    textures["yellow pawn"] = LoadTexture("assets/troops/yellow/pawn.png");
+    textures["yellow warrior"] = LoadTexture("assets/troops/yellow/warrior.png");
+    textures["yellow archer"] = LoadTexture("assets/troops/yellow/archer.png");
+    
     textures["purple pawn"] = LoadTexture("assets/troops/purple/pawn.png");
-
-    /* ----- OTHERS ----- */
-
-    textures["selection"] = LoadTexture("assets/troops/selection.png");
+    textures["purple warrior"] = LoadTexture("assets/troops/purple/warrior.png");
+    textures["purple archer"] = LoadTexture("assets/troops/purple/archer.png");
 }
 
 void Manager::clearGameTextures() {
@@ -137,13 +147,33 @@ void Manager::clearGameTextures() {
 
     /* ----- SPRITESHEETS ----- */
 
+    SDL_DestroyTexture(textures["blue pawn"]);
+    textures.erase("blue pawn");
+    SDL_DestroyTexture(textures["blue warrior"]);
+    textures.erase("blue warrior");
+    SDL_DestroyTexture(textures["blue archer"]);
+    textures.erase("blue archer");
+
+    SDL_DestroyTexture(textures["red pawn"]);
+    textures.erase("red pawn");
+    SDL_DestroyTexture(textures["red warrior"]);
+    textures.erase("red warrior");
+    SDL_DestroyTexture(textures["red archer"]);
+    textures.erase("red archer");
+
+    SDL_DestroyTexture(textures["yellow pawn"]);
+    textures.erase("yellow pawn");
+    SDL_DestroyTexture(textures["yellow warrior"]);
+    textures.erase("yellow warrior");
+    SDL_DestroyTexture(textures["yellow archer"]);
+    textures.erase("yellow archer");
+
     SDL_DestroyTexture(textures["purple pawn"]);
     textures.erase("purple pawn");
-
-    /* ----- OTHERS ----- */
-
-    SDL_DestroyTexture(textures["selection"]);
-    textures.erase("selection");
+    SDL_DestroyTexture(textures["purple warrior"]);
+    textures.erase("purple warrior");
+    SDL_DestroyTexture(textures["purple archer"]);
+    textures.erase("purple archer");
 }
 
 void Manager::clearTextures() {

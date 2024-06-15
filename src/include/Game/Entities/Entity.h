@@ -6,6 +6,9 @@
 
 class Entity {
 public:
+    // blue, red, yellow, purple
+    std::string faction;
+    
     bool selected;
 
     Vector2D position;
@@ -16,13 +19,13 @@ public:
     Entity();
     ~Entity();
 
-    void update();
-    void draw();
-    void kill();
+    virtual void update();
+    virtual void draw();
+    virtual void kill();
 
     void placeAt(const int x, const int y);
     void setPosition(const int x, const int y);
 
-private:
+protected:
     Sprite* sprite;
 };

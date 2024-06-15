@@ -40,7 +40,6 @@ void Map::render() {
 void Map::destroy() {
     for (Entity* e : entities) {
         e->kill();
-        delete e;
     }
     entities.clear();
 
@@ -216,11 +215,15 @@ void Map::createTestMap() {
     };
     create(33, 17, rmap);
 
-    Entity* p1 = new Entity();
+    Pawn* p1 = new Pawn("blue");
     p1->placeAt(15, 5);
     entities.push_back(p1);
-
-    Entity* p2 = new Entity();
+    
+    Warrior* p2 = new Warrior("purple");
     p2->placeAt(18, 8);
     entities.push_back(p2);
+    
+    Archer* p3 = new Archer("red");
+    p3->placeAt(15, 8);
+    entities.push_back(p3);
 }
