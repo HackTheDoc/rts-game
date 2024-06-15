@@ -254,8 +254,11 @@ Tile::Tile(const Type t) {
 Tile::~Tile() {}
 
 void Tile::update() {
-    rect.x = position.x - Game::camera.pos.x;
-    rect.y = position.y - Game::camera.pos.y;
+    rect.w = Tile::SIZE * Game::camera.zoom;
+    rect.h = Tile::SIZE * Game::camera.zoom;
+
+    rect.x = position.x * rect.w - Game::camera.pos.x;
+    rect.y = position.y * rect.h - Game::camera.pos.y;
 }
 
 void Tile::draw() {
@@ -268,8 +271,7 @@ void Tile::destroy() {
 }
 
 void Tile::place(const int x, const int y) {
-    position.x = x * Tile::SIZE;
-    position.y = y * Tile::SIZE;
+    position = {x,y};
 }
 
 /* ---------- FLOAM CLASS ---------- */
@@ -285,14 +287,19 @@ Foam::Foam() {
 Foam::~Foam() {}
 
 void Foam::place(const int x, const int y) {
-    position.x = (x-1) * Tile::SIZE;
-    position.y = (y-1) * Tile::SIZE;
+    position = {x-1, y-1};
 }
 
 void Foam::update() {
     const int currentFrame = (int)((SDL_GetTicks64() / Animation::SPEED) % FRAMES);
     srcRect.x = srcRect.w * currentFrame;
 
-    rect.x = position.x - Game::camera.pos.x;
-    rect.y = position.y - Game::camera.pos.y;
+    const int s = Tile::SIZE * Game::camera.zoom;
+
+    rect.w = s * 3;
+    rect.h = s * 3;
+
+
+    rect.x = position.x * s - Game::camera.pos.x;
+    rect.y = position.y * s - Game::camera.pos.y;
 }

@@ -18,4 +18,8 @@ public:
 
     void place(const int x, const int y);
     void place(const Vector2D& pos);
+
+protected:
+    int width;
+    int height;
 };

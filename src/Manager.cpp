@@ -113,7 +113,7 @@ void Manager::loadGameTextures() {
 
     /* ----- SPRITESHEETS ----- */
 
-    textures["purple pawn"] = LoadTexture("assets/troops/pawn/pawn_purple.png");
+    textures["purple pawn"] = LoadTexture("assets/troops/purple/pawn.png");
 
     /* ----- OTHERS ----- */
 

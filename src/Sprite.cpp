@@ -69,8 +69,11 @@ void Sprite::update() {
         srcRect.y = animationIndex * srcRect.h;
     }
 
-    destRect.x = owner->position.x - Tile::SIZE - Game::camera.pos.x;
-    destRect.y = owner->position.y - Tile::SIZE - Game::camera.pos.y;
+    destRect.x = (owner->position.x - Tile::SIZE) * Game::camera.zoom - Game::camera.pos.x;
+    destRect.y = (owner->position.y - Tile::SIZE) * Game::camera.zoom - Game::camera.pos.y;
+
+    destRect.w = owner->width * Game::camera.zoom;
+    destRect.h = owner->height * Game::camera.zoom;
 }
 
 void Sprite::draw() {

@@ -5,6 +5,8 @@
 #include <iostream>
 #include <algorithm>
 
+#include <iostream>
+
 const float Camera::SPEED =48.0f;
 const float Camera::ZOOM_SPEED = 0.1f;
 const float Camera::ZOOM_MARGIN = 0.1f;
@@ -17,25 +19,25 @@ float Lerp(float a, float b, float c) {
 }
 
 Camera::Camera() {
-    pos.Zero();
-    zoom = 1.0f;
+    reset();
 }
 
 Camera::~Camera() {}
 
 void Camera::update() {
+    std::cout << zoom << std::endl;
     const int inputX = Window::event.raised(Event::ID::MOVE_RIGHT) - Window::event.raised(Event::ID::MOVE_LEFT);
     const int inputY = Window::event.raised(Event::ID::MOVE_DOWN)  - Window::event.raised(Event::ID::MOVE_UP);
 
-    pos.x = Lerp(pos.x, pos.x + inputX*SPEED*zoom, SPEED*Window::deltaTime);
-    pos.y = Lerp(pos.y, pos.y + inputY*SPEED*zoom, SPEED*Window::deltaTime);
+    const float b = SPEED * zoom;
+    const float c = SPEED * Window::deltaTime;
+    pos.x = Lerp(pos.x, pos.x + inputX * b, c);
+    pos.y = Lerp(pos.y, pos.y + inputY * b, c);
 }
 
 void Camera::applyZoom(const int s) {
     zoom += s * ZOOM_SPEED;
     zoom = std::clamp(zoom, ZOOM_MIN, ZOOM_MAX);
-
-    Manager::SetScale(zoom, zoom);
 }
 
 void Camera::reset() {

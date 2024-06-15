@@ -11,10 +11,10 @@ using Layer = std::vector<Tile*>;
 using RawLayer = std::vector<std::vector<int>>;
 
 enum LayerID {
+    FOAM,
     SAND,
     STONE,
     GRASS,
-    FOAM,
     NUMBER_OF_LAYER
 };
 
@@ -33,8 +33,7 @@ public:
 
 private:
     std::string m_name;
-    std::array<Layer, NUMBER_OF_LAYER-1> layers;
-    std::vector<Foam*> foamLayer;
+    std::array<Layer, NUMBER_OF_LAYER> layers;
     int m_height, m_width;
 
     std::vector<Entity*> entities;

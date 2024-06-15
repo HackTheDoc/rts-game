@@ -67,7 +67,7 @@ void Map::addTile(const LayerID lid, const int x, const int y, const Tile::Type 
     if (ttype == Tile::Type::FOAM) {
         Foam* t = new Foam();
         t->place(x, y);
-        foamLayer.push_back(t);
+        layers[lid].push_back(t);
 
     }
     else {
@@ -94,34 +94,19 @@ void Map::createLayer(const LayerID lid, const RawLayer& rlayer) {
 }
 
 void Map::updateLayer(const LayerID lid) {
-    if (lid == LayerID::FOAM) 
-        for (Foam* f : foamLayer)
-            f->update();
-    else
-        for (Tile* t : layers[lid])
-            t->update();
+    for (auto t : layers[lid])
+        t->update();
 }
 
 void Map::renderLayer(const LayerID lid) {
-    if (lid == LayerID::FOAM) 
-        for (Foam* f : foamLayer)
-            f->draw();
-    else
-        for (Tile* t : layers[lid])
-            t->draw();
+    for (auto t : layers[lid])
+        t->draw();
 }
 
 void Map::destroyLayer(const LayerID lid) {
-    if (lid == LayerID::FOAM) {
-        for (Foam* f : foamLayer)
-            f->destroy();
-        foamLayer.clear();
-    }
-    else {
-        for (Tile* t : layers[lid])
-            t->draw();
-        layers[lid].clear();
-    }
+    for (auto t : layers[lid])
+        t->destroy();
+    layers[lid].clear();
 }
 
 void Map::createTestMap() {
@@ -206,10 +191,10 @@ void Map::createTestMap() {
     };
 
     const std::array<RawLayer, NUMBER_OF_LAYER> rmap = {
+        foamLayer,
         sandLayer,
         stoneLayer,
         grassLayer,
-        foamLayer,
     };
     create(33, 17, rmap);
 

@@ -137,9 +137,7 @@ void Window::openGame() {
     manager->setCurrentWindowState(WindowState::Type::GAME);
 }
 
-void Window::quitGame() {    
-    Manager::SetScale(1.0f, 1.0f);
-
+void Window::quitGame() {
     openMainMenu();
 }
 

@@ -4,11 +4,10 @@
 
 class Camera {
 public:
-
+    float zoom;
     Vector2D pos;
     int width;
     int height;
-    float zoom;
 
     Camera();
     ~Camera();

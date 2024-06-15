@@ -82,9 +82,9 @@ public:
     Tile(const Type t = Type::WATER);
     ~Tile();
 
-    void place(const int x, const int y);
+    virtual void place(const int x, const int y);
     
-    void update();
+    virtual void update();
     void draw();
     void destroy();
 
@@ -98,9 +98,9 @@ public:
     Foam();
     ~Foam();
 
-    void place(const int x, const int y);
+    void place(const int x, const int y) override;
 
-    void update();
+    void update() override;
 
 private:
     static constexpr int FRAMES = 8;

@@ -6,13 +6,18 @@
 
 Collider::Collider(const int w, const int h) {
     rect = {0, 0, w, h};
+    width = w;
+    height = h;
 }
 
 Collider::~Collider() {}
 
 void Collider::update() {
-    rect.x = position.x - Game::camera.pos.x;
-    rect.y = position.y - Game::camera.pos.y;
+    rect.x = position.x * Game::camera.zoom - Game::camera.pos.x;
+    rect.y = position.y * Game::camera.zoom - Game::camera.pos.y;
+
+    rect.w = width * Game::camera.zoom;
+    rect.h = height * Game::camera.zoom;
 }
 
 void Collider::draw() {
