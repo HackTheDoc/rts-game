@@ -60,9 +60,17 @@ namespace Struct {
         float zoom;
     };
 
+    struct Faction {
+        std::string name;
+        int food;
+        int gold;
+        int wood;
+    };
+
     struct Game {
         Camera camera;
         Map map;
+        Faction faction;
     };
 
     struct Config {

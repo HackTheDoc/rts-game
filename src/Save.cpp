@@ -62,7 +62,8 @@ bool Save::Exist() {
 void Save::Create() {
     Struct::Game game{
         .camera = CreateCamera(0, 0),
-        .map = CreateMap_Test()
+        .map = CreateMap_Test(),
+        .faction = CreateFaction("purple")
     };
     serialize::game(game, pathToSaveFolder+"game");
 }
@@ -100,6 +101,10 @@ Struct::Game Save::Load() {
 
 Struct::Camera Save::CreateCamera(const int x, const int y) {
     return {{x,y}, 1.0f};
+}
+
+Struct::Faction Save::CreateFaction(const std::string& name) {
+    return {name, 0,0,0};
 }
 
     /* ----- ENTITIES ----- */

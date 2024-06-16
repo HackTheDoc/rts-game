@@ -6,6 +6,10 @@
 Camera Game::camera;
 Cursor Game::cursor;
 
+UI* Game::ui = nullptr;
+
+Faction Game::playerFaction;
+
 Map* Game::map = nullptr;
 std::vector<Entity*> Game::selectedEntities{};
 
@@ -23,10 +27,15 @@ void Game::init() {
 
     const Struct::Game g = Save::Load();
 
+    playerFaction = Faction(g.faction.name, g.faction.food, g.faction.gold, g.faction.wood);
+
     camera.load(g.camera);
 
     map = new Map();
     map->init(g.map);
+
+    ui = new UI();
+    ui->init();
 }
 
 void Game::update() {
@@ -34,12 +43,15 @@ void Game::update() {
     cursor.update();
 
     map->update();
-    
+
+    ui->update();
 }
 
 void Game::render() {
     map->render();
     cursor.draw();
+
+    ui->display();
 }
 
 void Game::clean() {
@@ -49,6 +61,10 @@ void Game::clean() {
     map->destroy();
     delete map;
     map = nullptr;
+
+    ui->destroy();
+    delete ui;
+    ui = nullptr;
 
     Window::manager->clearGameTextures();
 
@@ -97,5 +113,5 @@ void Game::SelectEntityAt(const Vector2D* pos) {
 }
 
 Struct::Game Game::GetStructure() {
-    return {camera.getStructure(), map->getStructure()};
+    return {camera.getStructure(), map->getStructure(), playerFaction.getstructure()};
 }

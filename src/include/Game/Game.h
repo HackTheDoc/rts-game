@@ -3,7 +3,10 @@
 #include "Cursor.h"
 #include "Camera.h"
 
+#include "../UI/UI.h"
+
 #include "Map/Map.h"
+#include "Faction.h"
 
 #include "../WindowStates/WindowState.h"
 
@@ -15,6 +18,10 @@ class Game : public WindowState {
 public:
     static Cursor cursor;
     static Camera camera;
+
+    static UI* ui;
+
+    static Faction playerFaction;
 
     Game();
     ~Game();

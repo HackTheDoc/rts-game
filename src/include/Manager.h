@@ -40,8 +40,6 @@ public:
     /// @brief game related textures only
     void clearGameTextures();
 
-    void clearTextures();
-
     static SDL_Texture* LoadTexture(const char* filepath);
 
     static SDL_Texture* GenerateText(const std::string& text, const std::string& font, const SDL_Color& color, const int length = INT16_MAX, const bool centered = false);

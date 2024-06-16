@@ -39,6 +39,8 @@ private:
     
     static Struct::Camera CreateCamera(const int x, const int y);
 
+    static Struct::Faction CreateFaction(const std::string& name);
+
         /* ----- ENTITIES ----- */
     
     static Struct::Entity CreatePawn(const std::string& faction, const int x, const int y);

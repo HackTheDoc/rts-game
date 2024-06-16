@@ -11,3 +11,7 @@
 #include "UIActivator.h"
 
 #include "UIWindowModeSelector.h"
+
+// GAME RELATED
+
+#include "UIRessourceCounter.h"

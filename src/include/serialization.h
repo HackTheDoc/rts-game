@@ -34,6 +34,8 @@ namespace serialize {
 
     void camera(std::ofstream& outfile, const Struct::Camera& c);
 
+    void faction(std::ofstream& outfile, const Struct::Faction& f);
+
     void game(const Struct::Game& g, const fs::path& path);
 
     void config(const Struct::Config& config);
@@ -66,6 +68,8 @@ namespace deserialize {
     void map(std::ifstream& infile, Struct::Map& m);
 
     void camera(std::ifstream& infile, Struct::Camera& c);
+
+    void faction(std::ifstream& infile, Struct::Faction& f);
 
     void game(Struct::Game& g, const fs::path& path);
 

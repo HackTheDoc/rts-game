@@ -106,12 +106,21 @@ namespace serialize {
         var(outfile, c.zoom);
     }
 
+    void faction(std::ofstream& outfile, const Struct::Faction& f) {
+        string(outfile, f.name);
+        var(outfile, f.food);
+        var(outfile, f.gold);
+        var(outfile, f.wood);
+    }
+
     void game(const Struct::Game& g, const fs::path& path) {
         std::ofstream outfile(path, std::ios::binary);
 
         camera(outfile, g.camera);
 
         map(outfile, g.map);
+
+        faction(outfile, g.faction);
 
         outfile.close();
     }
@@ -257,6 +266,12 @@ namespace deserialize {
         var(infile, c.zoom);
     }
 
+    void faction(std::ifstream& infile, Struct::Faction& f) {
+        string(infile, f.name);
+        var(infile, f.food);
+        var(infile, f.gold);
+        var(infile, f.wood);
+    }
 
     void game(Struct::Game& g, const fs::path& path) {
         std::ifstream infile(path, std::ios::binary);
@@ -264,6 +279,8 @@ namespace deserialize {
         camera(infile, g.camera);
 
         map(infile, g.map);
+
+        faction(infile, g.faction);
 
         infile.close();
     }

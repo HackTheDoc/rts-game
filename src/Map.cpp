@@ -2,6 +2,7 @@
 
 #include "include/Window.h"
 #include "include/struct.h"
+#include "include/Game/Game.h"
 #include "include/Game/Components/Collision.h"
 
 Map::Map() {
@@ -179,6 +180,9 @@ void Map::addPawn(const std::string& f, const Vector2D& pos, const bool selected
     p->selected = selected;
     
     entities.push_back(p);
+
+    if (f == Game::playerFaction.name)
+        Game::playerFaction.pawns.push_back(p);
 }
 
 void Map::addWarrior(const std::string& f, const Vector2D& pos, const bool selected) {
@@ -187,6 +191,9 @@ void Map::addWarrior(const std::string& f, const Vector2D& pos, const bool selec
     w->selected = selected;
     
     entities.push_back(w);
+
+    if (f == Game::playerFaction.name)
+        Game::playerFaction.warriors.push_back(w);
 }
 
 void Map::addArcher(const std::string& f, const Vector2D& pos, const bool selected) {
@@ -195,4 +202,7 @@ void Map::addArcher(const std::string& f, const Vector2D& pos, const bool select
     a->selected = selected;
     
     entities.push_back(a);
+
+    if (f == Game::playerFaction.name)
+        Game::playerFaction.archers.push_back(a);
 }

@@ -1,4 +1,5 @@
 #include "include/UI/UI.h"
+#include "include/UI/UIElements.h"
 
 #include "include/Window.h"
 
@@ -18,6 +19,27 @@ void UI::remove(const std::string& tag) {
 
 void UI::init() {
     destroy();
+
+    UIRessourceCounter* foodCounter = new UIRessourceCounter("food");
+    foodCounter->place(
+        8*(Window::fullscreen+1),
+        0
+    );
+    add("food counter", foodCounter);
+    
+    UIRessourceCounter* goldCounter = new UIRessourceCounter("gold");
+    goldCounter->place(
+        UIRessourceCounter::WIDTH + 8*(Window::fullscreen+1),
+        0
+    );
+    add("gold counter", goldCounter);
+
+    UIRessourceCounter* woodCounter = new UIRessourceCounter("wood");
+    woodCounter->place(
+        UIRessourceCounter::WIDTH*2 + 8*(Window::fullscreen+1),
+        0
+    );
+    add("wood counter", woodCounter);
 }
 
 void UI::update() {
