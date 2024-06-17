@@ -112,6 +112,10 @@ void Manager::loadGameTextures() {
 
     /* ----- SPRITESHEETS ----- */
 
+    textures["white pawn"] = LoadTexture("assets/troops/white/pawn.png");
+    textures["white warrior"] = LoadTexture("assets/troops/white/warrior.png");
+    textures["white archer"] = LoadTexture("assets/troops/white/archer.png");
+
     textures["blue pawn"] = LoadTexture("assets/troops/blue/pawn.png");
     textures["blue warrior"] = LoadTexture("assets/troops/blue/warrior.png");
     textures["blue archer"] = LoadTexture("assets/troops/blue/archer.png");

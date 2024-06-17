@@ -63,7 +63,7 @@ void Save::Create() {
     Struct::Game game{
         .camera = CreateCamera(0, 0),
         .map = CreateMap_Test(),
-        .faction = CreateFaction("purple")
+        .faction = CreateFaction("white")
     };
     serialize::game(game, pathToSaveFolder+"game");
 }
@@ -227,9 +227,9 @@ Struct::Map Save::CreateMap_Test() {
             })
         },
         .entities = {
-            CreatePawn("blue", 15, 5),
-            CreateWarrior("purple", 18, 8),
-            CreateArcher("red", 15, 8),
+            CreatePawn("white", 15, 5),
+            CreateWarrior("white", 18, 8),
+            CreateArcher("white", 15, 8),
         }
     };
     return m;
