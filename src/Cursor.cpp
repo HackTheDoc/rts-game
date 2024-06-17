@@ -50,3 +50,8 @@ bool Cursor::inRect(const SDL_Rect* r) {
     SDL_Point p{pos.x, pos.y};
     return SDL_PointInRect(&p, r);
 }
+
+Vector2D Cursor::getPosOnMap() {
+    const int realTileSize = Tile::SIZE * Game::camera.zoom;
+    return (Game::camera.pos + pos) / realTileSize;
+}

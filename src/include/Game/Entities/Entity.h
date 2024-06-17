@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "../Components/Vector2D.h"
 #include "../Components/Sprite.h"
 #include "../Components/EntityCollider.h"
@@ -39,5 +41,9 @@ public:
     virtual Struct::Entity getStructure();
 
 protected:
+    int speed;
+
     Sprite* sprite;
+
+    std::vector<Vector2D> pathToTravel;
 };

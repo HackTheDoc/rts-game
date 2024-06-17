@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Components/AStar.h"
+
 #include "Cursor.h"
 #include "Camera.h"
 
@@ -39,7 +41,11 @@ public:
 
     static Struct::Game GetStructure();
 
+    static std::vector<Vector2D> FindPath(const Vector2D& start, const Vector2D& end);
+
 private:
+    static AStar::Generator generator;
+    
     static Map* map;
     static std::vector<Entity*> selectedEntities;
 };

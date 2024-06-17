@@ -40,10 +40,6 @@ Vector2D& Vector2D::Divide(const Vector2D& vec) {
     return *this;
 }
 
-Vector2D& operator+(Vector2D& v1, const Vector2D& v2) {
-    return v1.Add(v2);
-}
-
 Vector2D operator+(const Vector2D& v1, const Vector2D& v2) {
     return Vector2D{v1.x + v2.x, v1.y + v2.y};
 }
@@ -80,6 +76,10 @@ Vector2D Vector2D::operator*(const int i) const {
     return Vector2D{this->x * i, this->y * i};
 }
 
+Vector2D Vector2D::operator/(const int i) const {
+    return Vector2D{this->x / i, this->y / i};
+}
+
 Vector2D& Vector2D::Zero() {
     this->x = 0;
     this->y = 0;
@@ -106,4 +106,10 @@ std::ostream& operator<<(std::ostream& stream, const Vector2D& vec) {
 bool PointInRect(const Vector2D* p, const SDL_Rect* r) {
     return  p->x >= r->x && p->x <= r->x + r->w &&
             p->y >= r->y && p->y <= r->y + r->h;
+}
+
+int dist(const Vector2D& v1, const Vector2D& v2) {
+    const int x = (v1.x - v2.x);
+    const int y = (v1.y - v2.y);
+    return x*x + y*y;
 }

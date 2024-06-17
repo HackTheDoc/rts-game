@@ -266,6 +266,8 @@ void Tile::update() {
 
 void Tile::draw() {
     Manager::Draw(texture, &srcRect, &rect);
+
+    Manager::DrawRect(&rect, hue::black);
 }
 
 void Tile::destroy() {

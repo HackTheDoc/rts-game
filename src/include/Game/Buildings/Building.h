@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include <string>
 #include <SDL2/SDL.h>
 
@@ -25,6 +26,8 @@ public:
     void update();
     void draw();
     void destroy();
+
+    virtual std::vector<Vector2D> tilesBlocked();
 
     virtual Struct::Building getStructure();
 

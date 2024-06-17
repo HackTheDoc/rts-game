@@ -76,11 +76,29 @@ void Map::destroy() {
 }
 
 int Map::width() {
-    return m_width * Tile::SIZE;
+    return m_width;
 }
 
 int Map::height() {
-    return m_height * Tile::SIZE;
+    return m_height;
+}
+
+std::vector<std::vector<bool>> Map::getCollisionMap() {
+    std::vector<std::vector<bool>> map;
+    map.resize(m_height, {});
+    for (int i = 0; i < m_height; i++)
+        map[i].resize(m_width, true);
+    
+    for (Tile* t : layers[LayerID::GRASS])
+        map[t->position.y][t->position.x] = false;
+
+    for (Building* b : buildings) {
+        const std::vector<Vector2D> p = b->tilesBlocked();
+        for (const Vector2D& v : p)
+            map[v.y][v.x] = true;
+    }
+
+    return map;
 }
 
 std::vector<Entity*> Map::getEntitiesInRect(const SDL_Rect& rect) {

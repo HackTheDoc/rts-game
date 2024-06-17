@@ -3,6 +3,8 @@
 #include "include/Window.h"
 #include "include/Save.h"
 
+AStar::Generator Game::generator;
+
 Camera Game::camera;
 Cursor Game::cursor;
 
@@ -33,6 +35,21 @@ void Game::init() {
 
     map = new Map();
     map->init(g.map);
+
+    // init pathfinder generator
+    generator.setHeuristic(&AStar::Heuristic::euclidean);
+    generator.setDiagonalMovement(true);
+    generator.setWorldSize({map->width(), map->height()});
+    
+    std::vector<std::vector<bool>> col_map = map->getCollisionMap();
+    for (int y = 0; y < map->height(); y++) {
+        for (int x = 0; x < map->width(); x++) {
+            std::cout << col_map[y][x];
+            if (col_map[y][x] == true)
+                generator.addCollision(Vector2D{x,y});
+            }
+        std::cout << std::endl;
+    }
 
     ui = new UI();
     ui->init();
@@ -144,4 +161,12 @@ void Game::AddStartingEntities(const int pawnCount, const int warriorCount, cons
 
 Struct::Game Game::GetStructure() {
     return {camera.getStructure(), map->getStructure(), playerFaction.getstructure()};
+}
+
+std::vector<Vector2D> Game::FindPath(const Vector2D& start, const Vector2D& end) {
+    auto path = generator.findPath(start, end);
+    std::cout << "from" << start << " to " << end << std::endl;
+    for(auto& coordinate : path)
+        std::cout << coordinate << std::endl;
+    return path;
 }

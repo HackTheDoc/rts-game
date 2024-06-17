@@ -20,4 +20,6 @@ public:
     void reset();
 
     bool inRect(const SDL_Rect* r);
+
+    Vector2D getPosOnMap();
 };

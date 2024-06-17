@@ -16,7 +16,6 @@ public:
     Vector2D& Mutliply(const Vector2D& vec);
     Vector2D& Divide(const Vector2D& vec);
 
-    friend Vector2D& operator+(Vector2D& v1, const Vector2D& v2);
     friend Vector2D operator+(const Vector2D& v1, const Vector2D& v2);
     friend Vector2D& operator-(Vector2D& v1, const Vector2D& v2);
     friend Vector2D& operator*(Vector2D& v1, const Vector2D& v2);
@@ -28,6 +27,7 @@ public:
     Vector2D& operator/=(const Vector2D& vec);
 
     Vector2D operator*(const int i) const;
+    Vector2D operator/(const int i) const;
     Vector2D& Zero();
     bool isZero();
 
@@ -39,3 +39,5 @@ public:
 struct SDL_Rect;
 
 bool PointInRect(const Vector2D* p, const SDL_Rect* r);
+
+int dist(const Vector2D& v1, const Vector2D& v2);

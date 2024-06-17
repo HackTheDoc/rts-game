@@ -39,6 +39,8 @@ public:
     int width();
     int height();
 
+    std::vector<std::vector<bool>> getCollisionMap();
+
     void addPawn(const std::string& f, const Vector2D& pos, const bool selected = false);
     void addWarrior(const std::string& f, const Vector2D& pos, const bool selected = false);
     void addArcher(const std::string& f, const Vector2D& pos, const bool selected = false);

@@ -32,6 +32,10 @@ void Building::destroy() {
     height = width = 0;
 }
 
+std::vector<Vector2D> Building::tilesBlocked() {
+    return {};
+}
+
 Struct::Building Building::getStructure() {
     return {Struct::Castle{faction, position}};
 }
