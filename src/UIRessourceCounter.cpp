@@ -5,14 +5,20 @@
 
 UIRessourceCounter::UIRessourceCounter(const std::string& r) {
     lbl = new UILabel();
-    ico = new UIIcon(r);
+    ico = new UIIcon("ressources icons", 64);
 
-    if (r == "food")
+    if (r == "food") {
+        ico->setSourceX(0);
         ressource = &Game::playerFaction.food;
-    else if (r == "wood")
+    }
+    else if (r == "wood") {
+        ico->setSourceX(128);
         ressource = &Game::playerFaction.wood;
-    else
+    }
+    else {
+        ico->setSourceX(64);
         ressource = &Game::playerFaction.gold;
+    }
 }
 
 UIRessourceCounter::~UIRessourceCounter() {}

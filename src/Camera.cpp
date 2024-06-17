@@ -1,5 +1,7 @@
 #include "include/Game/Camera.h"
 
+#include "include/Game/Buildings/Building.h"
+
 #include "include/Window.h"
 #include "include/struct.h"
 
@@ -46,6 +48,11 @@ void Camera::applyZoom(const int s) {
 void Camera::reset() {
     pos.Zero();
     zoom = 1.0f;
+}
+
+void Camera::centerOn(Building* b) {
+    pos.x = b->position.x + (b->width - width) / 2;
+    pos.y = b->position.y + (b->height - height) / 2;
 }
 
 Struct::Camera Camera::getStructure() {

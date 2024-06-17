@@ -15,9 +15,12 @@ public:
     /// @brief autosave mode
     static bool Auto;
 
+    /// @brief new game ?
+    static bool New;
+
     static bool Exist();
 
-    static void Create();
+    static Struct::Game Create();
 
     static bool Update();
 
@@ -48,6 +51,10 @@ private:
     static Struct::Entity CreateWarrior(const std::string& faction, const int x, const int y);
     
     static Struct::Entity CreateArcher(const std::string& faction, const int x, const int y);
+
+        /* ----- BUILDINGS ----- */
+    
+    static Struct::Building CreateCastle(const std::string& faction, const int x, const int y);
 
         /* ----- MAPS ------ */
 

@@ -36,6 +36,9 @@ void Game::init() {
 
     ui = new UI();
     ui->init();
+
+    if (Save::New)
+        camera.centerOn(playerFaction.castles[0]);
 }
 
 void Game::update() {
@@ -110,6 +113,33 @@ void Game::SelectEntityAt(const Vector2D* pos) {
         selectedEntities.push_back(e.value());
     }
 
+}
+
+void Game::AddStartingEntities(const int pawnCount, const int warriorCount, const int archerCount) {
+    const Vector2D castlePos = playerFaction.castles[0]->position;
+    const std::array<Vector2D, 4> pos{
+        castlePos + Vector2D{1*Tile::SIZE, 3*Tile::SIZE},
+        castlePos + Vector2D{3*Tile::SIZE, 3*Tile::SIZE},
+        castlePos + Vector2D{0*Tile::SIZE, 3*Tile::SIZE},
+        castlePos + Vector2D{4*Tile::SIZE, 3*Tile::SIZE}
+    };
+
+    int i = 0;
+
+    while (i < pawnCount) {
+        map->addPawn(playerFaction.name, pos[i]);
+        i++;
+    }
+    
+    while (i < pawnCount+warriorCount) {
+        map->addWarrior(playerFaction.name, pos[i]);
+        i++;
+    }
+    
+    while (i < pawnCount+warriorCount+archerCount) {
+        map->addArcher(playerFaction.name, pos[i]);
+        i++;
+    }
 }
 
 Struct::Game Game::GetStructure() {

@@ -7,6 +7,7 @@
 #include "Tile.h"
 
 #include "../Entities/Entities.h"
+#include "../Buildings/Buildings.h"
 
 using Layer = std::vector<Tile*>;
 
@@ -22,6 +23,7 @@ namespace Struct {
     struct Map;
     struct Layer;
     struct Entity;
+    struct Building;
 }
 
 class Map {
@@ -41,6 +43,8 @@ public:
     void addWarrior(const std::string& f, const Vector2D& pos, const bool selected = false);
     void addArcher(const std::string& f, const Vector2D& pos, const bool selected = false);
 
+    void addCastle(const std::string& f, const Vector2D& pos);
+
     std::vector<Entity*> getEntitiesInRect(const SDL_Rect& rect);
     std::optional<Entity*> getEntitiesAt(const Vector2D* pos);
 
@@ -52,6 +56,7 @@ private:
     int m_height, m_width;
 
     std::vector<Entity*> entities;
+    std::vector<Building*> buildings;
 
     void addTile(const LayerID lid, const Vector2D& pos, const Tile::Type ttype);
 
@@ -63,4 +68,5 @@ private:
     Struct::Layer getLayerStructure(const LayerID lid);
     
     void addEntity(const Struct::Entity& e);
+    void addBuilding(const Struct::Building& b);
 };

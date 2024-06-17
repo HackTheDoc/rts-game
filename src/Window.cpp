@@ -133,8 +133,31 @@ void Window::openMainMenu() {
     manager->setCurrentWindowState(WindowState::Type::MAIN);
 }
 
+/* ----- GAME ----- */
+
 void Window::openGame() {
+    manager->removeWindowState(WindowState::Type::MAIN);
     manager->addWindowState(WindowState::Type::GAME, new Game());
+    
+    if (Save::New) {
+        manager->addWindowState(WindowState::Type::STARTING_UNIT_SELECTION, new StartingUnitSelectionMenu());
+        manager->setCurrentWindowState(WindowState::Type::STARTING_UNIT_SELECTION);
+    }
+    else manager->setCurrentWindowState(WindowState::Type::GAME);
+}
+
+void Window::endStartingUnitSelection() {
+    std::cout << "starting game with : " << std::endl;
+    int pawnCount = StartingUnitSelectionMenu::pawnSelector->count + StartingUnitSelectionMenu::avalaible;
+    std::cout << "  - " <<  pawnCount << " pawns" << std::endl;
+    const int warriorCount = StartingUnitSelectionMenu::warriorSelector->count;
+    std::cout << "  - " <<  warriorCount << " warriors" << std::endl;
+    const int archerCount = StartingUnitSelectionMenu::archerSelector->count;
+    std::cout << "  - " <<  archerCount << " archers" << std::endl;
+    
+    Game::AddStartingEntities(pawnCount, warriorCount, archerCount);
+
+    manager->removeWindowState(WindowState::Type::STARTING_UNIT_SELECTION);
     manager->setCurrentWindowState(WindowState::Type::GAME);
 }
 

@@ -172,15 +172,21 @@ void Event::raise(const Event::ID id) {
     case QUIT:
         Window::isRunning = false;
         break;
+    
     case OPEN_MAIN_MENU:
         window->openMainMenu();
         break;
+    
     case OPEN_GAME:
         window->openGame();
         break;  
+    case VALID_STARTING_UNIT_SELECTION:
+        window->endStartingUnitSelection();
+        break;
     case QUIT_GAME:
         window->quitGame();
         break; 
+
     case OPEN_OPTIONS:
         window->openOptionsMenu();
         break;
@@ -190,6 +196,7 @@ void Event::raise(const Event::ID id) {
     case OPEN_CONTROLS_SETTINGS:
         window->openControlsOptions();
         break;
+    
     case OPEN_CREDITS:
         window->openCredits();
         break;

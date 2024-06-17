@@ -4,6 +4,8 @@
 
 #include "UILabel.h"
 
+#include "UITextBox.h"
+
 #include "UIButton.h"
 
 #include "UIHyperlink.h"
@@ -14,4 +16,8 @@
 
 // GAME RELATED
 
+#include "UIIcon.h"
+
 #include "UIRessourceCounter.h"
+
+#include "UIUnitSelector.h"

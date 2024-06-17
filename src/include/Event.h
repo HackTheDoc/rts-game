@@ -36,6 +36,8 @@ public:
 
         // GAME RELATED
 
+        VALID_STARTING_UNIT_SELECTION,
+
         MOVE_UP,
         MOVE_DOWN,
         MOVE_LEFT,

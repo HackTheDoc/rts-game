@@ -30,6 +30,8 @@ public:
     void update() override;
     void render() override;
     void clean() override;
+
+    static void AddStartingEntities(const int pawnCount, const int warriorCount, const int archerCount);
     
     static void ReleaseSelectedEntities();
     static void SelectEntities();

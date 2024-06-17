@@ -73,6 +73,29 @@ namespace serialize {
         std::visit(visitor, e.e);
     }
 
+    void castle(std::ofstream& outfile, const Struct::Castle& c) {
+        var(outfile, Building::Type::CASTLE);
+        
+        string(outfile, c.faction);
+        vector2D(outfile, c.pos);
+    }
+
+    void building(std::ofstream& outfile, const Struct::Building& b) {
+        struct BuildingVisitor {
+            std::ofstream& outfile;
+
+            void operator()(const Struct::Castle& c) {
+                serialize::castle(outfile, c);
+            }
+            void operator()(const Struct::House& h) {
+
+            }
+        };
+
+        BuildingVisitor visitor{outfile};
+        std::visit(visitor, b.b);
+    }
+
     void tile(std::ofstream& outfile, const Struct::Tile& t) {
         vector2D(outfile, t.pos);
         var(outfile, t.type);
@@ -95,10 +118,15 @@ namespace serialize {
         for (const Struct::Layer& l : m.layers)
             layer(outfile, l);
         
-        size_t size = m.entities.size();
-        var(outfile, size);
+        size_t esize = m.entities.size();
+        var(outfile, esize);
         for (const Struct::Entity& e : m.entities)
             entity(outfile, e);
+        
+        size_t bsize = m.buildings.size();
+        var(outfile, bsize);
+        for (const Struct::Building& b : m.buildings)
+            building(outfile, b);
     }
 
     void camera(std::ofstream& outfile, const Struct::Camera& c) {
@@ -231,6 +259,40 @@ namespace deserialize {
         std::visit(visitor, e.e);
     }
 
+    void castle(std::ifstream& infile, Struct::Castle& c) {
+        string(infile, c.faction);
+        vector2D(infile, c.pos);
+    }
+
+    void building(std::ifstream& infile, Struct::Building& b) {
+        Building::Type t;
+        var(infile, t);
+        switch (t) {
+        case Building::Type::CASTLE:
+            b.b = Struct::Castle{};
+            break;
+        case Building::Type::HOUSE:
+            b.b = Struct::House{};
+            break;
+        default:
+            break;
+        }
+
+        struct BuildingVisitor {
+            std::ifstream& infile;
+
+            void operator()(Struct::Castle& c) {
+                deserialize::castle(infile, c);
+            }
+            void operator()(Struct::House& h) {
+                
+            }
+        };
+
+        BuildingVisitor visitor{infile};
+        std::visit(visitor, b.b);
+    }
+
     void tile(std::ifstream& infile, Struct::Tile& t) {
         vector2D(infile, t.pos);
         var(infile, t.type);
@@ -254,11 +316,17 @@ namespace deserialize {
         for (Struct::Layer& l : m.layers)
             layer(infile, l);
         
-        size_t size;
-        var(infile, size);
-        m.entities.resize(size);
-        for (size_t i = 0; i < size; i++)
+        size_t esize;
+        var(infile, esize);
+        m.entities.resize(esize);
+        for (size_t i = 0; i < esize; i++)
             entity(infile, m.entities[i]);
+        
+        size_t bsize;
+        var(infile, bsize);
+        m.buildings.resize(bsize);
+        for (size_t i = 0; i < bsize; i++)
+            building(infile, m.buildings[i]);
     }
 
     void camera(std::ifstream& infile, Struct::Camera& c) {

@@ -13,6 +13,7 @@ public:
         
         GAME,
         PAUSE_MENU,
+        STARTING_UNIT_SELECTION,
     };
 
     WindowState() {}

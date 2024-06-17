@@ -25,6 +25,9 @@ void Map::init(const Struct::Map& m) {
 
     for (const Struct::Entity& e : m.entities)
         addEntity(e);
+
+    for (const Struct::Building& b : m.buildings)
+        addBuilding(b);
 }
 
 void Map::update() {
@@ -32,6 +35,9 @@ void Map::update() {
     updateLayer(LayerID::SAND);
     updateLayer(LayerID::STONE);
     updateLayer(LayerID::GRASS);
+
+    for (Building* b : buildings)
+        b->update();
 
     for (Entity* e : entities)
         e->update();
@@ -43,14 +49,20 @@ void Map::render() {
     renderLayer(LayerID::STONE);
     renderLayer(LayerID::GRASS);
 
+    for (Building* b : buildings)
+        b->draw();
+
     for (Entity* e : entities)
         e->draw();
 }
 
 void Map::destroy() {
-    for (Entity* e : entities) {
+    for (Building* b : buildings)
+        b->destroy();
+    buildings.clear();
+
+    for (Entity* e : entities)
         e->kill();
-    }
     entities.clear();
 
     destroyLayer(LayerID::FOAM);
@@ -136,11 +148,15 @@ Struct::Map Map::getStructure() {
             getLayerStructure(LayerID::STONE),
             getLayerStructure(LayerID::GRASS)
         },
+        {},
         {}
     };
 
     for (auto e : entities)
         m.entities.push_back(e->getStructure());
+
+    for (auto B : buildings)
+        m.buildings.push_back(B->getStructure());
 
     return m;
 }
@@ -205,4 +221,29 @@ void Map::addArcher(const std::string& f, const Vector2D& pos, const bool select
 
     if (f == Game::playerFaction.name)
         Game::playerFaction.archers.push_back(a);
+}
+
+void Map::addBuilding(const Struct::Building& b) {
+    struct BuildingVisitor {
+        Map* map;
+
+        void operator()(const Struct::Castle& c) {
+            map->addCastle(c.faction, c.pos);
+        }
+        void operator()(const Struct::House& h) {
+
+        }
+    };
+
+    BuildingVisitor visitor{this};
+    std::visit(visitor, b.b);
+}
+
+void Map::addCastle(const std::string& f, const Vector2D& pos) {
+    Castle* c = new Castle(f, pos);
+    
+    buildings.push_back(c);
+
+    if (f == Game::playerFaction.name)
+        Game::playerFaction.castles.push_back(c);
 }

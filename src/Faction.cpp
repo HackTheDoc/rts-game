@@ -12,12 +12,16 @@ Faction::Faction(const std::string& n, const int f, const int g, const int w) {
     pawns.clear();
     warriors.clear();
     archers.clear();
+    
+    castles.clear();
 }
 
 Faction::~Faction() {
     pawns.clear();
     warriors.clear();
     archers.clear();
+
+    castles.clear();
 }
 
 Struct::Faction Faction::getstructure() {

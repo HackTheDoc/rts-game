@@ -38,6 +38,23 @@ namespace Struct {
         > e;
     };
 
+    struct Castle {
+        std::string faction;
+        Vector2D pos;
+    };
+
+    struct House {
+        std::string faction;
+        Vector2D pos;
+    };
+
+    struct Building {
+        std::variant<
+            Castle,
+            House
+        > b;
+    };
+
     struct Tile {
         Vector2D pos;
         TileType type;
@@ -53,6 +70,7 @@ namespace Struct {
         int height;
         std::array<Layer, NUMBER_OF_LAYER> layers;
         std::vector<Entity> entities;
+        std::vector<Building> buildings;
     };
 
     struct Camera {

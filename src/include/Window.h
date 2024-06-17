@@ -36,6 +36,8 @@ public:
     /* ----- GAME ----- */
 
     void openGame();
+    void endStartingUnitSelection();
+
     void quitGame();
 
     /* ----- OPTIONS ----- */

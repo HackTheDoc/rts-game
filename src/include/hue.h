@@ -3,6 +3,8 @@
 #include <SDL2/SDL.h>
 
 namespace hue {
+    const SDL_Color invisible               = {   0,   0,   0,   0 };
+
     const SDL_Color black                   = {   0,   0,   0, 255 };
     const SDL_Color white                   = { 255, 255, 255, 255 };
     const SDL_Color red                     = { 255,  85,  85, 255 }; // #ff5555
@@ -20,4 +22,7 @@ namespace hue {
     const SDL_Color background              = {  22,  23,  29, 255 }; // #16171d
 
     const SDL_Color water                   = {  71, 171, 169, 255 }; // #47ABA9
+
+    const SDL_Color card_background         = {  40,  42,  54, 255 }; // #282a36
+    const SDL_Color card_border = border;
 };

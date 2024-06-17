@@ -6,7 +6,8 @@
 
 class UIIcon : public UIElement {
 public:
-    UIIcon(const std::string& iname);
+    UIIcon();
+    UIIcon(const std::string& iname, const int sz);
     ~UIIcon();
 
     void draw() override;
@@ -14,6 +15,9 @@ public:
 
     void resize(const int sz);
 
-private:
+    void setSourceX(const int x);
+
+protected:
     SDL_Texture* texture;
+    SDL_Rect srcRect;
 };

@@ -6,6 +6,8 @@ namespace Struct {
     struct Camera;
 } // namespace Struct
 
+class Building;
+
 class Camera {
 public:
     float zoom;
@@ -23,6 +25,8 @@ public:
     void applyZoom(const int s);
 
     void reset();
+
+    void centerOn(Building* b);
 
     Struct::Camera getStructure();
 

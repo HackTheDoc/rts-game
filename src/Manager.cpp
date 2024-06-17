@@ -132,7 +132,16 @@ void Manager::loadGameTextures() {
     textures["purple warrior"] = LoadTexture("assets/troops/purple/warrior.png");
     textures["purple archer"] = LoadTexture("assets/troops/purple/archer.png");
 
-    std::cout << "game textures loaded" << std::endl;
+    /* ----- BUILDINGS ----- */
+    
+    textures["white castle"] = LoadTexture("assets/buildings/white/castle.png");
+    textures["white tower"] = LoadTexture("assets/buildings/white/tower.png");
+    textures["white house"] = LoadTexture("assets/buildings/white/house.png");
+
+    /* ----- ICONS ----- */
+
+    textures["unit icons"] = LoadTexture("assets/icons/troops.png");
+    textures["ressources icons"] = LoadTexture("assets/icons/ressources.png");
 }
 
 void Manager::clearGameTextures() {
@@ -268,13 +277,16 @@ void Manager::DrawLine(const int x1, const int y1, const int x2, const int y2, c
 void Manager::addWindowState(const WindowState::Type id, WindowState* ws) {
     windowStates.emplace(id, ws);
     windowStates[id]->init();
+    
+    if (id == WindowState::Type::GAME)
+        windowStates[id]->update();
 }
 
 void Manager::removeWindowState(const WindowState::Type id) {
     if (windowStates.count(id) == 0)
-        return
+        return;
 
-        windowStates[id]->clean();
+    windowStates[id]->clean();
     windowStates.erase(id);
     currentWindowState = previousWindowState;
 }

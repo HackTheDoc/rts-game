@@ -10,11 +10,12 @@
 namespace fs = std::filesystem;
 
 bool Save::Auto = false;
+bool Save::New = false;
 std::string Save::pathToSaveFolder = "./data/";
 
 /* ----- CONFIG ----- */
 
-void Save::CreateConfig() {
+void Save::CreateConfig() {    
     Struct::Config config{
     .autosave = true,
     .window_mode = 0,
@@ -59,13 +60,15 @@ bool Save::Exist() {
     return fs::exists(path);
 }
 
-void Save::Create() {
+Struct::Game Save::Create() {
+    Save::New = true;    
     Struct::Game game{
         .camera = CreateCamera(0, 0),
         .map = CreateMap_Test(),
         .faction = CreateFaction("white")
     };
     serialize::game(game, pathToSaveFolder+"game");
+    return game;
 }
 
 bool Save::Update() {
@@ -87,7 +90,11 @@ bool Save::Erase() {
 }
 
 Struct::Game Save::Load() {
-    if (!Exist()) Create();
+    Save::New = false;
+    
+    if (!Exist()) {
+        return Create();
+    }
 
     Struct::Game game;
     deserialize::game(game, pathToSaveFolder+"game");
@@ -122,6 +129,13 @@ Struct::Entity Save::CreateWarrior(const std::string& faction, const int x, cons
 Struct::Entity Save::CreateArcher(const std::string& faction, const int x, const int y) {
     const Struct::Archer a{faction, {x*Tile::SIZE, y*Tile::SIZE}, false};
     return {a};
+}
+
+    /* ----- BUILDINGS ----- */
+
+Struct::Building Save::CreateCastle(const std::string& faction, const int x, const int y) {
+    const Struct::Castle c{faction, {x*Tile::SIZE, y*Tile::SIZE}};
+    return {c};
 }
 
     /* ----- MAPS ------ */
@@ -230,6 +244,9 @@ Struct::Map Save::CreateMap_Test() {
             CreatePawn("white", 15, 5),
             CreateWarrior("white", 18, 8),
             CreateArcher("white", 15, 8),
+        },
+        .buildings = {
+            CreateCastle("white", 10, 0),
         }
     };
     return m;
