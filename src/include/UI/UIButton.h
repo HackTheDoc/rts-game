@@ -39,6 +39,8 @@ protected:
     SDL_Texture* texture;
 
     bool hovered;
+
+private:
     SDL_Texture* hoveredTexture;
     SDL_Rect hoveredTextureRect;
 };

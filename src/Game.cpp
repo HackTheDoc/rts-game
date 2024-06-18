@@ -91,6 +91,10 @@ void Game::clean() {
     Manager::SetRenderDrawColor(hue::background);
 }
 
+int Game::CountSelectedEntities() {
+    return selectedEntities.size();
+}
+
 void Game::ReleaseSelectedEntities() {
     for (Entity* e : selectedEntities)
         e->selected = false;
@@ -98,6 +102,8 @@ void Game::ReleaseSelectedEntities() {
 }
 
 void Game::SelectEntities() {
+    ui->hide("construction menu");
+
     if (!Window::event.raised(Event::ID::SELECT_MULTIPLE))
         Game::ReleaseSelectedEntities();
 

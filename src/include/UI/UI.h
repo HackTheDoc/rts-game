@@ -17,6 +17,9 @@ public:
     void add(const std::string& tag, UIElement* element);
     void remove(const std::string& tag);
 
+    void show(const std::string& tag);
+    void hide(const std::string& tag);
+
     void init();
     void update();
     void display();

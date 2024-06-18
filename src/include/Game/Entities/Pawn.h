@@ -7,5 +7,7 @@ public:
     Pawn(const std::string& f);
     ~Pawn();
 
+    void update() override;
+
     Struct::Entity getStructure() override;
 };

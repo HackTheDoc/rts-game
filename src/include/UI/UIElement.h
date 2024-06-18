@@ -9,6 +9,8 @@ protected:
 public:
     static const int MARGIN;
     
+    bool shown = true;
+
     virtual void draw();
     virtual void update();
     virtual void destroy();

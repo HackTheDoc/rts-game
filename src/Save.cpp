@@ -111,7 +111,7 @@ Struct::Camera Save::CreateCamera(const int x, const int y) {
 }
 
 Struct::Faction Save::CreateFaction(const std::string& name) {
-    return {name, 0,0,0};
+    return {name, 100,100,100};
 }
 
     /* ----- ENTITIES ----- */

@@ -7,6 +7,7 @@
 #include "UITextBox.h"
 
 #include "UIButton.h"
+#include "UIIconButton.h"
 
 #include "UIHyperlink.h"
 
@@ -21,3 +22,5 @@
 #include "UIRessourceCounter.h"
 
 #include "UIUnitSelector.h"
+
+#include "UIConstructionMenu.h"

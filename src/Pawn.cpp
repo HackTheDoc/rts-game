@@ -1,5 +1,7 @@
 #include "include/Game/Entities/Pawn.h"
 
+#include "include/Game/Game.h"
+#include "include/Window.h"
 #include "include/struct.h"
 
 Pawn::Pawn(const std::string& f) {
@@ -21,6 +23,13 @@ Pawn::Pawn(const std::string& f) {
 }
 
 Pawn::~Pawn() {}
+
+void Pawn::update() {
+    if (selected && Game::CountSelectedEntities() == 1)
+        Game::ui->show("construction menu");
+
+    Entity::update();
+}
 
 Struct::Entity Pawn::getStructure() {
     const Struct::Pawn p{faction, position, selected};

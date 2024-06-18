@@ -17,6 +17,14 @@ void UI::remove(const std::string& tag) {
     elements.erase(tag);
 }
 
+void UI::show(const std::string& tag) {
+    elements[tag]->shown = true;
+}
+
+void UI::hide(const std::string& tag) {
+    elements[tag]->shown = false;
+}
+
 void UI::init() {
     destroy();
 
@@ -40,6 +48,10 @@ void UI::init() {
         0
     );
     add("wood counter", woodCounter);
+
+    UIConstructionMenu* constructionMenu = new UIConstructionMenu();
+    add("construction menu", constructionMenu);
+    hide("construction menu");
 }
 
 void UI::update() {

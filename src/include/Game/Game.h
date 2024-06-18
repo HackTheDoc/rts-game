@@ -35,6 +35,7 @@ public:
 
     static void AddStartingEntities(const int pawnCount, const int warriorCount, const int archerCount);
     
+    static int CountSelectedEntities();
     static void ReleaseSelectedEntities();
     static void SelectEntities();
     static void SelectEntityAt(const Vector2D* pos);
