@@ -13,21 +13,11 @@ Castle::Castle(const std::string& faction, const Vector2D& pos) {
     height = 4;
 
     texture = Window::manager->getTexture(faction+" castle");
+
+    addCollidersOnMap();
 }
 
 Castle::~Castle() {}
-
-std::vector<Vector2D> Castle::tilesBlocked() {
-    std::vector<Vector2D> p;
-
-    const Vector2D pos = position / Tile::SIZE;
-
-    for (int y = 0; y < 3; y++)
-        for (int x = 0; x < 5; x++)
-            p.push_back(pos + Vector2D{x,y});
-
-    return p;
-}
 
 Struct::Building Castle::getStructure() {
     return {Struct::Castle{faction, position}};

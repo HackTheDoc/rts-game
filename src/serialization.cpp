@@ -73,6 +73,20 @@ namespace serialize {
         std::visit(visitor, e.e);
     }
 
+    void house(std::ofstream& outfile, const Struct::House& h) {
+        var(outfile, Building::Type::HOUSE);
+        
+        string(outfile, h.faction);
+        vector2D(outfile, h.pos);
+    }
+    
+    void tower(std::ofstream& outfile, const Struct::Tower& t) {
+        var(outfile, Building::Type::TOWER);
+        
+        string(outfile, t.faction);
+        vector2D(outfile, t.pos);
+    }
+    
     void castle(std::ofstream& outfile, const Struct::Castle& c) {
         var(outfile, Building::Type::CASTLE);
         
@@ -84,11 +98,14 @@ namespace serialize {
         struct BuildingVisitor {
             std::ofstream& outfile;
 
+            void operator()(const Struct::House& h) {
+                serialize::house(outfile, h);
+            }
+            void operator()(const Struct::Tower& t) {
+                serialize::tower(outfile, t);
+            }
             void operator()(const Struct::Castle& c) {
                 serialize::castle(outfile, c);
-            }
-            void operator()(const Struct::House& h) {
-
             }
         };
 
@@ -259,6 +276,16 @@ namespace deserialize {
         std::visit(visitor, e.e);
     }
 
+    void house(std::ifstream& infile, Struct::House& h) {
+        string(infile, h.faction);
+        vector2D(infile, h.pos);
+    }
+
+    void tower(std::ifstream& infile, Struct::Tower& t) {
+        string(infile, t.faction);
+        vector2D(infile, t.pos);
+    }
+
     void castle(std::ifstream& infile, Struct::Castle& c) {
         string(infile, c.faction);
         vector2D(infile, c.pos);
@@ -268,11 +295,14 @@ namespace deserialize {
         Building::Type t;
         var(infile, t);
         switch (t) {
-        case Building::Type::CASTLE:
-            b.b = Struct::Castle{};
-            break;
         case Building::Type::HOUSE:
             b.b = Struct::House{};
+            break;
+        case Building::Type::TOWER:
+            b.b = Struct::Tower{};
+            break;
+        case Building::Type::CASTLE:
+            b.b = Struct::Castle{};
             break;
         default:
             break;
@@ -281,11 +311,14 @@ namespace deserialize {
         struct BuildingVisitor {
             std::ifstream& infile;
 
+            void operator()(Struct::House& h) {
+                deserialize::house(infile, h);
+            }
+            void operator()(Struct::Tower& t) {
+                deserialize::tower(infile, t);
+            }
             void operator()(Struct::Castle& c) {
                 deserialize::castle(infile, c);
-            }
-            void operator()(Struct::House& h) {
-                
             }
         };
 

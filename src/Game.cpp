@@ -7,6 +7,7 @@ AStar::Generator Game::generator;
 
 Camera Game::camera;
 Cursor Game::cursor;
+Builder Game::builder;
 
 UI* Game::ui = nullptr;
 
@@ -33,23 +34,15 @@ void Game::init() {
 
     camera.load(g.camera);
 
-    map = new Map();
-    map->init(g.map);
-
     // init pathfinder generator
     generator.setHeuristic(&AStar::Heuristic::euclidean);
     generator.setDiagonalMovement(true);
-    generator.setWorldSize({map->width(), map->height()});
-    
-    std::vector<std::vector<bool>> col_map = map->getCollisionMap();
-    for (int y = 0; y < map->height(); y++) {
-        for (int x = 0; x < map->width(); x++) {
-            std::cout << col_map[y][x];
-            if (col_map[y][x] == true)
-                generator.addCollision(Vector2D{x,y});
-            }
-        std::cout << std::endl;
-    }
+    generator.setWorldSize({g.map.width, g.map.height});
+
+    // init map
+
+    map = new Map();
+    map->init(g.map);
 
     ui = new UI();
     ui->init();
@@ -59,17 +52,22 @@ void Game::init() {
 }
 
 void Game::update() {
+    ui->update();
+
     camera.update();
     cursor.update();
 
     map->update();
 
-    ui->update();
+    builder.update();
+
 }
 
 void Game::render() {
     map->render();
     cursor.draw();
+
+    builder.draw();
 
     ui->display();
 }
@@ -102,6 +100,7 @@ void Game::ReleaseSelectedEntities() {
 }
 
 void Game::SelectEntities() {
+    if (Builder::active) return;
     ui->hide("construction menu");
 
     if (!Window::event.raised(Event::ID::SELECT_MULTIPLE))
@@ -165,8 +164,42 @@ void Game::AddStartingEntities(const int pawnCount, const int warriorCount, cons
     }
 }
 
+void Game::ActiveBuilder(const Building::Type type) {
+    builder.active = true;
+    builder.justActived = true;
+    builder.type = type;
+}
+
+void Game::AddBuilding(const Building::Type type, const Vector2D& pos, const std::string& fac) {
+    switch (type) {
+    case Building::Type::HOUSE:
+        map->addHouse(fac, pos);
+        break;
+    case Building::Type::TOWER:
+        map->addTower(fac, pos);
+        break;
+    case Building::Type::CASTLE:
+        map->addCastle(fac, pos);
+        break;
+    default:
+        break;
+    }
+}
+
 Struct::Game Game::GetStructure() {
     return {camera.getStructure(), map->getStructure(), playerFaction.getstructure()};
+}
+
+Vector2D Game::GetMapSize() {
+    return Vector2D{map->width(), map->height()};
+}
+
+std::vector<Entity*> Game::GetEntities() {
+    return map->getEntities();
+}
+
+void Game::AddCollider(const Vector2D& pos) {
+    generator.addCollision(pos);
 }
 
 std::vector<Vector2D> Game::FindPath(const Vector2D& start, const Vector2D& end) {

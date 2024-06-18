@@ -26,6 +26,10 @@ namespace serialize {
 
     void entity(std::ofstream& outfile, const Struct::Entity& e);
     
+    void house(std::ofstream& outfile, const Struct::House& h);
+    
+    void tower(std::ofstream& outfile, const Struct::Tower& t);
+
     void castle(std::ofstream& outfile, const Struct::Castle& c);
 
     void building(std::ofstream& outfile, const Struct::Building& b);
@@ -64,6 +68,10 @@ namespace deserialize {
     void pawn(std::ifstream& infile, Struct::Pawn& p);
 
     void entity(std::ifstream& infile, Struct::Entity& e);
+    
+    void house(std::ofstream& outfile, const Struct::House& h);
+    
+    void tower(std::ofstream& outfile, const Struct::Tower& t);
     
     void castle(std::ifstream& infile, Struct::Castle& c);
 

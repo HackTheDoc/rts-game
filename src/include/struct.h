@@ -38,20 +38,27 @@ namespace Struct {
         > e;
     };
 
+    struct House {
+        std::string faction;
+        Vector2D pos;
+    };
+    
+    struct Tower {
+        std::string faction;
+        Vector2D pos;
+    };
+
     struct Castle {
         std::string faction;
         Vector2D pos;
     };
 
-    struct House {
-        std::string faction;
-        Vector2D pos;
-    };
 
     struct Building {
         std::variant<
-            Castle,
-            House
+            House,
+            Tower,
+            Castle
         > b;
     };
 

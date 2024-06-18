@@ -39,14 +39,15 @@ public:
     int width();
     int height();
 
-    std::vector<std::vector<bool>> getCollisionMap();
-
     void addPawn(const std::string& f, const Vector2D& pos, const bool selected = false);
     void addWarrior(const std::string& f, const Vector2D& pos, const bool selected = false);
     void addArcher(const std::string& f, const Vector2D& pos, const bool selected = false);
 
+    void addHouse(const std::string& f, const Vector2D& pos);
+    void addTower(const std::string& f, const Vector2D& pos);
     void addCastle(const std::string& f, const Vector2D& pos);
 
+    std::vector<Entity*> getEntities();
     std::vector<Entity*> getEntitiesInRect(const SDL_Rect& rect);
     std::optional<Entity*> getEntitiesAt(const Vector2D* pos);
 

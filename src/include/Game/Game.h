@@ -4,6 +4,7 @@
 
 #include "Cursor.h"
 #include "Camera.h"
+#include "Components/Builder.h"
 
 #include "../UI/UI.h"
 
@@ -18,6 +19,8 @@ namespace Struct {
 
 class Game : public WindowState {
 public:
+    static AStar::Generator generator;
+
     static Cursor cursor;
     static Camera camera;
 
@@ -35,6 +38,9 @@ public:
 
     static void AddStartingEntities(const int pawnCount, const int warriorCount, const int archerCount);
     
+    static void ActiveBuilder(const Building::Type type);
+    static void AddBuilding(const Building::Type type, const Vector2D& pos, const std::string& fac);
+
     static int CountSelectedEntities();
     static void ReleaseSelectedEntities();
     static void SelectEntities();
@@ -42,11 +48,15 @@ public:
 
     static Struct::Game GetStructure();
 
+    static Vector2D GetMapSize();
+    static std::vector<Entity*> GetEntities();
+        
+    static void AddCollider(const Vector2D& pos);
     static std::vector<Vector2D> FindPath(const Vector2D& start, const Vector2D& end);
 
 private:
-    static AStar::Generator generator;
-    
+    static Builder builder;
+        
     static Map* map;
     static std::vector<Entity*> selectedEntities;
 };

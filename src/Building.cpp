@@ -46,10 +46,12 @@ int Building::getHeight() {
     return height * Map::TileSize();
 }
 
-std::vector<Vector2D> Building::tilesBlocked() {
-    return {};
-}
-
 Struct::Building Building::getStructure() {
     return {Struct::Castle{faction, position}};
+}
+
+void Building::addCollidersOnMap() {
+    for (int y = 0; y < height-1; y++)
+        for (int x = 0; x < width; x++)
+            Game::AddCollider(position + Vector2D{x,y});
 }

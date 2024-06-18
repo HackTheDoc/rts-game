@@ -14,7 +14,8 @@ class Building {
 public:
     enum Type {
         CASTLE,
-        HOUSE
+        HOUSE,
+        TOWER
     };
 
     Vector2D position;
@@ -30,8 +31,6 @@ public:
     int getWidth();
     int getHeight();
 
-    virtual std::vector<Vector2D> tilesBlocked();
-
     virtual Struct::Building getStructure();
 
 protected:
@@ -41,4 +40,6 @@ protected:
     SDL_Rect rect;
     
     int width, height;
+
+    void addCollidersOnMap();
 };

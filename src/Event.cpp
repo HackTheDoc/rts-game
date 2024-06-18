@@ -183,6 +183,17 @@ void Event::raise(const Event::ID id) {
     case VALID_STARTING_UNIT_SELECTION:
         window->endStartingUnitSelection();
         break;
+
+    case SELECT_HOUSE_SCHEMATIC:   
+        Game::ActiveBuilder(Building::Type::HOUSE);
+        break;
+    case SELECT_TOWER_SCHEMATIC:
+        Game::ActiveBuilder(Building::Type::TOWER);
+        break;
+    case SELECT_CASTLE_SCHEMATIC:
+        Game::ActiveBuilder(Building::Type::CASTLE);
+        break;
+
     case QUIT_GAME:
         window->quitGame();
         break; 
@@ -200,6 +211,7 @@ void Event::raise(const Event::ID id) {
     case OPEN_CREDITS:
         window->openCredits();
         break;
+    
     case RESUME_GAME:
         //window->resumeGame();
         break;

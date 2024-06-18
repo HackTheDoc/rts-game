@@ -30,6 +30,7 @@ namespace AStar {
         void setHeuristic(HeuristicFunction heuristic_);
         CoordinateList findPath(Vector2D source_, Vector2D target_);
         void addCollision(Vector2D coordinates_);
+        bool detectCollision(Vector2D coordinates_);
         void removeCollision(Vector2D coordinates_);
         void clearCollisions();
 
@@ -39,7 +40,6 @@ namespace AStar {
         Vector2D worldSize;
         uint directions;
 
-        bool detectCollision(Vector2D coordinates_);
         Node* findNodeOnList(NodeSet& nodes_, Vector2D coordinates_);
         void releaseNodes(NodeSet& nodes_);
     };

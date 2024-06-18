@@ -3,9 +3,17 @@
 #include "include/Window.h"
 
 UIConstructionMenu::UIConstructionMenu() {
-    btn_house = new UIIconButton(Event::ID::SELECT_HOUSE_SCHEMATIC, "building icons", 64);
-    btn_tower = new UIIconButton(Event::ID::SELECT_TOWER_SCHEMATIC, "building icons", 64);
-    btn_castle = new UIIconButton(Event::ID::SELECT_CASTLE_SCHEMATIC, "building icons", 64);
+    btn_house = new UIIconButton(Event::ID::SELECT_HOUSE_SCHEMATIC, "buildings icons", 320);
+    btn_house->resize(64);
+    btn_house->setSourceX(0);
+
+    btn_tower = new UIIconButton(Event::ID::SELECT_TOWER_SCHEMATIC, "buildings icons", 320);
+    btn_tower->resize(64);
+    btn_tower->setSourceX(320);
+    
+    btn_castle = new UIIconButton(Event::ID::SELECT_CASTLE_SCHEMATIC, "buildings icons", 320);
+    btn_castle->resize(64);
+    btn_castle->setSourceX(640);
 
     rect.h = 192 + 16*(Window::fullscreen+1);
     rect.w = 64 + 8*(Window::fullscreen+1);

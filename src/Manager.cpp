@@ -141,6 +141,7 @@ void Manager::loadGameTextures() {
     /* ----- ICONS ----- */
 
     textures["unit icons"] = LoadTexture("assets/icons/troops.png");
+    textures["buildings icons"] = LoadTexture("assets/icons/buildings.png");
     textures["ressources icons"] = LoadTexture("assets/icons/ressources.png");
 }
 

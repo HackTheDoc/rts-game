@@ -27,6 +27,20 @@ void Map::init(const Struct::Map& m) {
     loadLayer(STONE, m.layers[STONE]);
     loadLayer(GRASS, m.layers[GRASS]);
 
+    // loading colliders
+    std::vector<std::vector<bool>> map;
+    map.resize(m_height, {});
+    for (int i = 0; i < m_height; i++)
+        map[i].resize(m_width, true);
+    
+    for (Tile* t : layers[LayerID::GRASS])
+        map[t->position.y][t->position.x] = false;
+
+    for (int y = 0; y < m_height; y++)
+        for (int x = 0; x < m_width; x++)
+            if (map[y][x])
+                Game::AddCollider(Vector2D{x,y});
+
     for (const Struct::Entity& e : m.entities)
         addEntity(e);
 
@@ -87,22 +101,8 @@ int Map::height() {
     return m_height;
 }
 
-std::vector<std::vector<bool>> Map::getCollisionMap() {
-    std::vector<std::vector<bool>> map;
-    map.resize(m_height, {});
-    for (int i = 0; i < m_height; i++)
-        map[i].resize(m_width, true);
-    
-    for (Tile* t : layers[LayerID::GRASS])
-        map[t->position.y][t->position.x] = false;
-
-    for (Building* b : buildings) {
-        const std::vector<Vector2D> p = b->tilesBlocked();
-        for (const Vector2D& v : p)
-            map[v.y][v.x] = true;
-    }
-
-    return map;
+std::vector<Entity*> Map::getEntities() {
+    return entities;
 }
 
 std::vector<Entity*> Map::getEntitiesInRect(const SDL_Rect& rect) {
@@ -249,16 +249,31 @@ void Map::addBuilding(const Struct::Building& b) {
     struct BuildingVisitor {
         Map* map;
 
+        void operator()(const Struct::House& h) {
+            map->addHouse(h.faction, h.pos);
+        }
+        void operator()(const Struct::Tower& t) {
+            map->addTower(t.faction, t.pos);
+        }
         void operator()(const Struct::Castle& c) {
             map->addCastle(c.faction, c.pos);
-        }
-        void operator()(const Struct::House& h) {
-
         }
     };
 
     BuildingVisitor visitor{this};
     std::visit(visitor, b.b);
+}
+
+void Map::addHouse(const std::string& f, const Vector2D& pos) {
+    House* c = new House(f, pos);
+    
+    buildings.push_back(c);
+}
+
+void Map::addTower(const std::string& f, const Vector2D& pos) {
+    Tower* c = new Tower(f, pos);
+    
+    buildings.push_back(c);
 }
 
 void Map::addCastle(const std::string& f, const Vector2D& pos) {
