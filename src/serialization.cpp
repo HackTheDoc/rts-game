@@ -73,6 +73,15 @@ namespace serialize {
         std::visit(visitor, e.e);
     }
 
+    void construction(std::ofstream& outfile, const Struct::Construction& c) {
+        var(outfile, Building::Type::CONSTRUCTION);
+        
+        string(outfile, c.faction);
+        vector2D(outfile, c.pos);
+        var(outfile, c.type);
+        var(outfile, c.level);
+    }
+    
     void house(std::ofstream& outfile, const Struct::House& h) {
         var(outfile, Building::Type::HOUSE);
         
@@ -98,6 +107,9 @@ namespace serialize {
         struct BuildingVisitor {
             std::ofstream& outfile;
 
+            void operator()(const Struct::Construction& c) {
+                serialize::construction(outfile, c);
+            }
             void operator()(const Struct::House& h) {
                 serialize::house(outfile, h);
             }
@@ -276,6 +288,13 @@ namespace deserialize {
         std::visit(visitor, e.e);
     }
 
+    void construction(std::ifstream& infile, Struct::Construction& c) {
+        string(infile, c.faction);
+        vector2D(infile, c.pos);
+        var(infile, c.type);
+        var(infile, c.level);
+    }
+
     void house(std::ifstream& infile, Struct::House& h) {
         string(infile, h.faction);
         vector2D(infile, h.pos);
@@ -295,6 +314,9 @@ namespace deserialize {
         Building::Type t;
         var(infile, t);
         switch (t) {
+        case Building::Type::CONSTRUCTION:
+            b.b = Struct::Construction{};
+            break;
         case Building::Type::HOUSE:
             b.b = Struct::House{};
             break;
@@ -311,6 +333,9 @@ namespace deserialize {
         struct BuildingVisitor {
             std::ifstream& infile;
 
+            void operator()(Struct::Construction& c) {
+                deserialize::construction(infile, c);
+            }
             void operator()(Struct::House& h) {
                 deserialize::house(infile, h);
             }

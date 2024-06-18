@@ -47,11 +47,5 @@ int Building::getHeight() {
 }
 
 Struct::Building Building::getStructure() {
-    return {Struct::Castle{faction, position}};
-}
-
-void Building::addCollidersOnMap() {
-    for (int y = 0; y < height-1; y++)
-        for (int x = 0; x < width; x++)
-            Game::AddCollider(position + Vector2D{x,y});
+    return {Struct::House{faction, position}};
 }

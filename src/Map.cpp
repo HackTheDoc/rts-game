@@ -5,6 +5,8 @@
 #include "include/Game/Game.h"
 #include "include/Game/Components/Collision.h"
 
+#include <algorithm>
+
 int Map::TileSize() {
     return Tile::SIZE * Game::camera.zoom;
 }
@@ -249,6 +251,9 @@ void Map::addBuilding(const Struct::Building& b) {
     struct BuildingVisitor {
         Map* map;
 
+        void operator()(const Struct::Construction& c) {
+            map->addConstruction(c.type, c.faction, c.pos, c.level);
+        }
         void operator()(const Struct::House& h) {
             map->addHouse(h.faction, h.pos);
         }
@@ -264,16 +269,30 @@ void Map::addBuilding(const Struct::Building& b) {
     std::visit(visitor, b.b);
 }
 
-void Map::addHouse(const std::string& f, const Vector2D& pos) {
-    House* c = new House(f, pos);
-    
+void Map::removeBuilding(const Vector2D& pos) {
+    std::vector<Building*>::iterator it = std::find_if(buildings.begin(), buildings.end(), [&pos](Building* building) {
+        return building->position == pos;
+    });
+
+    if (it == buildings.end()) return;
+
+    (*it)->destroy();
+    buildings.erase(it);
+}
+
+void Map::addConstruction(const Building::Type type, const std::string& f, const Vector2D& pos, const int clevel) {
+    Construction* c = new Construction(type, f, pos, clevel);
     buildings.push_back(c);
 }
 
+void Map::addHouse(const std::string& f, const Vector2D& pos) {
+    House* h = new House(f, pos);
+    buildings.push_back(h);
+}
+
 void Map::addTower(const std::string& f, const Vector2D& pos) {
-    Tower* c = new Tower(f, pos);
-    
-    buildings.push_back(c);
+    Tower* t = new Tower(f, pos);    
+    buildings.push_back(t);
 }
 
 void Map::addCastle(const std::string& f, const Vector2D& pos) {

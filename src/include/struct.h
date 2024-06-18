@@ -10,6 +10,7 @@
 using EventID = Event::ID;
 using KeyMap = std::map<Event::ID, SDL_Scancode>;
 using TileType = Tile::Type;
+using BuildingType = Building::Type;
 
 namespace Struct {
     struct Archer {
@@ -38,6 +39,13 @@ namespace Struct {
         > e;
     };
 
+    struct Construction {
+        std::string faction;
+        Vector2D pos;
+        int level;
+        BuildingType type;
+    };
+
     struct House {
         std::string faction;
         Vector2D pos;
@@ -53,9 +61,9 @@ namespace Struct {
         Vector2D pos;
     };
 
-
     struct Building {
         std::variant<
+            Construction,
             House,
             Tower,
             Castle

@@ -138,6 +138,10 @@ void Manager::loadGameTextures() {
     textures["white tower"] = LoadTexture("assets/buildings/white/tower.png");
     textures["white house"] = LoadTexture("assets/buildings/white/house.png");
 
+    textures["construction castle"] = LoadTexture("assets/buildings/construction/castle.png");
+    textures["construction tower"] = LoadTexture("assets/buildings/construction/tower.png");
+    textures["construction house"] = LoadTexture("assets/buildings/construction/house.png");
+
     /* ----- ICONS ----- */
 
     textures["unit icons"] = LoadTexture("assets/icons/troops.png");

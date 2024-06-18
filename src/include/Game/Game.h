@@ -40,6 +40,8 @@ public:
     
     static void ActiveBuilder(const Building::Type type);
     static void AddBuilding(const Building::Type type, const Vector2D& pos, const std::string& fac);
+    static void BeginConstruction(const Building::Type type, const Vector2D& pos, const std::string& fac);
+    static void FinishConstruction(const Building::Type type, const Vector2D& pos, const std::string& fac);
 
     static int CountSelectedEntities();
     static void ReleaseSelectedEntities();

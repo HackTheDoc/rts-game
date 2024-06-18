@@ -43,6 +43,8 @@ public:
     void addWarrior(const std::string& f, const Vector2D& pos, const bool selected = false);
     void addArcher(const std::string& f, const Vector2D& pos, const bool selected = false);
 
+    void removeBuilding(const Vector2D& pos);
+    void addConstruction(const Building::Type type, const std::string& f, const Vector2D& pos, const int clevel = 0);
     void addHouse(const std::string& f, const Vector2D& pos);
     void addTower(const std::string& f, const Vector2D& pos);
     void addCastle(const std::string& f, const Vector2D& pos);

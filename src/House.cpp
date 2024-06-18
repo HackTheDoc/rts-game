@@ -13,8 +13,6 @@ House::House(const std::string& faction, const Vector2D& pos) {
     height = 3;
 
     texture = Window::manager->getTexture(faction+" house");
-
-    addCollidersOnMap();
 }
 
 House::~House() {}

@@ -186,6 +186,15 @@ void Game::AddBuilding(const Building::Type type, const Vector2D& pos, const std
     }
 }
 
+void Game::BeginConstruction(const Building::Type type, const Vector2D& pos, const std::string& fac) {
+    map->addConstruction(type, fac, pos);
+}
+
+void Game::FinishConstruction(const Building::Type type, const Vector2D& pos, const std::string& fac) {
+    map->removeBuilding(pos);
+    AddBuilding(type, pos, fac);
+}
+
 Struct::Game Game::GetStructure() {
     return {camera.getStructure(), map->getStructure(), playerFaction.getstructure()};
 }

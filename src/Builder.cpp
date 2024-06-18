@@ -7,10 +7,11 @@
 bool Builder::active = false;
 Building::Type Builder::type = Building::Type::HOUSE;
 
-std::array<Vector2D, 3> Builder::dimensions = {
-    Vector2D{5, 4}, // CASTLE
+std::array<Vector2D, 4> Builder::dimensions = {
+    Vector2D{0, 0}, // unreachable
     Vector2D{2, 3}, // HOUSE
     Vector2D{2, 4}, // TOWER
+    Vector2D{5, 4}, // CASTLE
 };
 
 void Builder::update() {
@@ -25,7 +26,7 @@ void Builder::update() {
     }
     
     if (Collision::IsValidBuildingPosition(position, dimensions[type]) && Window::event.mouseClickLeft())
-        Game::AddBuilding(type, position, Game::playerFaction.name);
+        Game::BeginConstruction(type, position, Game::playerFaction.name);
     else if (Window::event.mouseClickRight())
         active = false;
 }
@@ -54,7 +55,7 @@ void Builder::draw() {
         break;
     case Building::Type::CASTLE:
         texture = Window::manager->getTexture("white castle");
-        break;    
+        break;  
     default:
         break;
     }

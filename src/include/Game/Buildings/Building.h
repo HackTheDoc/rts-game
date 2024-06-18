@@ -13,9 +13,10 @@ namespace Struct {
 class Building {
 public:
     enum Type {
-        CASTLE,
+        CONSTRUCTION,
         HOUSE,
-        TOWER
+        TOWER,
+        CASTLE,
     };
 
     Vector2D position;
@@ -23,9 +24,9 @@ public:
     Building();
     ~Building();
 
-    void update();
-    void draw();
-    void destroy();
+    virtual void update();
+    virtual void draw();
+    virtual void destroy();
 
     Vector2D getPosition();
     int getWidth();
@@ -40,6 +41,4 @@ protected:
     SDL_Rect rect;
     
     int width, height;
-
-    void addCollidersOnMap();
 };
