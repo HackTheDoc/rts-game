@@ -130,7 +130,7 @@ void Game::SelectEntityAt(const Vector2D* pos) {
 
     std::optional<Entity*> e = map->getEntitiesAt(pos);
     
-    if (e.has_value()) {
+    if (e.has_value() && e.value()->state == Entity::State::FREE) {
         e.value()->selected = true;
         selectedEntities.push_back(e.value());
     }
@@ -164,6 +164,10 @@ void Game::AddStartingEntities(const int pawnCount, const int warriorCount, cons
     }
 }
 
+void Game::AddEntity(Entity* e) {
+    map->addEntity(e);
+}
+
 void Game::ActiveBuilder(const Building::Type type) {
     builder.active = true;
     builder.justActived = true;
@@ -187,7 +191,12 @@ void Game::AddBuilding(const Building::Type type, const Vector2D& pos, const std
 }
 
 void Game::BeginConstruction(const Building::Type type, const Vector2D& pos, const std::string& fac) {
-    map->addConstruction(type, fac, pos);
+    ui->hide("construction menu");
+    builder.active = false;
+
+    Construction* c = map->addConstruction(type, fac, pos);
+    c->addBuilder(selectedEntities[0]);
+    selectedEntities.clear();
 }
 
 void Game::FinishConstruction(const Building::Type type, const Vector2D& pos, const std::string& fac) {

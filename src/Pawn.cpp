@@ -6,6 +6,8 @@
 
 Pawn::Pawn(const std::string& f) {
     faction = f;
+
+    state = FREE;
     
     selected = false;
     

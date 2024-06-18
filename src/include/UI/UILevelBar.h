@@ -4,6 +4,8 @@
 
 class UILevelBar : public UIElement {
 public:
+    bool active;
+    
     UILevelBar(const int mlevel, const int clevel = 0);
     ~UILevelBar();
 

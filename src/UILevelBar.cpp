@@ -15,7 +15,8 @@ UILevelBar::UILevelBar(const int mlevel, const int clevel) {
 UILevelBar::~UILevelBar() {}
 
 void UILevelBar::update() {
-    currentLevel++;
+    if (active)
+        currentLevel++;
 
     rect.w = maxLevel * Game::camera.zoom;
     rect.h = 16 * Game::camera.zoom;

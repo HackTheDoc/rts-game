@@ -5,6 +5,8 @@
 #include "include/struct.h"
 
 Entity::Entity() {
+    state = FREE;
+
     selected = false;
 
     faction = "unknown";
@@ -28,6 +30,53 @@ void Entity::update() {
     sprite->update();
     collider->update();
 
+    if (state == State::FREE)
+        updateFree();
+}
+
+void Entity::draw() {
+    sprite->draw();
+    collider->draw();
+}
+
+void Entity::kill() {
+    sprite->destroy();
+    delete sprite;
+    sprite = nullptr;
+
+    delete collider;
+    collider = nullptr;
+}
+
+void Entity::placeAt(const Vector2D& pos) {
+    position = pos;
+}
+
+void Entity::setState(const State s) {
+    state = s;
+
+    switch (s) {
+    case State::FREE:
+        sprite->play("idle");
+        break;
+    case State::BUILDING:
+        sprite->play("build");
+        break;    
+    default:
+        break;
+    }
+}
+
+void Entity::setFlip(const SDL_RendererFlip flip) {
+    sprite->spriteFlip = flip;
+}
+
+Struct::Entity Entity::getStructure() {
+    const Struct::Pawn p{faction, position, selected};
+    return {p};
+}
+
+void Entity::updateFree() {
     // check if new path
 
     if (selected && Window::event.mouseClickRight()) {
@@ -62,27 +111,4 @@ void Entity::update() {
 
     position.x += (int)((dest.x - position.x) * f);
     position.y += (int)((dest.y - position.y) * f);
-}
-
-void Entity::draw() {
-    sprite->draw();
-    collider->draw();
-}
-
-void Entity::kill() {
-    sprite->destroy();
-    delete sprite;
-    sprite = nullptr;
-
-    delete collider;
-    collider = nullptr;
-}
-
-void Entity::placeAt(const Vector2D& pos) {
-    position = pos;
-}
-
-Struct::Entity Entity::getStructure() {
-    const Struct::Pawn p{faction, position, selected};
-    return {p};
 }

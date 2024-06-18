@@ -12,6 +12,12 @@ namespace Struct {
 
 class Entity {
 public:
+    enum State {
+        FREE,
+        BUILDING
+    };
+    State state;
+
     enum Type : char {
         UNKNOWN,
         PAWN,
@@ -38,6 +44,9 @@ public:
 
     void placeAt(const Vector2D& pos);
 
+    void setState(const State s);
+    void setFlip(const SDL_RendererFlip flip);
+
     virtual Struct::Entity getStructure();
 
 protected:
@@ -46,4 +55,6 @@ protected:
     Sprite* sprite;
 
     std::vector<Vector2D> pathToTravel;
+
+    void updateFree();
 };

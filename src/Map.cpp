@@ -111,7 +111,7 @@ std::vector<Entity*> Map::getEntitiesInRect(const SDL_Rect& rect) {
     std::vector<Entity*> temp;
 
     for (Entity* e : entities)
-        if (Collision::AABB(e->collider, rect))
+        if (e->state == Entity::State::FREE && Collision::AABB(e->collider, rect))
             temp.push_back(e);
 
     return temp;
@@ -214,12 +214,16 @@ void Map::addEntity(const Struct::Entity& e) {
     std::visit(visitor, e.e);
 }
 
+void Map::addEntity(Entity* e) {
+    entities.push_back(e);
+}
+
 void Map::addPawn(const std::string& f, const Vector2D& pos, const bool selected) {
     Pawn* p = new Pawn(f);
     p->placeAt(pos);
     p->selected = selected;
     
-    entities.push_back(p);
+    addEntity(p);
 
     if (f == Game::playerFaction.name)
         Game::playerFaction.pawns.push_back(p);
@@ -230,7 +234,7 @@ void Map::addWarrior(const std::string& f, const Vector2D& pos, const bool selec
     w->placeAt(pos);
     w->selected = selected;
     
-    entities.push_back(w);
+    addEntity(w);
 
     if (f == Game::playerFaction.name)
         Game::playerFaction.warriors.push_back(w);
@@ -241,7 +245,7 @@ void Map::addArcher(const std::string& f, const Vector2D& pos, const bool select
     a->placeAt(pos);
     a->selected = selected;
     
-    entities.push_back(a);
+    addEntity(a);
 
     if (f == Game::playerFaction.name)
         Game::playerFaction.archers.push_back(a);
@@ -280,9 +284,10 @@ void Map::removeBuilding(const Vector2D& pos) {
     buildings.erase(it);
 }
 
-void Map::addConstruction(const Building::Type type, const std::string& f, const Vector2D& pos, const int clevel) {
+Construction* Map::addConstruction(const Building::Type type, const std::string& f, const Vector2D& pos, const int clevel) {
     Construction* c = new Construction(type, f, pos, clevel);
     buildings.push_back(c);
+    return c;
 }
 
 void Map::addHouse(const std::string& f, const Vector2D& pos) {

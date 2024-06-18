@@ -12,7 +12,7 @@ const float Camera::SPEED =48.0f;
 const float Camera::ZOOM_SPEED = 0.1f;
 const float Camera::ZOOM_MARGIN = 0.1f;
 const float Camera::ZOOM_MIN = 0.5f;
-const float Camera::ZOOM_MAX = 3.0f;
+const float Camera::ZOOM_MAX = 1.0f;
 
 float Lerp(float a, float b, float c) {
     const float t = std::clamp(c, 0.0f, 1.0f);
