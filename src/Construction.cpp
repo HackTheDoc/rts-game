@@ -52,6 +52,8 @@ Construction::~Construction() {}
 void Construction::update() {
     Building::update();
 
+    builder->update();
+
     if (builder->reachedDestination()) {
         builder->setFlip(SDL_FLIP_NONE);
         level->active = true;
@@ -70,6 +72,8 @@ void Construction::update() {
 
 void Construction::draw() {
     Building::draw();
+
+    builder->draw();
 
     level->draw();
 }
@@ -91,6 +95,8 @@ void Construction::addBuilder(Entity* b) {
     b->goTo(pos);
     b->setState(Entity::State::BUILDING);
     builder = b;
+
+    Game::RemoveEntity(b);
 }
 
 void Construction::realeaseBuilder() {
@@ -102,9 +108,11 @@ void Construction::realeaseBuilder() {
     builder->placeAt(pos);
     builder->setFlip(SDL_FLIP_NONE);
 
+    Game::AddEntity(builder);
+
     builder = nullptr;
 }
 
 Struct::Building Construction::getStructure() {
-    return {Struct::Construction{faction, position, level->getCurrentLevel(), type}};
+    return {Struct::Construction{faction, position, level->getCurrentLevel(), type, builder->getStructure()}};
 }

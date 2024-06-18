@@ -200,13 +200,13 @@ void Map::addEntity(const Struct::Entity& e) {
         Map* map;
 
         void operator()(const Struct::Pawn& p) {
-            map->addPawn(p.faction, p.pos, p.selected);
+            map->addPawn(p.faction, p.pos, p.selected, p.dest);
         }
         void operator()(const Struct::Warrior& w) {
-            map->addWarrior(w.faction, w.pos, w.selected);
+            map->addWarrior(w.faction, w.pos, w.selected, w.dest);
         }
         void operator()(const Struct::Archer& a) {
-            map->addArcher(a.faction, a.pos, a.selected);
+            map->addArcher(a.faction, a.pos, a.selected, a.dest);
         }
     };
 
@@ -218,10 +218,23 @@ void Map::addEntity(Entity* e) {
     entities.push_back(e);
 }
 
-void Map::addPawn(const std::string& f, const Vector2D& pos, const bool selected) {
+void Map::removeEntity(Entity* e) {
+    std::vector<Entity*>::iterator it = std::find_if(entities.begin(), entities.end(), [&e](Entity* entity) {
+        return entity == e;
+    });
+
+    if (it == entities.end()) return;
+
+    entities.erase(it);
+}
+
+void Map::addPawn(const std::string& f, const Vector2D& pos, const bool selected, Vector2D dest) {
     Pawn* p = new Pawn(f);
     p->placeAt(pos);
     p->selected = selected;
+    
+    if (!dest.isZero())
+        p->goTo(dest);
     
     addEntity(p);
 
@@ -229,10 +242,14 @@ void Map::addPawn(const std::string& f, const Vector2D& pos, const bool selected
         Game::playerFaction.pawns.push_back(p);
 }
 
-void Map::addWarrior(const std::string& f, const Vector2D& pos, const bool selected) {
+void Map::addWarrior(const std::string& f, const Vector2D& pos, const bool selected, Vector2D dest) {
     Warrior* w = new Warrior(f);
     w->placeAt(pos);
     w->selected = selected;
+    
+    std::cout << dest << std::endl;
+    if (!dest.isZero())
+        w->goTo(dest);
     
     addEntity(w);
 
@@ -240,10 +257,13 @@ void Map::addWarrior(const std::string& f, const Vector2D& pos, const bool selec
         Game::playerFaction.warriors.push_back(w);
 }
 
-void Map::addArcher(const std::string& f, const Vector2D& pos, const bool selected) {
+void Map::addArcher(const std::string& f, const Vector2D& pos, const bool selected, Vector2D dest) {
     Archer* a = new Archer(f);
     a->placeAt(pos);
     a->selected = selected;
+    
+    if (!dest.isZero())
+        a->goTo(dest);
     
     addEntity(a);
 
@@ -256,7 +276,7 @@ void Map::addBuilding(const Struct::Building& b) {
         Map* map;
 
         void operator()(const Struct::Construction& c) {
-            map->addConstruction(c.type, c.faction, c.pos, c.level);
+            map->addConstruction(c.type, c.faction, c.pos, c.level, c.builder);
         }
         void operator()(const Struct::House& h) {
             map->addHouse(h.faction, h.pos);
@@ -288,6 +308,15 @@ Construction* Map::addConstruction(const Building::Type type, const std::string&
     Construction* c = new Construction(type, f, pos, clevel);
     buildings.push_back(c);
     return c;
+}
+
+void Map::addConstruction(const Building::Type type, const std::string& f, const Vector2D& pos, const int clevel, const Struct::Entity& builder) {
+    Construction* c = new Construction(type, f, pos, clevel);
+
+    addEntity(builder);
+    c->addBuilder(entities.back());
+
+    buildings.push_back(c);
 }
 
 void Map::addHouse(const std::string& f, const Vector2D& pos) {

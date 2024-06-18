@@ -38,6 +38,7 @@ public:
 
     static void AddStartingEntities(const int pawnCount, const int warriorCount, const int archerCount);
     static void AddEntity(Entity* e);
+    static void RemoveEntity(Entity* e);
     
     static void ActiveBuilder(const Building::Type type);
     static void AddBuilding(const Building::Type type, const Vector2D& pos, const std::string& fac);

@@ -40,12 +40,14 @@ public:
     int height();
 
     void addEntity(Entity* e);
-    void addPawn(const std::string& f, const Vector2D& pos, const bool selected = false);
-    void addWarrior(const std::string& f, const Vector2D& pos, const bool selected = false);
-    void addArcher(const std::string& f, const Vector2D& pos, const bool selected = false);
+    void removeEntity(Entity* e);
+    void addPawn(const std::string& f, const Vector2D& pos, const bool selected = false, Vector2D dest = Vector2D{0,0});
+    void addWarrior(const std::string& f, const Vector2D& pos, const bool selected = false, Vector2D dest = Vector2D{0,0});
+    void addArcher(const std::string& f, const Vector2D& pos, const bool selected = false, Vector2D dest = Vector2D{0,0});
 
     void removeBuilding(const Vector2D& pos);
     Construction* addConstruction(const Building::Type type, const std::string& f, const Vector2D& pos, const int clevel = 0);
+    void addConstruction(const Building::Type type, const std::string& f, const Vector2D& pos, const int clevel, const Struct::Entity& builder);
     void addHouse(const std::string& f, const Vector2D& pos);
     void addTower(const std::string& f, const Vector2D& pos);
     void addCastle(const std::string& f, const Vector2D& pos);

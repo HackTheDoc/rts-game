@@ -34,6 +34,10 @@ void Pawn::update() {
 }
 
 Struct::Entity Pawn::getStructure() {
-    const Struct::Pawn p{faction, position, selected};
+    Struct::Pawn p{faction, position, selected, Vector2D{0,0}};
+    
+    if (!reachedDestination() && state == FREE)
+        p.dest = pathToTravel.front();
+
     return {p};
 }

@@ -173,6 +173,10 @@ void Game::AddEntity(Entity* e) {
     map->addEntity(e);
 }
 
+void Game::RemoveEntity(Entity* e) {
+    map->removeEntity(e);
+}
+
 void Game::ActiveBuilder(const Building::Type type) {
     if (!playerFaction.hasEnoughRessourcesFor(type)) {
         std::cout << "not enough ressources to build" << std::endl;

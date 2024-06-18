@@ -35,6 +35,7 @@ namespace serialize {
 
         string(outfile, a.faction);
         vector2D(outfile, a.pos);
+        vector2D(outfile, a.dest);
         var(outfile, a.selected);
     }
 
@@ -43,6 +44,7 @@ namespace serialize {
         
         string(outfile, w.faction);
         vector2D(outfile, w.pos);
+        vector2D(outfile, w.dest);
         var(outfile, w.selected);
     }
 
@@ -51,6 +53,7 @@ namespace serialize {
         
         string(outfile, p.faction);
         vector2D(outfile, p.pos);
+        vector2D(outfile, p.dest);
         var(outfile, p.selected);
     }
 
@@ -80,6 +83,7 @@ namespace serialize {
         vector2D(outfile, c.pos);
         var(outfile, c.type);
         var(outfile, c.level);
+        entity(outfile, c.builder);
     }
     
     void house(std::ofstream& outfile, const Struct::House& h) {
@@ -238,18 +242,22 @@ namespace deserialize {
     void archer(std::ifstream& infile, Struct::Archer& a) {
         string(infile, a.faction);
         vector2D(infile, a.pos);
+        vector2D(infile, a.dest);
         var(infile, a.selected);
     }
 
     void warrior(std::ifstream& infile, Struct::Warrior& w) {
         string(infile, w.faction);
         vector2D(infile, w.pos);
+        vector2D(infile, w.dest);
         var(infile, w.selected);
+        std::cout << w.dest << std::endl;
     }
 
     void pawn(std::ifstream& infile, Struct::Pawn& p) {
         string(infile, p.faction);
         vector2D(infile, p.pos);
+        vector2D(infile, p.dest);
         var(infile, p.selected);
     }
 
@@ -293,6 +301,7 @@ namespace deserialize {
         vector2D(infile, c.pos);
         var(infile, c.type);
         var(infile, c.level);
+        entity(infile, c.builder);
     }
 
     void house(std::ifstream& infile, Struct::House& h) {

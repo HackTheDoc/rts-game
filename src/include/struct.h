@@ -11,24 +11,28 @@ using EventID = Event::ID;
 using KeyMap = std::map<Event::ID, SDL_Scancode>;
 using TileType = Tile::Type;
 using BuildingType = Building::Type;
+using EntityState = Entity::State;
 
 namespace Struct {
     struct Archer {
         std::string faction;
         Vector2D pos;
         bool selected;
+        Vector2D dest;
     };
 
     struct Warrior {
         std::string faction;
         Vector2D pos;
         bool selected;
+        Vector2D dest;
     };
 
     struct Pawn {
         std::string faction;
         Vector2D pos;
         bool selected;
+        Vector2D dest;
     };
 
     struct Entity {
@@ -44,6 +48,7 @@ namespace Struct {
         Vector2D pos;
         int level;
         BuildingType type;
+        Entity builder;
     };
 
     struct House {
