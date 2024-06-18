@@ -14,11 +14,13 @@ Building::Building() {
 Building::~Building() {}
 
 void Building::update() {
-    rect.x = position.x * Game::camera.zoom - Game::camera.pos.x;
-    rect.y = position.y * Game::camera.zoom - Game::camera.pos.y;
+    const int tileSize = Map::TileSize();
 
-    rect.w = width * Game::camera.zoom;
-    rect.h = height * Game::camera.zoom;
+    rect.w = width * tileSize;
+    rect.h = height * tileSize;
+
+    rect.x = position.x * tileSize - Game::camera.pos.x;
+    rect.y = position.y  * tileSize - Game::camera.pos.y;
 }
 
 void Building::draw() {
@@ -30,6 +32,18 @@ void Building::destroy() {
     texture = nullptr;
     rect = { 0, 0, 0, 0 };
     height = width = 0;
+}
+
+Vector2D Building::getPosition() {
+    return position * Map::TileSize();
+}
+
+int Building::getWidth() {
+    return width * Map::TileSize();
+}
+
+int Building::getHeight() {
+    return height * Map::TileSize();
 }
 
 std::vector<Vector2D> Building::tilesBlocked() {

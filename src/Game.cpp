@@ -133,7 +133,7 @@ void Game::SelectEntityAt(const Vector2D* pos) {
 }
 
 void Game::AddStartingEntities(const int pawnCount, const int warriorCount, const int archerCount) {
-    const Vector2D castlePos = playerFaction.castles[0]->position;
+    const Vector2D castlePos = playerFaction.castles[0]->getPosition();
     const std::array<Vector2D, 4> pos{
         castlePos + Vector2D{1*Tile::SIZE, 3*Tile::SIZE},
         castlePos + Vector2D{3*Tile::SIZE, 3*Tile::SIZE},

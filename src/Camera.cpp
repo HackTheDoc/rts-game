@@ -51,8 +51,8 @@ void Camera::reset() {
 }
 
 void Camera::centerOn(Building* b) {
-    pos.x = b->position.x + (b->width - width) / 2;
-    pos.y = b->position.y + (b->height - height) / 2;
+    pos.x = b->position.x * Tile::SIZE + (b->getWidth() - width) / 2;
+    pos.y = b->position.y * Tile::SIZE + (b->getHeight() - height) / 2;
 }
 
 Struct::Camera Camera::getStructure() {

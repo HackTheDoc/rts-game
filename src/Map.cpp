@@ -5,6 +5,10 @@
 #include "include/Game/Game.h"
 #include "include/Game/Components/Collision.h"
 
+int Map::TileSize() {
+    return Tile::SIZE * Game::camera.zoom;
+}
+
 Map::Map() {
     m_name = "undefined";
     m_height = 0;

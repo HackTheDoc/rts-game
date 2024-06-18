@@ -8,9 +8,9 @@ Castle::Castle(const std::string& faction, const Vector2D& pos) {
     this->faction = faction;
 
     position = pos;
-
-    width = 5 * Tile::SIZE;
-    height = 4 * Tile::SIZE;
+    
+    width = 5;
+    height = 4;
 
     texture = Window::manager->getTexture(faction+" castle");
 }

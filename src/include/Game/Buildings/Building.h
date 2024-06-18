@@ -18,7 +18,6 @@ public:
     };
 
     Vector2D position;
-    int width, height;
 
     Building();
     ~Building();
@@ -26,6 +25,10 @@ public:
     void update();
     void draw();
     void destroy();
+
+    Vector2D getPosition();
+    int getWidth();
+    int getHeight();
 
     virtual std::vector<Vector2D> tilesBlocked();
 
@@ -36,4 +39,6 @@ protected:
 
     SDL_Texture* texture;
     SDL_Rect rect;
+    
+    int width, height;
 };

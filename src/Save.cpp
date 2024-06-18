@@ -134,7 +134,7 @@ Struct::Entity Save::CreateArcher(const std::string& faction, const int x, const
     /* ----- BUILDINGS ----- */
 
 Struct::Building Save::CreateCastle(const std::string& faction, const int x, const int y) {
-    const Struct::Castle c{faction, {x*Tile::SIZE, y*Tile::SIZE}};
+    const Struct::Castle c{faction, {x, y}};
     return {c};
 }
 

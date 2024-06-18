@@ -52,6 +52,8 @@ public:
 
     Struct::Map getStructure();
 
+    static int TileSize();
+
 private:
     std::string m_name;
     std::array<Layer, NUMBER_OF_LAYER> layers;
