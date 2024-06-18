@@ -32,6 +32,8 @@ void Entity::update() {
 
     if (state == State::FREE)
         updateFree();
+    
+    travel();
 }
 
 void Entity::draw() {
@@ -60,7 +62,6 @@ void Entity::setState(const State s) {
         sprite->play("idle");
         break;
     case State::BUILDING:
-        sprite->play("build");
         break;    
     default:
         break;
@@ -69,6 +70,14 @@ void Entity::setState(const State s) {
 
 void Entity::setFlip(const SDL_RendererFlip flip) {
     sprite->spriteFlip = flip;
+}
+
+void Entity::goTo(const Vector2D& pos) {
+    pathToTravel = Game::FindPath(position / Tile::SIZE, pos);
+}
+
+bool Entity::reachedDestination() {
+    return pathToTravel.empty();
 }
 
 Struct::Entity Entity::getStructure() {
@@ -80,13 +89,16 @@ void Entity::updateFree() {
     // check if new path
 
     if (selected && Window::event.mouseClickRight()) {
-        pathToTravel = Game::FindPath(position / Tile::SIZE, Game::cursor.getPosOnMap());
+        goTo(Game::cursor.getPosOnMap());
     }
+}
 
-    // to travel
-    
-    if (pathToTravel.empty()) {
-        sprite->play("idle");
+void Entity::travel() {
+    if (reachedDestination()) {
+        if (state == BUILDING)
+            sprite->play("build");
+        else
+            sprite->play("idle");
         return;
     }
 

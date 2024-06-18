@@ -45,7 +45,11 @@ Construction::~Construction() {}
 void Construction::update() {
     Building::update();
 
-    level->active = builder;
+    if (builder->reachedDestination()) {
+        builder->setFlip(SDL_FLIP_NONE);
+        level->active = true;
+    }
+    else level->active = false;
 
     level->place(
         rect.x + (rect.w - level->width()) / 2,
@@ -74,20 +78,11 @@ void Construction::destroy() {
 void Construction::addBuilder(Entity* b) {
     if (builder) return;
 
-    Vector2D pos = position; 
-
-    // double builder : first builder placement
-    if (type == Building::Type::CASTLE)
-        pos += Vector2D{2, height-2};
-    else
-        pos += Vector2D{0, height-1};
-        
-    pos = pos * Tile::SIZE;
+    Vector2D pos = (position + Vector2D{0, height-1});
     
     b->selected = false;
-    b->placeAt(pos);
+    b->goTo(pos);
     b->setState(Entity::State::BUILDING);
-    b->setFlip(SDL_FLIP_NONE);
     builder = b;
 }
 

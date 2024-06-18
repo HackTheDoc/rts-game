@@ -47,6 +47,11 @@ public:
     void setState(const State s);
     void setFlip(const SDL_RendererFlip flip);
 
+    /// @brief apply pathfinding algo & store path in pathToTravel
+    /// @param pos in grid
+    void goTo(const Vector2D& pos);
+    bool reachedDestination();
+
     virtual Struct::Entity getStructure();
 
 protected:
@@ -56,5 +61,6 @@ protected:
 
     std::vector<Vector2D> pathToTravel;
 
+    void travel();
     void updateFree();
 };
