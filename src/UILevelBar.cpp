@@ -3,13 +3,14 @@
 #include "include/Game/Game.h"
 #include "include/Manager.h"
 
-UILevelBar::UILevelBar(const int mlevel, const int clevel) {
+UILevelBar::UILevelBar(const int mlevel, const int clevel, const int bwidth) {
     maxLevel = mlevel;
     currentLevel = clevel;
+    barWidth = bwidth;
 
-    levelRect = {0, 0, currentLevel, 0};
+    levelRect = {0, 0, 0, 16};
 
-    rect = {0, 0, maxLevel, 16};
+    rect = {0, 0, 0, 16};
 }
 
 UILevelBar::~UILevelBar() {}
@@ -18,10 +19,10 @@ void UILevelBar::update() {
     if (active)
         currentLevel++;
 
-    rect.w = maxLevel * Game::camera.zoom;
+    rect.w = barWidth * Game::camera.zoom;
     rect.h = 16 * Game::camera.zoom;
 
-    levelRect.w = currentLevel * Game::camera.zoom;
+    levelRect.w = (barWidth * currentLevel / maxLevel) * Game::camera.zoom;
     levelRect.h = rect.h;
 }
 

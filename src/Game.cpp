@@ -100,7 +100,12 @@ void Game::ReleaseSelectedEntities() {
 }
 
 void Game::SelectEntities() {
-    if (Builder::active) return;
+    if (builder.active) return;
+    if (builder.compromised) {
+        builder.compromised = false;
+        return;
+    }
+
     ui->hide("construction menu");
 
     if (!Window::event.raised(Event::ID::SELECT_MULTIPLE))
@@ -169,6 +174,12 @@ void Game::AddEntity(Entity* e) {
 }
 
 void Game::ActiveBuilder(const Building::Type type) {
+    if (!playerFaction.hasEnoughRessourcesFor(type)) {
+        std::cout << "not enough ressources to build" << std::endl;
+        builder.compromised = true;
+        return;
+    }
+
     builder.active = true;
     builder.justActived = true;
     builder.type = type;
@@ -193,6 +204,8 @@ void Game::AddBuilding(const Building::Type type, const Vector2D& pos, const std
 void Game::BeginConstruction(const Building::Type type, const Vector2D& pos, const std::string& fac) {
     ui->hide("construction menu");
     builder.active = false;
+
+    playerFaction.consumeRessourcesFor(type);
 
     Construction* c = map->addConstruction(type, fac, pos);
     c->addBuilder(selectedEntities[0]);

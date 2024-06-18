@@ -8,7 +8,8 @@ class Builder {
 public:    
     static bool active;
     static Building::Type type;
-
+    
+    bool compromised{false};
     bool justActived;
     Vector2D position;
 

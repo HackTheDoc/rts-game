@@ -9,7 +9,8 @@ namespace Struct {
     struct Faction;
 }
 
-struct Faction {
+class Faction {
+public:
     std::string name;
 
     int food;
@@ -24,6 +25,12 @@ struct Faction {
 
     Faction(const std::string& n = "undifined", const int f = 0, const int g = 0, const int w = 0);
     ~Faction();
+    
+    bool hasEnoughRessourcesFor(const Building::Type btype);
+    void consumeRessourcesFor(const Building::Type btype);
 
     Struct::Faction getstructure();
+
+private:
+    static std::array<std::array<int, 3>, 3> RessourceConsumptionOfBuildings;
 };

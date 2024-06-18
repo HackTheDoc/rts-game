@@ -12,28 +12,35 @@ Construction::Construction(const Building::Type type, const std::string& faction
 
     builder = nullptr;
 
+    int constructionTime, barWidth;
     switch (type) {
     case Building::Type::HOUSE:
         texture = Window::manager->getTexture("construction house");
         width = 2;
         height = 3;
+        constructionTime = 60*5;
+        barWidth = 128;
         break;
     case Building::Type::TOWER:
         texture = Window::manager->getTexture("construction tower");
         width = 2;
         height = 4;
+        constructionTime = 60*10;
+        barWidth = 192;
         break;
     case Building::Type::CASTLE:
         texture = Window::manager->getTexture("construction castle");
         width = 5;
         height = 4;
+        constructionTime = 60*20;
+        barWidth = 256;
         break;
     case Building::Type::CONSTRUCTION: // unreachable
     default:
         break;
     }
 
-    level = new UILevelBar(60*10, lvl);
+    level = new UILevelBar(constructionTime, lvl, barWidth);
 
     for (int y = 0; y < height-1; y++)
         for (int x = 0; x < width; x++)

@@ -6,7 +6,7 @@ class UILevelBar : public UIElement {
 public:
     bool active;
     
-    UILevelBar(const int mlevel, const int clevel = 0);
+    UILevelBar(const int mlevel, const int clevel, const int bwidth);
     ~UILevelBar();
 
     void update() override;
@@ -16,6 +16,6 @@ public:
     bool isFinished();
 
 private:
-    int maxLevel, currentLevel;
+    int maxLevel, currentLevel, barWidth;
     SDL_Rect levelRect;
 };
