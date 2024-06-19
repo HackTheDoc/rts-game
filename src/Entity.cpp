@@ -22,6 +22,8 @@ Entity::Entity() {
     sprite->init("purple pawn", 6);
 
     speed = 4;
+
+    type = UNKNOWN;
 }
 
 Entity::~Entity() {}
@@ -83,6 +85,10 @@ bool Entity::reachedDestination() {
 Struct::Entity Entity::getStructure() {
     const Struct::Pawn p{faction, position, selected};
     return {p};
+}
+
+bool Entity::died() {
+    return false;
 }
 
 void Entity::updateFree() {

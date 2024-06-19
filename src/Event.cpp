@@ -180,8 +180,11 @@ void Event::raise(const Event::ID id) {
     case OPEN_GAME:
         window->openGame();
         break;  
-    case VALID_STARTING_UNIT_SELECTION:
-        window->endStartingUnitSelection();
+    case SELECT_UNITS:
+        window->openUnitsSelectionMenu();
+        break;
+    case VALID_UNITS_SELECTION:
+        window->endUnitsSelection();
         break;
 
     case SELECT_HOUSE_SCHEMATIC:   

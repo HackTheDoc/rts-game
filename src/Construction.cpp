@@ -4,16 +4,17 @@
 #include "include/Window.h"
 #include "include/struct.h"
 
-Construction::Construction(const Building::Type type, const std::string& faction, const Vector2D& pos, const int lvl) {
-    this->type = type;
+Construction::Construction(const Building::Type constructionType, const std::string& faction, const Vector2D& pos, const int lvl) {
+    this->constructionType = constructionType;
     this->faction = faction;
-
+    type = CONSTRUCTION;
+    
     position = pos;
 
     builder = nullptr;
 
     int constructionTime, barWidth;
-    switch (type) {
+    switch (constructionType) {
     case Building::Type::HOUSE:
         texture = Window::manager->getTexture("construction house");
         width = 2;
@@ -66,8 +67,9 @@ void Construction::update() {
     );
     level->update();
 
+
     if (level->isFinished())
-        Game::FinishConstruction(type, position, "white");
+        Game::FinishConstruction(constructionType, position, "white");
 }
 
 void Construction::draw() {
@@ -114,5 +116,5 @@ void Construction::realeaseBuilder() {
 }
 
 Struct::Building Construction::getStructure() {
-    return {Struct::Construction{faction, position, level->getCurrentLevel(), type, builder->getStructure()}};
+    return {Struct::Construction{faction, position, level->getCurrentLevel(), constructionType, builder->getStructure()}};
 }

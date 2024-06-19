@@ -39,11 +39,13 @@ public:
     int width();
     int height();
 
+    bool isTileOccupied(const Vector2D& pos);
+
     void addEntity(Entity* e);
     void removeEntity(Entity* e);
-    void addPawn(const std::string& f, const Vector2D& pos, const bool selected = false, Vector2D dest = Vector2D{0,0});
-    void addWarrior(const std::string& f, const Vector2D& pos, const bool selected = false, Vector2D dest = Vector2D{0,0});
-    void addArcher(const std::string& f, const Vector2D& pos, const bool selected = false, Vector2D dest = Vector2D{0,0});
+    Pawn* addPawn(const std::string& f, const Vector2D& pos, const bool selected = false, Vector2D dest = Vector2D{0,0});
+    Warrior* addWarrior(const std::string& f, const Vector2D& pos, const bool selected = false, Vector2D dest = Vector2D{0,0});
+    Archer* addArcher(const std::string& f, const Vector2D& pos, const bool selected = false, Vector2D dest = Vector2D{0,0});
 
     void removeBuilding(const Vector2D& pos);
     Construction* addConstruction(const Building::Type type, const std::string& f, const Vector2D& pos, const int clevel = 0);

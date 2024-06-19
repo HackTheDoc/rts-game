@@ -15,6 +15,7 @@ Faction Game::playerFaction;
 
 Map* Game::map = nullptr;
 std::vector<Entity*> Game::selectedEntities{};
+Building* Game::selectedBuilding = nullptr;
 
 Game::Game() {}
 
@@ -142,29 +143,67 @@ void Game::SelectEntityAt(const Vector2D* pos) {
 
 }
 
-void Game::AddStartingEntities(const int pawnCount, const int warriorCount, const int archerCount) {
-    const Vector2D castlePos = playerFaction.castles[0]->getPosition();
+void Game::AddUnitsFromBuilding(const int pawnCount, const int warriorCount, const int archerCount) {
+    if (selectedBuilding == nullptr) return;
+    
+    const Vector2D buildingPos = selectedBuilding->position;
+    const int h = selectedBuilding->height;
+    const int w = selectedBuilding->width;
+
     const std::array<Vector2D, 4> pos{
-        castlePos + Vector2D{1*Tile::SIZE, 3*Tile::SIZE},
-        castlePos + Vector2D{3*Tile::SIZE, 3*Tile::SIZE},
-        castlePos + Vector2D{0*Tile::SIZE, 3*Tile::SIZE},
-        castlePos + Vector2D{4*Tile::SIZE, 3*Tile::SIZE}
+        (buildingPos + Vector2D{1, h-1}) * Tile::SIZE,
+        (buildingPos + Vector2D{w-2, h-1}) * Tile::SIZE,
+        (buildingPos + Vector2D{0, h-1}) * Tile::SIZE,
+        (buildingPos + Vector2D{w-1, h-1}) * Tile::SIZE
     };
 
     int i = 0;
 
     while (i < pawnCount) {
-        map->addPawn(playerFaction.name, pos[i]);
+        if (map->isTileOccupied(pos[i])) {
+            std::cout << "tile " << pos[i] << " occupied" << std::endl;
+        }
+        else {
+            Pawn* p = map->addPawn(playerFaction.name, pos[i]);
+            
+            if (i % 2 == 1)
+                p->setFlip(SDL_FLIP_HORIZONTAL);
+            
+            selectedBuilding->addUnit(p);
+        }
+            
         i++;
     }
     
     while (i < pawnCount+warriorCount) {
-        map->addWarrior(playerFaction.name, pos[i]);
+        if (map->isTileOccupied(pos[i])) {
+            std::cout << "tile " << pos[i] << " occupied" << std::endl;
+        }
+        else {
+            Warrior* w = map->addWarrior(playerFaction.name, pos[i]);
+            
+            if (i % 2 == 1)
+                w->setFlip(SDL_FLIP_HORIZONTAL);
+            
+            selectedBuilding->addUnit(w);
+        }
+            
         i++;
     }
     
     while (i < pawnCount+warriorCount+archerCount) {
-        map->addArcher(playerFaction.name, pos[i]);
+        if (map->isTileOccupied(pos[i])) {
+            std::cout << "tile " << pos[i] << " occupied" << std::endl;
+        }
+        else {
+            Archer* a = map->addArcher(playerFaction.name, pos[i]);
+            
+            if (i % 2 == 1)
+                a->setFlip(SDL_FLIP_HORIZONTAL);
+            
+            selectedBuilding->addUnit(a);
+        }
+            
         i++;
     }
 }
@@ -219,6 +258,14 @@ void Game::BeginConstruction(const Building::Type type, const Vector2D& pos, con
 void Game::FinishConstruction(const Building::Type type, const Vector2D& pos, const std::string& fac) {
     map->removeBuilding(pos);
     AddBuilding(type, pos, fac);
+}
+
+int Game::GetSelectedBuildingFreeSpace() {
+    return selectedBuilding->freeSpace;
+}
+
+void Game::SelectBuilding(Building* b) {
+    selectedBuilding = b;
 }
 
 Struct::Game Game::GetStructure() {

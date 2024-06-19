@@ -10,6 +10,8 @@ namespace Struct {
     struct Building;
 }
 
+class Entity;
+
 class Building {
 public:
     enum Type {
@@ -18,8 +20,10 @@ public:
         TOWER,
         CASTLE,
     };
+    Type type;
 
     Vector2D position;
+    int width, height;
 
     Building();
     ~Building();
@@ -34,11 +38,14 @@ public:
 
     virtual Struct::Building getStructure();
 
+    int freeSpace; // freeSpace for units;
+    void addUnit(Entity* u);
+
 protected:
     std::string faction;
 
     SDL_Texture* texture;
     SDL_Rect rect;
-    
-    int width, height;
+
+    std::vector<Entity*> units;
 };

@@ -18,6 +18,8 @@ Archer::Archer(const std::string& f) {
 
     sprite = new Sprite(this);
     sprite->init(faction+" archer", 2);
+    
+    type = ARCHER;
 }
 
 Archer::~Archer() {}

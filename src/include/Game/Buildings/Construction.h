@@ -22,7 +22,7 @@ public:
     Struct::Building getStructure() override;
 
 private:
-    Building::Type type;
+    Building::Type constructionType;
     UILevelBar* level;
 
     Entity* builder;

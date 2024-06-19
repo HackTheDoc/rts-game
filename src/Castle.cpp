@@ -6,11 +6,14 @@
 
 Castle::Castle(const std::string& faction, const Vector2D& pos) {
     this->faction = faction;
-
+    type = CASTLE;
+    
     position = pos;
     
     width = 5;
     height = 4;
+
+    freeSpace = 4;
 
     texture = Window::manager->getTexture(faction+" castle");
 }

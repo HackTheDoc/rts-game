@@ -1,20 +1,18 @@
-#include "include/WindowStates/StartingUnitSelectionMenu.h"
+#include "include/WindowStates/UnitsSelectionMenu.h"
 
 #include "include/Window.h"
 
-int StartingUnitSelectionMenu::avalaible = 4;
+int UnitsSelectionMenu::avalaible = 4;
 
-UIUnitSelector* StartingUnitSelectionMenu::pawnSelector = nullptr;
-UIUnitSelector* StartingUnitSelectionMenu::warriorSelector = nullptr;
-UIUnitSelector* StartingUnitSelectionMenu::archerSelector = nullptr;
+UIUnitSelector* UnitsSelectionMenu::pawnSelector = nullptr;
+UIUnitSelector* UnitsSelectionMenu::warriorSelector = nullptr;
+UIUnitSelector* UnitsSelectionMenu::archerSelector = nullptr;
 
-StartingUnitSelectionMenu::StartingUnitSelectionMenu() {}
+UnitsSelectionMenu::UnitsSelectionMenu() {}
 
-StartingUnitSelectionMenu::~StartingUnitSelectionMenu() {}
+UnitsSelectionMenu::~UnitsSelectionMenu() {}
 
-void StartingUnitSelectionMenu::init() {
-    avalaible = 4;
-
+void UnitsSelectionMenu::init() {
     warriorSelector = new UIUnitSelector(Entity::Type::WARRIOR, &avalaible);
     warriorSelector->place(
         (Window::screen.w - warriorSelector->width()) / 2,
@@ -33,31 +31,40 @@ void StartingUnitSelectionMenu::init() {
         (Window::screen.h - archerSelector->height()) / 2
     );
 
+    lbl = new UILabel();
 
-    btn_valid = new UIButton("VALID", Event::ID::VALID_STARTING_UNIT_SELECTION, "h3", hue::font, UIButton::Type::DOUBLE_CURSOR);
+    btn_valid = new UIButton("VALID", Event::ID::VALID_UNITS_SELECTION, "h3", hue::font, UIButton::Type::DOUBLE_CURSOR);
     btn_valid->place(
         (Window::screen.w - btn_valid->width()) / 2,
         (Window::screen.h + warriorSelector->y() + warriorSelector->height() - btn_valid->height()) / 2
     );
 }
 
-void StartingUnitSelectionMenu::update() {
+void UnitsSelectionMenu::update() {
     pawnSelector->update();
     warriorSelector->update();
     archerSelector->update();
+
+    lbl->setText("Available: "+std::to_string(avalaible), "h2", hue::font);
+    lbl->place(
+        (Window::screen.w - lbl->width()) / 2,
+        (pawnSelector->y() - lbl->height()) / 2
+    );
+
     btn_valid->update();
 }
 
-void StartingUnitSelectionMenu::render() {
+void UnitsSelectionMenu::render() {
     Manager::DrawFilledRect(&Window::screen, hue::blur);
     
     pawnSelector->draw();
     warriorSelector->draw();
     archerSelector->draw();
+    lbl->draw();
     btn_valid->draw();
 }
 
-void StartingUnitSelectionMenu::clean() {
+void UnitsSelectionMenu::clean() {
     avalaible = 0;
     
     pawnSelector->destroy();
@@ -68,6 +75,8 @@ void StartingUnitSelectionMenu::clean() {
 
     archerSelector->destroy();
     archerSelector = nullptr;
+
+    lbl->destroy();
 
     btn_valid->destroy();
 }

@@ -110,8 +110,9 @@ Struct::Camera Save::CreateCamera(const int x, const int y) {
     return {{x,y}, 1.0f};
 }
 
+/// TODO: change value to 100
 Struct::Faction Save::CreateFaction(const std::string& name) {
-    return {name, 100,100,100};
+    return {name, 1000,1000,1000}; 
 }
 
     /* ----- ENTITIES ----- */

@@ -18,12 +18,13 @@ public:
     };
     State state;
 
-    enum Type : char {
+    enum Type {
         UNKNOWN,
         PAWN,
         WARRIOR,
         ARCHER
     };
+    Type type;
 
     // blue, red, yellow, purple
     std::string faction;
@@ -53,6 +54,8 @@ public:
     bool reachedDestination();
 
     virtual Struct::Entity getStructure();
+
+    bool died();
 
 protected:
     int speed;

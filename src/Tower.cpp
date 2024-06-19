@@ -6,11 +6,14 @@
 
 Tower::Tower(const std::string& faction, const Vector2D& pos) {
     this->faction = faction;
-
+    type = TOWER;
+    
     position = pos;
     
     width = 2;
     height = 4;
+    
+    freeSpace = 0;
 
     texture = Window::manager->getTexture(faction+" tower");
 }

@@ -6,11 +6,14 @@
 
 House::House(const std::string& faction, const Vector2D& pos) {
     this->faction = faction;
-
+    type = HOUSE;
+    
     position = pos;
     
     width = 2;
     height = 3;
+
+    freeSpace = 2;
 
     texture = Window::manager->getTexture(faction+" house");
 }

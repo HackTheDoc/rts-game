@@ -1,7 +1,7 @@
 #include "include/Game/Buildings/Building.h"
 
 #include "include/Game/Game.h"
-#include "include/Manager.h"
+#include "include/Window.h"
 #include "include/struct.h"
 
 Building::Building() {
@@ -9,6 +9,7 @@ Building::Building() {
 
     position.Zero();
     this->faction = "undefined";
+    type = Type::CONSTRUCTION;
 }
 
 Building::~Building() {}
@@ -21,6 +22,24 @@ void Building::update() {
 
     rect.x = position.x * tileSize - Game::camera.pos.x;
     rect.y = position.y  * tileSize - Game::camera.pos.y;
+
+    for (size_t i = 0; i < units.size(); i++)
+        if (units[i]->died()) {
+            units.erase(units.begin() + i);
+            freeSpace++;
+        }
+
+    if (type == CONSTRUCTION) return;
+    
+    if (!Game::cursor.inRect(&rect)) return;
+
+    if (!Window::event.mouseClickLeft()) return;
+
+    if (Game::CountSelectedEntities() > 0) return;
+
+    Game::SelectBuilding(this);
+
+    Window::event.raise(Event::ID::SELECT_UNITS);
 }
 
 void Building::draw() {
@@ -48,4 +67,9 @@ int Building::getHeight() {
 
 Struct::Building Building::getStructure() {
     return {Struct::House{faction, position}};
+}
+
+void Building::addUnit(Entity* u) {
+    units.push_back(u);
+    freeSpace--;
 }

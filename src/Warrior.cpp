@@ -18,6 +18,8 @@ Warrior::Warrior(const std::string& f) {
 
     sprite = new Sprite(this);
     sprite->init(faction+" warrior", 4);
+
+    type = WARRIOR;
 }
 
 Warrior::~Warrior() {}

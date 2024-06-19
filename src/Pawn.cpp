@@ -22,6 +22,8 @@ Pawn::Pawn(const std::string& f) {
     sprite->init(faction+" pawn", 6);
 
     speed = 4;
+
+    type = PAWN;
 }
 
 Pawn::~Pawn() {}

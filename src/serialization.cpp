@@ -262,7 +262,7 @@ namespace deserialize {
     }
 
     void entity(std::ifstream& infile, Struct::Entity& e) {
-        Entity::Type t{0};
+        Entity::Type t{Entity::Type::UNKNOWN};
         var(infile, t);
         switch (t) {
         case Entity::Type::ARCHER:

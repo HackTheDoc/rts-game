@@ -103,6 +103,14 @@ int Map::height() {
     return m_height;
 }
 
+bool Map::isTileOccupied(const Vector2D& pos) {
+    std::vector<Entity*>::iterator it = std::find_if(entities.begin(), entities.end(), [&pos](Entity* entity) {
+        return entity->position == pos;
+    });
+    
+    return it != entities.end();
+}
+
 std::vector<Entity*> Map::getEntities() {
     return entities;
 }
@@ -228,7 +236,7 @@ void Map::removeEntity(Entity* e) {
     entities.erase(it);
 }
 
-void Map::addPawn(const std::string& f, const Vector2D& pos, const bool selected, Vector2D dest) {
+Pawn* Map::addPawn(const std::string& f, const Vector2D& pos, const bool selected, Vector2D dest) {
     Pawn* p = new Pawn(f);
     p->placeAt(pos);
     p->selected = selected;
@@ -240,9 +248,11 @@ void Map::addPawn(const std::string& f, const Vector2D& pos, const bool selected
 
     if (f == Game::playerFaction.name)
         Game::playerFaction.pawns.push_back(p);
+    
+    return p;
 }
 
-void Map::addWarrior(const std::string& f, const Vector2D& pos, const bool selected, Vector2D dest) {
+Warrior* Map::addWarrior(const std::string& f, const Vector2D& pos, const bool selected, Vector2D dest) {
     Warrior* w = new Warrior(f);
     w->placeAt(pos);
     w->selected = selected;
@@ -255,9 +265,11 @@ void Map::addWarrior(const std::string& f, const Vector2D& pos, const bool selec
 
     if (f == Game::playerFaction.name)
         Game::playerFaction.warriors.push_back(w);
+    
+    return w;
 }
 
-void Map::addArcher(const std::string& f, const Vector2D& pos, const bool selected, Vector2D dest) {
+Archer* Map::addArcher(const std::string& f, const Vector2D& pos, const bool selected, Vector2D dest) {
     Archer* a = new Archer(f);
     a->placeAt(pos);
     a->selected = selected;
@@ -269,6 +281,8 @@ void Map::addArcher(const std::string& f, const Vector2D& pos, const bool select
 
     if (f == Game::playerFaction.name)
         Game::playerFaction.archers.push_back(a);
+
+    return a;
 }
 
 void Map::addBuilding(const Struct::Building& b) {

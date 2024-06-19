@@ -140,24 +140,31 @@ void Window::openGame() {
     manager->addWindowState(WindowState::Type::GAME, new Game());
     
     if (Save::New) {
-        manager->addWindowState(WindowState::Type::STARTING_UNIT_SELECTION, new StartingUnitSelectionMenu());
-        manager->setCurrentWindowState(WindowState::Type::STARTING_UNIT_SELECTION);
+        Game::SelectBuilding(Game::playerFaction.castles[0]);
+        openUnitsSelectionMenu();
     }
     else manager->setCurrentWindowState(WindowState::Type::GAME);
 }
 
-void Window::endStartingUnitSelection() {
-    std::cout << "starting game with : " << std::endl;
-    int pawnCount = StartingUnitSelectionMenu::pawnSelector->count + StartingUnitSelectionMenu::avalaible;
+void Window::openUnitsSelectionMenu() {
+    UnitsSelectionMenu::avalaible = Game::GetSelectedBuildingFreeSpace();
+
+    manager->addWindowState(WindowState::Type::UNITS_SELECTION_MENU, new UnitsSelectionMenu());
+    manager->setCurrentWindowState(WindowState::Type::UNITS_SELECTION_MENU);
+}
+
+void Window::endUnitsSelection() {
+    std::cout << "spawning entities from building : " << std::endl;
+    int pawnCount = UnitsSelectionMenu::pawnSelector->count;
     std::cout << "  - " <<  pawnCount << " pawns" << std::endl;
-    const int warriorCount = StartingUnitSelectionMenu::warriorSelector->count;
+    const int warriorCount = UnitsSelectionMenu::warriorSelector->count;
     std::cout << "  - " <<  warriorCount << " warriors" << std::endl;
-    const int archerCount = StartingUnitSelectionMenu::archerSelector->count;
+    const int archerCount = UnitsSelectionMenu::archerSelector->count;
     std::cout << "  - " <<  archerCount << " archers" << std::endl;
     
-    Game::AddStartingEntities(pawnCount, warriorCount, archerCount);
+    Game::AddUnitsFromBuilding(pawnCount, warriorCount, archerCount);
 
-    manager->removeWindowState(WindowState::Type::STARTING_UNIT_SELECTION);
+    manager->removeWindowState(WindowState::Type::UNITS_SELECTION_MENU);
     manager->setCurrentWindowState(WindowState::Type::GAME);
 }
 

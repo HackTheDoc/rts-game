@@ -36,7 +36,7 @@ public:
     void render() override;
     void clean() override;
 
-    static void AddStartingEntities(const int pawnCount, const int warriorCount, const int archerCount);
+    static void AddUnitsFromBuilding(const int pawnCount, const int warriorCount, const int archerCount);
     static void AddEntity(Entity* e);
     static void RemoveEntity(Entity* e);
     
@@ -50,6 +50,9 @@ public:
     static void SelectEntities();
     static void SelectEntityAt(const Vector2D* pos);
 
+    static int GetSelectedBuildingFreeSpace();
+    static void SelectBuilding(Building* b);
+
     static Struct::Game GetStructure();
 
     static Vector2D GetMapSize();
@@ -60,7 +63,9 @@ public:
 
 private:
     static Builder builder;
-        
+
+    static Building* selectedBuilding;    
+    
     static Map* map;
     static std::vector<Entity*> selectedEntities;
 };

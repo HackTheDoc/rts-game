@@ -4,15 +4,15 @@
 
 #include "../UI/UIElements.h"
 
-class StartingUnitSelectionMenu : public WindowState {
+class UnitsSelectionMenu : public WindowState {
 public:
     static int avalaible;
     static UIUnitSelector* pawnSelector;
     static UIUnitSelector* warriorSelector;
     static UIUnitSelector* archerSelector;
 
-    StartingUnitSelectionMenu();
-    ~StartingUnitSelectionMenu();
+    UnitsSelectionMenu();
+    ~UnitsSelectionMenu();
 
     void init() override;
     void update() override;
@@ -20,5 +20,6 @@ public:
     void clean() override;
 
 private:
+    UILabel* lbl;
     UIButton* btn_valid;
 };
