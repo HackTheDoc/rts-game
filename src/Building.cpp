@@ -30,12 +30,14 @@ void Building::update() {
         }
 
     if (type == CONSTRUCTION) return;
+
+    if (Builder::active) return;
     
+    if (Game::CountSelectedEntities() > 0) return;
+
     if (!Game::cursor.inRect(&rect)) return;
 
     if (!Window::event.mouseClickLeft()) return;
-
-    if (Game::CountSelectedEntities() > 0) return;
 
     Game::SelectBuilding(this);
 
