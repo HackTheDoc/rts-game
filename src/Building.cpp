@@ -46,6 +46,9 @@ void Building::update() {
 
 void Building::draw() {
     Manager::Draw(texture, nullptr, &rect);
+
+    if (type != CONSTRUCTION && freeSpace > 0)
+        drawUnitSelectorIndicator();
 }
 
 void Building::destroy() {
@@ -74,4 +77,15 @@ Struct::Building Building::getStructure() {
 void Building::addUnit(Entity* u) {
     units.push_back(u);
     freeSpace--;
+}
+
+void Building::drawUnitSelectorIndicator() {
+    SDL_Texture* t = Window::manager->getTexture("unit selector indicator");
+    
+    SDL_Rect r;
+    r.w = r.h = 256 * Game::camera.zoom;
+    r.x = rect.x + rect.w - 3 * r.w / 4;
+    r.y = rect.y + rect.h - r.h;
+
+    Manager::Draw(t, nullptr, &r);
 }

@@ -48,4 +48,6 @@ protected:
     SDL_Rect rect;
 
     std::vector<Entity*> units;
+
+    void drawUnitSelectorIndicator();
 };

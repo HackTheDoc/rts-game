@@ -14,7 +14,7 @@ void Cursor::update() {
 
     // single selection
 
-    if (Window::event.mouseClickLeft())
+    if (!Builder::active && Window::event.mouseClickLeft())
         Game::SelectEntityAt(&pos);
     
     // selecting system

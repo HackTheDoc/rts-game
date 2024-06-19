@@ -134,6 +134,8 @@ void Manager::loadGameTextures() {
 
     /* ----- BUILDINGS ----- */
     
+    textures["unit selector indicator"] = LoadTexture("assets/buildings/unit_selector_indicator.png");
+    
     textures["white castle"] = LoadTexture("assets/buildings/white/castle.png");
     textures["white tower"] = LoadTexture("assets/buildings/white/tower.png");
     textures["white house"] = LoadTexture("assets/buildings/white/house.png");
