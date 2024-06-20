@@ -43,4 +43,8 @@ private:
     std::string currentAnimation;
 
     Entity* owner;
+
+    void loadAnimation_0();
+    void loadAnimation_1();
+    void loadAnimation_2();
 };

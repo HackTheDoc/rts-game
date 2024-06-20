@@ -100,7 +100,7 @@ void Mine::freeMiner() {
 }
 
 void Mine::destroy() {
-    if (miner)
+    if (miner && minerIn)
         miner->kill();
     
     Building::destroy();
@@ -126,13 +126,19 @@ void Mine::updateWithMiner() {
             level->setCurrentLevel(0);
         }
     }
-    else if (miner->reachedDestination() && miner->position == entryPosition*Tile::SIZE) {
-        miner->setState(Entity::State::MINING);
-        Game::RemoveEntity(miner);
-        
-        minerIn = true;
-        level->setCurrentLevel(0);
-        level->active = true;
+    else if (miner->reachedDestination()) {
+        if (miner->position == entryPosition*Tile::SIZE) {
+            miner->setState(Entity::State::MINING);
+            Game::RemoveEntity(miner);
+            
+            minerIn = true;
+            level->setCurrentLevel(0);
+            level->active = true;
+        }
+        else miner = nullptr;
+    }
+    else if (miner->destination() != entryPosition) {
+        miner = nullptr;
     }
 }
 

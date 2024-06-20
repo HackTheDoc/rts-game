@@ -48,6 +48,8 @@ void Map::init(const Struct::Map& m) {
 
     for (const Struct::Building& b : m.buildings)
         addBuilding(b);
+
+    std::cout << "map initialized" << std::endl;
 }
 
 void Map::update() {
@@ -216,6 +218,9 @@ void Map::addEntity(const Struct::Entity& e) {
         void operator()(const Struct::Archer& a) {
             map->addArcher(a.faction, a.pos, a.selected, a.dest);
         }
+        void operator()(const Struct::Tree& t) {
+            map->addTree(t.pos, t.hp);
+        }
     };
 
     EntityVisitor visitor{this};
@@ -282,6 +287,16 @@ Archer* Map::addArcher(const std::string& f, const Vector2D& pos, const bool sel
         Game::playerFaction.archers.push_back(a);
 
     return a;
+}
+
+Tree* Map::addTree(const Vector2D& pos, const int hp) {
+    Tree* t = new Tree();
+    t->placeAt(pos);
+    t->hp = hp;
+    
+    addEntity(t);
+
+    return t;
 }
 
 void Map::addBuilding(const Struct::Building& b) {

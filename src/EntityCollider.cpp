@@ -5,6 +5,7 @@
 EntityCollider::EntityCollider(Entity* o) {
     rect = { 0,0,0,0 };
     setOwner(o);
+
     width  = rect.w = owner->width / 3;
     height = rect.h = owner->height / 3;
 }

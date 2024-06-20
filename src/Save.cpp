@@ -112,7 +112,7 @@ Struct::Camera Save::CreateCamera(const int x, const int y) {
 
 /// TODO: change value to 100
 Struct::Faction Save::CreateFaction(const std::string& name) {
-    return {name, 1000,1000,1000}; 
+    return {name, 500,500,500}; 
 }
 
     /* ----- ENTITIES ----- */
@@ -130,6 +130,11 @@ Struct::Entity Save::CreateWarrior(const std::string& faction, const int x, cons
 Struct::Entity Save::CreateArcher(const std::string& faction, const int x, const int y) {
     const Struct::Archer a{faction, {x*Tile::SIZE, y*Tile::SIZE}, false};
     return {a};
+}
+
+Struct::Entity Save::CreateTree(const int x, const int y) {
+    const Struct::Tree t{{x*Tile::SIZE, y*Tile::SIZE}, 10};
+    return {t};
 }
 
     /* ----- BUILDINGS ----- */
@@ -231,9 +236,11 @@ Struct::Map Save::CreateMap_Test() {
             })
         },
         .entities = {
-            CreatePawn("white", 7, 3),
-            CreateWarrior("white", 10, 6),
-            CreateArcher("white", 7, 6),
+            CreateTree(16, 1),
+            CreateTree(18, 1),
+            CreateTree(20, 1),
+            CreateTree(17, 2),
+            CreateTree(19, 2),
         },
         .buildings = {
             CreateCastle("white", 2, -2),

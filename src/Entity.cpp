@@ -9,7 +9,7 @@ Entity::Entity() {
 
     selected = false;
 
-    faction = "unknown";
+    faction = "wilderness";
     
     position.Zero();
     
@@ -32,6 +32,9 @@ void Entity::update() {
     sprite->update();
     collider->update();
 
+    if (state == CHOPING_WOOD || state == MINING)
+        return;
+    
     if (state == State::FREE)
         updateFree();
     
@@ -64,9 +67,15 @@ void Entity::setState(const State s) {
         sprite->play("idle");
         break;
     case State::BUILDING:
-        break;    
+        break;
     case State::MINING:
         Game::ui->hide("construction menu");
+        break;
+    case State::CHOPING_WOOD:
+        Game::ui->hide("construction menu");
+        sprite->play("attack");
+        selected = false;
+        sprite->spriteFlip = SDL_FLIP_NONE;
         break;
     default:
         break;
@@ -88,6 +97,10 @@ void Entity::stopMovement() {
 
 bool Entity::reachedDestination() {
     return pathToTravel.empty();
+}
+
+Vector2D Entity::destination() {
+    return pathToTravel.front();
 }
 
 Struct::Entity Entity::getStructure() {

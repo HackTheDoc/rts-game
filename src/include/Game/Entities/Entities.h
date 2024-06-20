@@ -7,3 +7,5 @@
 #include "Warrior.h"
 
 #include "Archer.h"
+
+#include "Tree.h"

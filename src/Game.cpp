@@ -128,10 +128,12 @@ void Game::SelectEntities() {
     }
         
     std::vector<Entity*> newlySelectedEntities = map->getEntitiesInRect(r);
-    for (Entity* e :  newlySelectedEntities) {
-        e->selected = true;
-        selectedEntities.push_back(e);
-    }
+    for (Entity* e :  newlySelectedEntities)
+        if (e->type == Entity::Type::TREE) continue;
+        else {
+            e->selected = true;
+            selectedEntities.push_back(e);
+        }
 }
 
 void Game::SelectEntityAt(const Vector2D* pos) {
@@ -140,7 +142,7 @@ void Game::SelectEntityAt(const Vector2D* pos) {
 
     std::optional<Entity*> e = map->getEntitiesAt(pos);
     
-    if (e.has_value() && e.value()->state == Entity::State::FREE) {
+    if (e.has_value() && e.value()->type != Entity::Type::TREE && e.value()->state == Entity::State::FREE) {
         e.value()->selected = true;
         selectedEntities.push_back(e.value());
     }
@@ -286,6 +288,10 @@ std::vector<Entity*> Game::GetEntities() {
 
 void Game::AddCollider(const Vector2D& pos) {
     generator.addCollision(pos);
+}
+
+void Game::RemoveCollider(const Vector2D& pos) {
+    generator.removeCollision(pos);
 }
 
 std::vector<Vector2D> Game::FindPath(const Vector2D& start, const Vector2D& end) {

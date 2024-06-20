@@ -55,7 +55,7 @@ bool Collision::BuildingWithEntity(const Vector2D& pos, const Vector2D& size) {
     };
 
     for (auto e : entities)
-        if (AABB_STRICT(e->collider, r))
+        if (e->type != Entity::Type::TREE && AABB_STRICT(e->collider, r))
             return true;
     
     return false;

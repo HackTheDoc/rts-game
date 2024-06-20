@@ -52,6 +52,8 @@ private:
     
     static Struct::Entity CreateArcher(const std::string& faction, const int x, const int y);
 
+    static Struct::Entity CreateTree(const int x, const int y);
+
         /* ----- BUILDINGS ----- */
     
     static Struct::Building CreateCastle(const std::string& faction, const int x, const int y);

@@ -60,6 +60,7 @@ public:
     static std::vector<Entity*> GetEntities();
         
     static void AddCollider(const Vector2D& pos);
+    static void RemoveCollider(const Vector2D& pos);
     static std::vector<Vector2D> FindPath(const Vector2D& start, const Vector2D& end);
 
     static bool IsAllowedPosition(const Vector2D& pos);

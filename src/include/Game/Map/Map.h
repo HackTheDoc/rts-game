@@ -46,6 +46,7 @@ public:
     Pawn* addPawn(const std::string& f, const Vector2D& pos, const bool selected = false, Vector2D dest = Vector2D{0,0});
     Warrior* addWarrior(const std::string& f, const Vector2D& pos, const bool selected = false, Vector2D dest = Vector2D{0,0});
     Archer* addArcher(const std::string& f, const Vector2D& pos, const bool selected = false, Vector2D dest = Vector2D{0,0});
+    Tree* addTree(const Vector2D& pos, const int hp);
 
     void removeBuilding(const Vector2D& pos);
     Construction* addConstruction(const Building::Type type, const std::string& f, const Vector2D& pos, const int clevel = 0);

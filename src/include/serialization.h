@@ -24,6 +24,8 @@ namespace serialize {
 
     void pawn(std::ofstream& outfile, const Struct::Pawn& p);
 
+    void tree(std::ofstream& outfile, const Struct::Tree& t);
+
     void entity(std::ofstream& outfile, const Struct::Entity& e);
     
     void construction(std::ofstream& outfile, const Struct::Construction& c);
@@ -70,6 +72,8 @@ namespace deserialize {
     void warrior(std::ifstream& infile, Struct::Warrior& w);
 
     void pawn(std::ifstream& infile, Struct::Pawn& p);
+
+    void tree(std::ifstream& infile, Struct::Tree& t);
 
     void entity(std::ifstream& infile, Struct::Entity& e);
     

@@ -31,16 +31,13 @@ void Sprite::init(const std::string& tag, const int numberOfAnimations) {
     for (int i = 0; i < numberOfAnimations; i++) {
         switch (i) {
         case 0: // idle
-            animation = Animation(0, 6);
-            animations.emplace("idle", animation);
+            loadAnimation_0();
             break;
         case 1: // walk
-            animation = Animation(1, 6);
-            animations.emplace("walk", animation);
+            loadAnimation_1();
             break;
         case 2: // building
-            animation = Animation(2, 6);
-            animations.emplace("build", animation);
+            loadAnimation_2();
             break;
         case 3: // cutting wood
             animation = Animation(3, 6);
@@ -70,7 +67,11 @@ void Sprite::update() {
     }
 
     destRect.x = (owner->position.x - Tile::SIZE) * Game::camera.zoom - Game::camera.pos.x;
-    destRect.y = (owner->position.y - Tile::SIZE) * Game::camera.zoom - Game::camera.pos.y;
+    
+    if (owner->type == Entity::Type::TREE)
+        destRect.y = (owner->position.y - 2*Tile::SIZE) * Game::camera.zoom - Game::camera.pos.y;
+    else
+        destRect.y = (owner->position.y - Tile::SIZE) * Game::camera.zoom - Game::camera.pos.y;
 
     destRect.w = owner->width * Game::camera.zoom;
     destRect.h = owner->height * Game::camera.zoom;
@@ -108,4 +109,50 @@ void Sprite::useFrame(const int y, const int x) {
 void Sprite::drawSelection() {
     SDL_Texture* t = Window::manager->getTexture("selection");
     Manager::Draw(t, nullptr, &destRect);
+}
+
+void Sprite::loadAnimation_0() {
+    Animation animation;
+    
+    switch (owner->type) {
+    case Entity::Type::TREE:
+        animation = Animation(0, 4);
+        break;
+    default:
+        animation = Animation(0, 6);
+        break;
+    }
+
+    
+    animations.emplace("idle", animation);
+}
+
+void Sprite::loadAnimation_1() {
+    Animation animation;
+    
+    switch (owner->type) {
+    case Entity::Type::TREE:
+        animation = Animation(1, 2);
+        animations.emplace("damaged", animation);
+        break;
+    default:
+        animation = Animation(1, 6);
+        animations.emplace("walk", animation);
+        break;
+    }
+}
+
+void Sprite::loadAnimation_2() {
+    Animation animation;
+    
+    switch (owner->type) {
+    case Entity::Type::TREE:
+        animation = Animation(2, 1);
+        animations.emplace("dead", animation);
+        break;
+    default:
+        animation = Animation(2, 6);
+        animations.emplace("build", animation);
+        break;
+    }
 }

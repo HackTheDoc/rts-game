@@ -29,7 +29,7 @@ Pawn::Pawn(const std::string& f) {
 Pawn::~Pawn() {}
 
 void Pawn::update() {
-    if (selected && Game::CountSelectedEntities() == 1)
+    if (state == FREE && selected && Game::CountSelectedEntities() == 1)
         Game::ui->show("construction menu");
 
     Entity::update();

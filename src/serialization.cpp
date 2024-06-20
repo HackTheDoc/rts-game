@@ -57,6 +57,13 @@ namespace serialize {
         var(outfile, p.selected);
     }
 
+    void tree(std::ofstream& outfile, const Struct::Tree& t) {
+        var(outfile, Entity::Type::TREE);
+        
+        vector2D(outfile, t.pos);
+        var(outfile, t.hp);
+    }
+
     void entity(std::ofstream& outfile, const Struct::Entity& e) {
         struct EntityVisitor {
             std::ofstream& outfile;
@@ -69,6 +76,9 @@ namespace serialize {
             }
             void operator()(const Struct::Pawn& p) {
                 serialize::pawn(outfile, p);
+            }
+            void operator()(const Struct::Tree& t) {
+                serialize::tree(outfile, t);
             }
         };
 
@@ -269,6 +279,11 @@ namespace deserialize {
         var(infile, p.selected);
     }
 
+    void tree(std::ifstream& infile, Struct::Tree& t) {
+        vector2D(infile, t.pos);
+        var(infile, t.hp);
+    }
+
     void entity(std::ifstream& infile, Struct::Entity& e) {
         Entity::Type t{Entity::Type::UNKNOWN};
         var(infile, t);
@@ -281,6 +296,9 @@ namespace deserialize {
             break;
         case Entity::Type::PAWN:
             e.e = Struct::Pawn{};
+            break;
+        case Entity::Type::TREE:
+            e.e = Struct::Tree{};
             break;
         default:
             break;
@@ -297,6 +315,9 @@ namespace deserialize {
             }
             void operator()(Struct::Pawn& p) {
                 deserialize::pawn(infile, p);
+            }
+            void operator()(Struct::Tree& t) {
+                deserialize::tree(infile, t);
             }
         };
 

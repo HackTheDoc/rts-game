@@ -16,7 +16,8 @@ public:
         FREE,
         BUILDING,
         GOING_TO_MINE,
-        MINING
+        MINING,
+        CHOPING_WOOD
     };
     State state;
 
@@ -24,17 +25,20 @@ public:
         UNKNOWN,
         PAWN,
         WARRIOR,
-        ARCHER
+        ARCHER,
+        TREE,
     };
     Type type;
 
-    // blue, red, yellow, purple
+    // blue, red, yellow, purple, wilderness
     std::string faction;
     
     bool selected;
 
     Vector2D position;
     int width, height;
+
+    int hp;
 
     EntityCollider* collider;
 
@@ -55,6 +59,7 @@ public:
     void goTo(const Vector2D& pos);
     void stopMovement();
     bool reachedDestination();
+    Vector2D destination();
 
     virtual Struct::Entity getStructure();
 
