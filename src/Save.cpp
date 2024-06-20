@@ -139,6 +139,11 @@ Struct::Building Save::CreateCastle(const std::string& faction, const int x, con
     return {c};
 }
 
+Struct::Building Save::CreateMine(const int x, const int y) {
+    const Struct::Mine m{{x,y}};
+    return {m};
+}
+
     /* ----- MAPS ------ */
 
 Struct::Tile Save::CreateTile(const TileType type, const int x, const int y) {
@@ -232,6 +237,7 @@ Struct::Map Save::CreateMap_Test() {
         },
         .buildings = {
             CreateCastle("white", 2, -2),
+            CreateMine(18, 6),
         }
     };
     return m;

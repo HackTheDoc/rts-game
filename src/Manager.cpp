@@ -144,6 +144,10 @@ void Manager::loadGameTextures() {
     textures["construction tower"] = LoadTexture("assets/buildings/construction/tower.png");
     textures["construction house"] = LoadTexture("assets/buildings/construction/house.png");
 
+    textures["mine active"] = LoadTexture("assets/ressources/gold/active.png");
+    textures["mine inactive"] = LoadTexture("assets/ressources/gold/inactive.png");
+    textures["mine destroyed"] = LoadTexture("assets/ressources/gold/destroyed.png");
+
     /* ----- ICONS ----- */
 
     textures["unit icons"] = LoadTexture("assets/icons/troops.png");
@@ -225,7 +229,7 @@ SDL_Texture* Manager::GenerateCenterAnchoredText(const std::string& text, const 
     if (currWidth > 0) totalHeight += fontHeight;
 
     // generate the actual surface
-    SDL_Surface* tmpSurface = SDL_CreateRGBSurfaceWithFormat(0, totalWidth, totalHeight, 32, SDL_PIXELFORMAT_RGBA8888);
+    SDL_Surface* tmpSurface = SDL_CreateRGBSurfaceWithFormat(0, totalWidth+spaceWidth, totalHeight, 32, SDL_PIXELFORMAT_RGBA8888);
     if (tmpSurface == nullptr) return nullptr;
     SDL_SetSurfaceBlendMode(tmpSurface, SDL_BLENDMODE_BLEND);
 
@@ -304,6 +308,8 @@ void Manager::setCurrentWindowState(const WindowState::Type id) {
 }
 
 void Manager::updateCurrentWindowState() {
+    if (currentWindowState > WindowState::Type::GAME)
+        windowStates[WindowState::Type::GAME]->update();
     windowStates[currentWindowState]->update();
 }
 

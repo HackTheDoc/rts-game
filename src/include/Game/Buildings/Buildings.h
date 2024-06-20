@@ -9,3 +9,5 @@
 #include "Tower.h"
 
 #include "Castle.h"
+
+#include "Mine.h"

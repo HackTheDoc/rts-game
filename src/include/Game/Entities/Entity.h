@@ -14,7 +14,9 @@ class Entity {
 public:
     enum State {
         FREE,
-        BUILDING
+        BUILDING,
+        GOING_TO_MINE,
+        MINING
     };
     State state;
 
@@ -51,6 +53,7 @@ public:
     /// @brief apply pathfinding algo & store path in pathToTravel
     /// @param pos in grid
     void goTo(const Vector2D& pos);
+    void stopMovement();
     bool reachedDestination();
 
     virtual Struct::Entity getStructure();

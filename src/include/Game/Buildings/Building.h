@@ -19,6 +19,7 @@ public:
         HOUSE,
         TOWER,
         CASTLE,
+        MINE
     };
     Type type;
 
@@ -50,4 +51,6 @@ protected:
     std::vector<Entity*> units;
 
     void drawUnitSelectorIndicator();
+
+    void addColliders();
 };

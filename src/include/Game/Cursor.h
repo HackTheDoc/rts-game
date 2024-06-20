@@ -6,6 +6,8 @@
 
 class Cursor {
 public:
+    static bool enable;
+    
     Vector2D pos;
     
     bool selecting;

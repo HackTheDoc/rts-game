@@ -7,5 +7,7 @@ public:
     Castle(const std::string& faction, const Vector2D& pos);
     ~Castle();
 
+    void update() override;
+
     Struct::Building getStructure() override;
 };

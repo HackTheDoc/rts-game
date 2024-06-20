@@ -66,12 +66,17 @@ namespace Struct {
         Vector2D pos;
     };
 
+    struct Mine {
+        Vector2D pos;
+    };
+
     struct Building {
         std::variant<
             Construction,
             House,
             Tower,
-            Castle
+            Castle,
+            Mine
         > b;
     };
 

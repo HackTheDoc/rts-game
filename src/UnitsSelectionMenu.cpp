@@ -1,5 +1,6 @@
 #include "include/WindowStates/UnitsSelectionMenu.h"
 
+#include "include/Game/Cursor.h"
 #include "include/Window.h"
 
 int UnitsSelectionMenu::avalaible = 4;
@@ -38,6 +39,8 @@ void UnitsSelectionMenu::init() {
         (Window::screen.w - btn_valid->width()) / 2,
         (Window::screen.h + warriorSelector->y() + warriorSelector->height() - btn_valid->height()) / 2
     );
+
+    Cursor::enable = false;
 }
 
 void UnitsSelectionMenu::update() {
@@ -79,4 +82,6 @@ void UnitsSelectionMenu::clean() {
     lbl->destroy();
 
     btn_valid->destroy();
+
+    Cursor::enable = true;
 }

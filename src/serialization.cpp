@@ -107,6 +107,12 @@ namespace serialize {
         vector2D(outfile, c.pos);
     }
 
+    void mine(std::ofstream& outfile, const Struct::Mine& m) {
+        var(outfile, Building::Type::MINE);
+        
+        vector2D(outfile, m.pos);
+    }
+
     void building(std::ofstream& outfile, const Struct::Building& b) {
         struct BuildingVisitor {
             std::ofstream& outfile;
@@ -122,6 +128,9 @@ namespace serialize {
             }
             void operator()(const Struct::Castle& c) {
                 serialize::castle(outfile, c);
+            }
+            void operator()(const Struct::Mine& m) {
+                serialize::mine(outfile, m);
             }
         };
 
@@ -251,7 +260,6 @@ namespace deserialize {
         vector2D(infile, w.pos);
         vector2D(infile, w.dest);
         var(infile, w.selected);
-        std::cout << w.dest << std::endl;
     }
 
     void pawn(std::ifstream& infile, Struct::Pawn& p) {
@@ -319,6 +327,10 @@ namespace deserialize {
         vector2D(infile, c.pos);
     }
 
+    void mine(std::ifstream& infile, Struct::Mine& m) {
+        vector2D(infile, m.pos);
+    }
+
     void building(std::ifstream& infile, Struct::Building& b) {
         Building::Type t;
         var(infile, t);
@@ -334,6 +346,9 @@ namespace deserialize {
             break;
         case Building::Type::CASTLE:
             b.b = Struct::Castle{};
+            break;
+        case Building::Type::MINE:
+            b.b = Struct::Mine{};
             break;
         default:
             break;
@@ -353,6 +368,9 @@ namespace deserialize {
             }
             void operator()(Struct::Castle& c) {
                 deserialize::castle(infile, c);
+            }
+            void operator()(Struct::Mine& m) {
+                deserialize::mine(infile, m);
             }
         };
 

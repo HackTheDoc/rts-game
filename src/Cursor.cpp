@@ -3,6 +3,8 @@
 #include "include/Window.h"
 #include "include/Game/Game.h"
 
+bool Cursor::enable = true;
+
 Cursor::Cursor() {
     reset();
 }
@@ -11,6 +13,8 @@ Cursor::~Cursor() {}
 
 void Cursor::update() {
     SDL_GetMouseState(&pos.x, &pos.y);
+    
+    if (!enable) return;
 
     // single selection
 

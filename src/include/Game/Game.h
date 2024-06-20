@@ -45,6 +45,7 @@ public:
     static void BeginConstruction(const Building::Type type, const Vector2D& pos, const std::string& fac);
     static void FinishConstruction(const Building::Type type, const Vector2D& pos, const std::string& fac);
 
+    static Entity* GetSelectedEntity(const int i = 0);
     static int CountSelectedEntities();
     static void ReleaseSelectedEntities();
     static void SelectEntities();
@@ -61,10 +62,13 @@ public:
     static void AddCollider(const Vector2D& pos);
     static std::vector<Vector2D> FindPath(const Vector2D& start, const Vector2D& end);
 
+    static bool IsAllowedPosition(const Vector2D& pos);
+    static bool IsTileOccupied(const Vector2D& pos);
+
 private:
     static Builder builder;
 
-    static Building* selectedBuilding;    
+    static Building* selectedBuilding;
     
     static Map* map;
     static std::vector<Entity*> selectedEntities;

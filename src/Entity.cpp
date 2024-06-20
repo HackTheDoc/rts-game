@@ -65,6 +65,9 @@ void Entity::setState(const State s) {
         break;
     case State::BUILDING:
         break;    
+    case State::MINING:
+        Game::ui->hide("construction menu");
+        break;
     default:
         break;
     }
@@ -76,6 +79,11 @@ void Entity::setFlip(const SDL_RendererFlip flip) {
 
 void Entity::goTo(const Vector2D& pos) {
     pathToTravel = Game::FindPath(position / Tile::SIZE, pos);
+}
+
+void Entity::stopMovement() {
+    pathToTravel.clear();
+    sprite->play("idle");
 }
 
 bool Entity::reachedDestination() {
@@ -94,8 +102,9 @@ bool Entity::died() {
 void Entity::updateFree() {
     // check if new path
 
-    if (selected && Window::event.mouseClickRight()) {
-        goTo(Game::cursor.getPosOnMap());
+    const Vector2D p = Game::cursor.getPosOnMap();
+    if (selected && Window::event.mouseClickRight() && Game::IsAllowedPosition(p)) {
+        goTo(p);
     }
 }
 

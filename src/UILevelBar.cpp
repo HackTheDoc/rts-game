@@ -5,7 +5,7 @@
 
 UILevelBar::UILevelBar(const int mlevel, const int clevel, const int bwidth) {
     maxLevel = mlevel;
-    currentLevel = clevel;
+    setCurrentLevel(clevel);
     barWidth = bwidth;
 
     levelRect = {0, 0, 0, 16};
@@ -36,6 +36,10 @@ void UILevelBar::draw() {
     Manager::SetViewport(nullptr);
 
     Manager::DrawRect(&rect, hue::black);
+}
+
+void UILevelBar::setCurrentLevel(const int clevel) {
+    currentLevel = clevel;
 }
 
 int UILevelBar::getCurrentLevel() {

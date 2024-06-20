@@ -33,6 +33,7 @@ namespace AStar {
         bool detectCollision(Vector2D coordinates_);
         void removeCollision(Vector2D coordinates_);
         void clearCollisions();
+        bool hasCollision(Vector2D pos);
 
     private:
         HeuristicFunction heuristic;

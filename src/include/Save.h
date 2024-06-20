@@ -56,6 +56,8 @@ private:
     
     static Struct::Building CreateCastle(const std::string& faction, const int x, const int y);
 
+    static Struct::Building CreateMine(const int x, const int y);
+
         /* ----- MAPS ------ */
 
     static Struct::Tile CreateTile(const TileType type, const int x, const int y);

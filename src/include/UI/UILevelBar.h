@@ -12,6 +12,7 @@ public:
     void update() override;
     void draw() override;
     
+    void setCurrentLevel(const int clevel);
     int getCurrentLevel();
     bool isFinished();
 

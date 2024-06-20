@@ -52,6 +52,14 @@ void AStar::Generator::clearCollisions() {
     walls.clear();
 }
 
+bool AStar::Generator::hasCollision(Vector2D pos) {
+    auto it = std::find_if(walls.begin(), walls.end(), [&pos](const Vector2D& w) {
+        return pos == w;
+    });
+
+    return it == walls.end();
+}
+
 AStar::CoordinateList AStar::Generator::findPath(Vector2D source_, Vector2D target_) {
     Node* current = nullptr;
     NodeSet openSet, closedSet;

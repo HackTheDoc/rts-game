@@ -28,20 +28,6 @@ void Building::update() {
             units.erase(units.begin() + i);
             freeSpace++;
         }
-
-    if (type == CONSTRUCTION) return;
-
-    if (Builder::active) return;
-    
-    if (Game::CountSelectedEntities() > 0) return;
-
-    if (!Game::cursor.inRect(&rect)) return;
-
-    if (!Window::event.mouseClickLeft()) return;
-
-    Game::SelectBuilding(this);
-
-    Window::event.raise(Event::ID::SELECT_UNITS);
 }
 
 void Building::draw() {
@@ -88,4 +74,10 @@ void Building::drawUnitSelectorIndicator() {
     r.y = rect.y + rect.h - r.h;
 
     Manager::Draw(t, nullptr, &r);
+}
+
+void Building::addColliders() {
+    for (int y = 0; y < height-1; y++)
+        for (int x = 0; x < width; x++)
+            Game::AddCollider(position + Vector2D{x,y});
 }

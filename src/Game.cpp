@@ -90,6 +90,10 @@ void Game::clean() {
     Manager::SetRenderDrawColor(hue::background);
 }
 
+Entity* Game::GetSelectedEntity(const int i) {
+    return selectedEntities.at(i);
+}
+
 int Game::CountSelectedEntities() {
     return selectedEntities.size();
 }
@@ -160,7 +164,7 @@ void Game::AddUnitsFromBuilding(const int pawnCount, const int warriorCount, con
     int i = 0;
 
     while (i < pawnCount) {
-        if (map->isTileOccupied(pos[i])) {
+        if (IsTileOccupied(pos[i])) {
             std::cout << "tile " << pos[i] << " occupied" << std::endl;
         }
         else {
@@ -176,7 +180,7 @@ void Game::AddUnitsFromBuilding(const int pawnCount, const int warriorCount, con
     }
     
     while (i < pawnCount+warriorCount) {
-        if (map->isTileOccupied(pos[i])) {
+        if (IsTileOccupied(pos[i])) {
             std::cout << "tile " << pos[i] << " occupied" << std::endl;
         }
         else {
@@ -192,7 +196,7 @@ void Game::AddUnitsFromBuilding(const int pawnCount, const int warriorCount, con
     }
     
     while (i < pawnCount+warriorCount+archerCount) {
-        if (map->isTileOccupied(pos[i])) {
+        if (IsTileOccupied(pos[i])) {
             std::cout << "tile " << pos[i] << " occupied" << std::endl;
         }
         else {
@@ -290,4 +294,12 @@ std::vector<Vector2D> Game::FindPath(const Vector2D& start, const Vector2D& end)
     for(auto& coordinate : path)
         std::cout << coordinate << std::endl;
     return path;
+}
+
+bool Game::IsAllowedPosition(const Vector2D& pos) {
+    return generator.hasCollision(pos);
+}
+
+bool Game::IsTileOccupied(const Vector2D& pos) {
+    return map->isTileOccupied(pos);
 }

@@ -34,6 +34,8 @@ namespace serialize {
 
     void castle(std::ofstream& outfile, const Struct::Castle& c);
 
+    void mine(std::ofstream& outfile, const Struct::Mine& m);
+
     void building(std::ofstream& outfile, const Struct::Building& b);
 
     void tile(std::ofstream& outfile, const Struct::Tile& t);
@@ -78,6 +80,8 @@ namespace deserialize {
     void tower(std::ifstream& infile, Struct::Tower& t);
     
     void castle(std::ifstream& infile, Struct::Castle& c);
+
+    void mine(std::ifstream& infile, Struct::Mine& m);
 
     void building(std::ifstream& infile, Struct::Building& b);
 

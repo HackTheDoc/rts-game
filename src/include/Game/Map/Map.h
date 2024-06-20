@@ -53,6 +53,7 @@ public:
     void addHouse(const std::string& f, const Vector2D& pos);
     void addTower(const std::string& f, const Vector2D& pos);
     void addCastle(const std::string& f, const Vector2D& pos);
+    void addMine(const Vector2D& pos);
 
     std::vector<Entity*> getEntities();
     std::vector<Entity*> getEntitiesInRect(const SDL_Rect& rect);

@@ -43,9 +43,7 @@ Construction::Construction(const Building::Type constructionType, const std::str
 
     level = new UILevelBar(constructionTime, lvl, barWidth);
 
-    for (int y = 0; y < height-1; y++)
-        for (int x = 0; x < width; x++)
-            Game::AddCollider(position + Vector2D{x,y});
+    addColliders();
 }
 
 Construction::~Construction() {}

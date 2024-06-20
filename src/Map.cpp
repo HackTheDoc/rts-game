@@ -257,7 +257,6 @@ Warrior* Map::addWarrior(const std::string& f, const Vector2D& pos, const bool s
     w->placeAt(pos);
     w->selected = selected;
     
-    std::cout << dest << std::endl;
     if (!dest.isZero())
         w->goTo(dest);
     
@@ -300,6 +299,9 @@ void Map::addBuilding(const Struct::Building& b) {
         }
         void operator()(const Struct::Castle& c) {
             map->addCastle(c.faction, c.pos);
+        }
+        void operator()(const Struct::Mine& m) {
+            map->addMine(m.pos);
         }
     };
 
@@ -350,4 +352,9 @@ void Map::addCastle(const std::string& f, const Vector2D& pos) {
 
     if (f == Game::playerFaction.name)
         Game::playerFaction.castles.push_back(c);
+}
+
+void Map::addMine(const Vector2D& pos) {
+    Mine* m = new Mine(pos);
+    buildings.push_back(m);
 }
