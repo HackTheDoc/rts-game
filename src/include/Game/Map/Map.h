@@ -53,7 +53,7 @@ public:
     void addConstruction(const Building::Type type, const std::string& f, const Vector2D& pos, const int clevel, const Struct::Entity& builder);
     void addHouse(const std::string& f, const Vector2D& pos);
     void addTower(const std::string& f, const Vector2D& pos);
-    void addCastle(const std::string& f, const Vector2D& pos);
+    void addCastle(const std::string& f, const Vector2D& pos, const int foodStorage = 0, const int goldStorage = 0, const int woodStorage = 0);
     void addMine(const Vector2D& pos);
 
     std::vector<Entity*> getEntities();

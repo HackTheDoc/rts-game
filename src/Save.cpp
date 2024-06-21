@@ -110,9 +110,8 @@ Struct::Camera Save::CreateCamera(const int x, const int y) {
     return {{x,y}, 1.0f};
 }
 
-/// TODO: change value to 100
 Struct::Faction Save::CreateFaction(const std::string& name) {
-    return {name, 500,500,500}; 
+    return {name}; 
 }
 
     /* ----- ENTITIES ----- */
@@ -139,8 +138,9 @@ Struct::Entity Save::CreateTree(const int x, const int y) {
 
     /* ----- BUILDINGS ----- */
 
+/// TODO: change value to 100
 Struct::Building Save::CreateCastle(const std::string& faction, const int x, const int y) {
-    const Struct::Castle c{faction, {x, y}};
+    const Struct::Castle c{faction, {x, y},  500, 500, 500};
     return {c};
 }
 

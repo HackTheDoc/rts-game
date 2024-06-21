@@ -313,7 +313,7 @@ void Map::addBuilding(const Struct::Building& b) {
             map->addTower(t.faction, t.pos);
         }
         void operator()(const Struct::Castle& c) {
-            map->addCastle(c.faction, c.pos);
+            map->addCastle(c.faction, c.pos, c.foodStorage, c.goldStorage, c.woodStorage);
         }
         void operator()(const Struct::Mine& m) {
             map->addMine(m.pos);
@@ -360,8 +360,11 @@ void Map::addTower(const std::string& f, const Vector2D& pos) {
     buildings.push_back(t);
 }
 
-void Map::addCastle(const std::string& f, const Vector2D& pos) {
+void Map::addCastle(const std::string& f, const Vector2D& pos, const int foodStorage, const int goldStorage, const int woodStorage) {
     Castle* c = new Castle(f, pos);
+    c->foodStorage = foodStorage;
+    c->goldStorage = goldStorage;
+    c->woodStorage = woodStorage;
     
     buildings.push_back(c);
 

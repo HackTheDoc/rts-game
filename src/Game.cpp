@@ -31,12 +31,12 @@ void Game::init() {
 
     const Struct::Game g = Save::Load();
 
-    playerFaction = Faction(g.faction.name, g.faction.food, g.faction.gold, g.faction.wood);
+    playerFaction = Faction(g.faction.name);
 
     camera.load(g.camera);
 
     // init pathfinder generator
-    generator.setHeuristic(&AStar::Heuristic::euclidean);
+    generator.setHeuristic(&Heuristic::euclidean);
     generator.setDiagonalMovement(true);
     generator.setWorldSize({g.map.width, g.map.height});
 
@@ -53,6 +53,8 @@ void Game::init() {
 }
 
 void Game::update() {
+    playerFaction.update();
+    
     ui->update();
 
     camera.update();
@@ -61,7 +63,6 @@ void Game::update() {
     map->update();
 
     builder.update();
-
 }
 
 void Game::render() {

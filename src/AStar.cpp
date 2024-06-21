@@ -1,6 +1,5 @@
 #include "include/Game/Components/AStar.h"
 #include <algorithm>
-#include <math.h>
 
 using namespace std::placeholders;
 
@@ -11,7 +10,7 @@ AStar::Node::Node(Vector2D coordinates_, Node *parent_) {
     G = H = 0;
 }
 
-AStar::uint AStar::Node::getScore() {
+uint AStar::Node::getScore() {
     return G + H;
 }
 
@@ -144,25 +143,4 @@ bool AStar::Generator::detectCollision(Vector2D coordinates_) {
         return true;
     }
     return false;
-}
-
-/* ----- HEURISTIC ----- */
-
-Vector2D AStar::Heuristic::getDelta(Vector2D source_, Vector2D target_) {
-    return{ abs(source_.x - target_.x),  abs(source_.y - target_.y) };
-}
-
-AStar::uint AStar::Heuristic::manhattan(Vector2D source_, Vector2D target_) {
-    auto delta = std::move(getDelta(source_, target_));
-    return static_cast<uint>(10 * (delta.x + delta.y));
-}
-
-AStar::uint AStar::Heuristic::euclidean(Vector2D source_, Vector2D target_) {
-    auto delta = std::move(getDelta(source_, target_));
-    return static_cast<uint>(10 * sqrt(pow(delta.x, 2) + pow(delta.y, 2)));
-}
-
-AStar::uint AStar::Heuristic::octagonal(Vector2D source_, Vector2D target_) {
-    auto delta = std::move(getDelta(source_, target_));
-    return 10 * (delta.x + delta.y) + (-6) * std::min(delta.x, delta.y);
 }

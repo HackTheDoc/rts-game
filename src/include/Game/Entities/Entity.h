@@ -15,7 +15,6 @@ public:
     enum State {
         FREE,
         BUILDING,
-        GOING_TO_MINE,
         MINING,
         CHOPING_WOOD
     };

@@ -16,6 +16,10 @@ Castle::Castle(const std::string& faction, const Vector2D& pos) {
     freeSpace = 4;
 
     texture = Window::manager->getTexture(faction+" castle");
+
+    foodStorage = 0;
+    goldStorage = 0;
+    woodStorage = 0;
 }
 
 Castle::~Castle() {}
@@ -39,5 +43,5 @@ void Castle::update() {
 }
 
 Struct::Building Castle::getStructure() {
-    return {Struct::Castle{faction, position}};
+    return {Struct::Castle{faction, position, foodStorage, goldStorage, woodStorage}};
 }

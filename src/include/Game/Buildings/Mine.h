@@ -27,7 +27,7 @@ private:
     int capacity;
 
     Entity* miner;
-    bool minerIn;
+    bool isMinerWorking;
     Vector2D entryPosition;
 
     void updateWithMiner();

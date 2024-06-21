@@ -70,6 +70,9 @@ namespace Struct {
     struct Castle {
         std::string faction;
         Vector2D pos;
+        int foodStorage;
+        int goldStorage;
+        int woodStorage;
     };
 
     struct Mine {
@@ -111,9 +114,6 @@ namespace Struct {
 
     struct Faction {
         std::string name;
-        int food;
-        int gold;
-        int wood;
     };
 
     struct Game {

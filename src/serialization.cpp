@@ -115,6 +115,9 @@ namespace serialize {
         
         string(outfile, c.faction);
         vector2D(outfile, c.pos);
+        var(outfile, c.foodStorage);
+        var(outfile, c.goldStorage);
+        var(outfile, c.woodStorage);
     }
 
     void mine(std::ofstream& outfile, const Struct::Mine& m) {
@@ -188,9 +191,6 @@ namespace serialize {
 
     void faction(std::ofstream& outfile, const Struct::Faction& f) {
         string(outfile, f.name);
-        var(outfile, f.food);
-        var(outfile, f.gold);
-        var(outfile, f.wood);
     }
 
     void game(const Struct::Game& g, const fs::path& path) {
@@ -346,6 +346,9 @@ namespace deserialize {
     void castle(std::ifstream& infile, Struct::Castle& c) {
         string(infile, c.faction);
         vector2D(infile, c.pos);
+        var(infile, c.foodStorage);
+        var(infile, c.goldStorage);
+        var(infile, c.woodStorage);
     }
 
     void mine(std::ifstream& infile, Struct::Mine& m) {
@@ -442,9 +445,6 @@ namespace deserialize {
 
     void faction(std::ifstream& infile, Struct::Faction& f) {
         string(infile, f.name);
-        var(infile, f.food);
-        var(infile, f.gold);
-        var(infile, f.wood);
     }
 
     void game(Struct::Game& g, const fs::path& path) {

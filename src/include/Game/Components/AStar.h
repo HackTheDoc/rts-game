@@ -1,14 +1,11 @@
 #pragma once
 
-#include "Vector2D.h"
+#include "Heuristic.h"
 
 #include <vector>
-#include <functional>
 #include <set>
 
 namespace AStar {
-    using uint = unsigned int;
-    using HeuristicFunction = std::function<uint(Vector2D, Vector2D)>;
     using CoordinateList = std::vector<Vector2D>;
 
     struct Node {
@@ -43,15 +40,5 @@ namespace AStar {
 
         Node* findNodeOnList(NodeSet& nodes_, Vector2D coordinates_);
         void releaseNodes(NodeSet& nodes_);
-    };
-
-    class Heuristic {
-    public:
-        static uint manhattan(Vector2D source_, Vector2D target_);
-        static uint euclidean(Vector2D source_, Vector2D target_);
-        static uint octagonal(Vector2D source_, Vector2D target_);
-    
-    private:
-        static Vector2D getDelta(Vector2D source_, Vector2D target_);
     };
 }

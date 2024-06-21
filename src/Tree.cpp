@@ -123,7 +123,7 @@ void Tree::updateWithLumberjack() {
         );
         
         if (level->isFinished()) {
-            Game::playerFaction.wood += TREE_DAMAGE;
+            Game::playerFaction.storeWood(TREE_DAMAGE, entryPosition/Tile::SIZE);
             hp -= TREE_DAMAGE;
             level->setCurrentLevel(0);
         }

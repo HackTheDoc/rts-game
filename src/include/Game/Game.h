@@ -23,6 +23,8 @@ public:
 
     static Cursor cursor;
     static Camera camera;
+    
+    static Builder builder;
 
     static UI* ui;
 
@@ -67,8 +69,6 @@ public:
     static bool IsTileOccupied(const Vector2D& pos);
 
 private:
-    static Builder builder;
-
     static Building* selectedBuilding;
     
     static Map* map;
