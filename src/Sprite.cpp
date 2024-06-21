@@ -131,9 +131,6 @@ void Sprite::loadAnimation_1() {
     case Entity::Type::TREE:
         animations["damaged"] = Animation(1, 2);
         break;
-    case Entity::Type::SHEEP:
-        animations["carried"] = Animation(1, 8);
-        break;
     default:
         animations["walk"] = Animation(1, 6);
         break;
@@ -146,9 +143,6 @@ void Sprite::loadAnimation_2() {
     switch (owner->type) {
     case Entity::Type::TREE:
         animations["dead"] = Animation(2, 1);
-        break;
-    case Entity::Type::SHEEP:
-        animations["walk"] = Animation(2, 1);
         break;
     default:
         animations["build"] = Animation(2, 6);

@@ -61,9 +61,10 @@ public:
 
     /// @brief apply pathfinding algo & store path in pathToTravel
     /// @param pos in grid
-    void goTo(const Vector2D& pos);
+    void goTo(const Vector2D& pos, const bool force = false);
     void stopMovement();
     bool reachedDestination();
+    bool isAtPos(const Vector2D& pos);
     Vector2D destination();
 
     virtual Struct::Entity getStructure();

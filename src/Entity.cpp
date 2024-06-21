@@ -97,18 +97,22 @@ void Entity::playAnimation(const std::string& a) {
     sprite->play(a);
 }
 
-void Entity::goTo(const Vector2D& pos) {
-    Vector2D start = position / Tile::SIZE;
-
-    if (position.x % Tile::SIZE > Tile::SIZE / 2)
-        start.x++;
-    if (position.y % Tile::SIZE > Tile::SIZE / 2)
-        start.y++;
-
-    if (pos == start) return;
+void Entity::goTo(const Vector2D& pos, const bool force) {
+    if (!Game::IsAllowedPosition(pos)) return;
     if (!reachedDestination() && pos == destination()) return;
 
+    const Vector2D start = position / Tile::SIZE;
+
     pathToTravel = Game::FindPath(start, pos);
+    pathToTravel.pop_back();
+
+    if (pathToTravel.empty()) pathToTravel.push_back(pos);
+
+    if (!selected) return;
+    
+    std::cout << "from" << start << " to " << pos << std::endl;
+    for(auto& coordinate : pathToTravel)
+        std::cout << "  - " << coordinate << std::endl;
 }
 
 void Entity::stopMovement() {
@@ -133,8 +137,12 @@ void Entity::carrySheep(Sheep* s) {
     if (sheep) return;
 
     sheep = s;
-    sheep->playAnimation("carried");
+    sheep->playAnimation("idle");
     Game::RemoveEntity(sheep);
+
+    Castle* c = Game::playerFaction.getNearestCastle(position);
+    if (c == nullptr) return;
+    goTo(c->entry);
 }
 
 void Entity::consumeSheep() {
@@ -181,7 +189,8 @@ void Entity::travel() {
 
     Vector2D dest = pathToTravel.back();
     dest = dest * Tile::SIZE;
-    if (dest == position) {
+
+    if (isAtPos(dest)) {
         pathToTravel.pop_back();
         return;
     }
@@ -203,4 +212,8 @@ void Entity::travel() {
 
     position.x += (int)((dest.x - position.x) * f);
     position.y += (int)((dest.y - position.y) * f);
+}
+
+bool Entity::isAtPos(const Vector2D& pos) {
+    return abs(pos.x - position.x) < speed && abs(pos.y - position.y) < speed;
 }

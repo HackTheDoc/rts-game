@@ -20,7 +20,7 @@ Sheep::Sheep() {
     collider = new EntityCollider(this);
 
     sprite = new Sprite(this);
-    sprite->init("sheep", 3);
+    sprite->init("sheep", 2);
 
     speed = 2;
 
@@ -55,7 +55,7 @@ void Sheep::update() {
             dest = position / Tile::SIZE + offset;
         } while (!Game::IsAllowedPosition(dest));
 
-        goTo(dest);       
+        goTo(dest);   
     }
 
     if (hunter) updateWithHunter();
@@ -70,16 +70,27 @@ Struct::Entity Sheep::getStructure() {
     return {Struct::Sheep{position}};
 }
 
+Vector2D Sheep::hunterDestination() {
+    Vector2D dest = position / Tile::SIZE;
+
+    if (position.x % Tile::SIZE > Tile::SIZE / 2)
+        dest.x++;
+    if (position.y % Tile::SIZE > Tile::SIZE / 2)
+        dest.y++;
+
+    return dest;
+}
+
 void Sheep::updateWithHunter() {
-    hunter->goTo(position/Tile::SIZE);
+    hunter->goTo(hunterDestination());
     if (Collision::AABB(hunter, this))
         hunter->carrySheep(this);
-    else if (hunter->reachedDestination() || hunter->destination() != position / Tile::SIZE)
-        hunter = nullptr;
+    else if (hunter->destination() != hunterDestination())
+        removeHunter();
 }
 
 void Sheep::updateWithoutHunter() {
-    sprite->play("idle");
+    sprite->play("walk");
     
     if (Builder::active) return;
 
@@ -95,5 +106,5 @@ void Sheep::updateWithoutHunter() {
 
     hunter->releaseSheep();
     
-    hunter->goTo(position/Tile::SIZE);
+    hunter->goTo(hunterDestination());
 }

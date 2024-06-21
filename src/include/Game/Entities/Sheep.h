@@ -18,6 +18,8 @@ public:
 private:
     Entity* hunter;
 
+    Vector2D hunterDestination();
+
     void updateWithHunter();
     void updateWithoutHunter();
 };

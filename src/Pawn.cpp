@@ -47,7 +47,7 @@ void Pawn::update() {
         sheep->updateSprite();
 
         Castle* c = Game::playerFaction.getNearestCastle(position);
-        if (c && position == c->entry*Tile::SIZE) {
+        if (c && isAtPos(c->entry*Tile::SIZE)) {
             Game::playerFaction.storeFood(25, c);
             consumeSheep();
         }

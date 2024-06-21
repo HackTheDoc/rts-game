@@ -307,9 +307,6 @@ void Game::RemoveCollider(const Vector2D& pos) {
 
 std::vector<Vector2D> Game::FindPath(const Vector2D& start, const Vector2D& end) {
     auto path = generator.findPath(start, end);
-    std::cout << "from" << start << " to " << end << std::endl;
-    for(auto& coordinate : path)
-        std::cout << coordinate << std::endl;
     return path;
 }
 
@@ -320,3 +317,4 @@ bool Game::IsAllowedPosition(const Vector2D& pos) {
 bool Game::IsTileOccupied(const Vector2D& pos) {
     return map->isTileOccupied(pos);
 }
+
