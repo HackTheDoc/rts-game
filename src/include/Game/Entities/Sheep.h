@@ -10,4 +10,10 @@ public:
     void update() override;
 
     Struct::Entity getStructure() override;
+
+private:
+    Entity* hunter;
+
+    void updateWithHunter();
+    void updateWithoutHunter();
 };

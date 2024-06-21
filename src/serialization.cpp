@@ -55,6 +55,7 @@ namespace serialize {
         vector2D(outfile, p.pos);
         vector2D(outfile, p.dest);
         var(outfile, p.selected);
+        var(outfile, p.carryingSheep);
     }
 
     void tree(std::ofstream& outfile, const Struct::Tree& t) {
@@ -286,6 +287,7 @@ namespace deserialize {
         vector2D(infile, p.pos);
         vector2D(infile, p.dest);
         var(infile, p.selected);
+        var(infile, p.carryingSheep);
     }
 
     void tree(std::ifstream& infile, Struct::Tree& t) {

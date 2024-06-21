@@ -16,6 +16,8 @@ Tower::Tower(const std::string& faction, const Vector2D& pos) {
     freeSpace = 0;
 
     texture = Window::manager->getTexture(faction+" tower");
+    
+    addColliders();
 }
 
 Tower::~Tower() {}

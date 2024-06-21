@@ -20,6 +20,8 @@ Archer::Archer(const std::string& f) {
     sprite->init(faction+" archer", 2);
     
     type = ARCHER;
+
+    setState(FREE);
 }
 
 Archer::~Archer() {}

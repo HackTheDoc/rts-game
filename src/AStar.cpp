@@ -38,11 +38,15 @@ void AStar::Generator::setHeuristic(HeuristicFunction heuristic_) {
 }
 
 void AStar::Generator::addCollision(Vector2D coordinates_) {
+    AStar::CoordinateList::iterator it = std::find(walls.begin(), walls.end(), coordinates_);
+    
+    if (it != walls.end()) return;
+    
     walls.push_back(coordinates_);
 }
 
 void AStar::Generator::removeCollision(Vector2D coordinates_) {
-    auto it = std::find(walls.begin(), walls.end(), coordinates_);
+    AStar::CoordinateList::iterator it = std::find(walls.begin(), walls.end(), coordinates_);
     if (it != walls.end())
         walls.erase(it);
 }
@@ -52,7 +56,7 @@ void AStar::Generator::clearCollisions() {
 }
 
 bool AStar::Generator::hasCollision(Vector2D pos) {
-    auto it = std::find_if(walls.begin(), walls.end(), [&pos](const Vector2D& w) {
+    AStar::CoordinateList::iterator it = std::find_if(walls.begin(), walls.end(), [&pos](const Vector2D& w) {
         return pos == w;
     });
 

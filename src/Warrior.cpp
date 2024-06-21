@@ -4,8 +4,6 @@
 
 Warrior::Warrior(const std::string& f) {
     faction = f;
-
-    state = FREE;
     
     selected = false;
     
@@ -20,6 +18,8 @@ Warrior::Warrior(const std::string& f) {
     sprite->init(faction+" warrior", 4);
 
     type = WARRIOR;
+
+    setState(FREE);
 }
 
 Warrior::~Warrior() {}

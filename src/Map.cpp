@@ -210,7 +210,7 @@ void Map::addEntity(const Struct::Entity& e) {
         Map* map;
 
         void operator()(const Struct::Pawn& p) {
-            map->addPawn(p.faction, p.pos, p.selected, p.dest);
+            map->addPawn(p.faction, p.pos, p.selected, p.dest, p.carryingSheep);
         }
         void operator()(const Struct::Warrior& w) {
             map->addWarrior(w.faction, w.pos, w.selected, w.dest);
@@ -244,13 +244,18 @@ void Map::removeEntity(Entity* e) {
     entities.erase(it);
 }
 
-Pawn* Map::addPawn(const std::string& f, const Vector2D& pos, const bool selected, Vector2D dest) {
+Pawn* Map::addPawn(const std::string& f, const Vector2D& pos, const bool selected, Vector2D dest, const bool carrySheep) {
     Pawn* p = new Pawn(f);
     p->placeAt(pos);
     p->selected = selected;
     
     if (!dest.isZero())
         p->goTo(dest);
+
+    if (carrySheep) {
+        Sheep* s = new Sheep();
+        p->carrySheep(s);
+    }
     
     addEntity(p);
 

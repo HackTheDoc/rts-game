@@ -16,6 +16,8 @@ House::House(const std::string& faction, const Vector2D& pos) {
     freeSpace = 2;
 
     texture = Window::manager->getTexture(faction+" house");
+    
+    addColliders();
 }
 
 House::~House() {}

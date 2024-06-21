@@ -5,8 +5,6 @@
 #include "include/struct.h"
 
 Entity::Entity() {
-    state = FREE;
-
     selected = false;
 
     faction = "wilderness";
@@ -23,7 +21,10 @@ Entity::Entity() {
 
     speed = 4;
 
+    sheep = nullptr;
+
     type = UNKNOWN;
+    setState(FREE);
 }
 
 Entity::~Entity() {}
@@ -64,7 +65,11 @@ void Entity::setState(const State s) {
 
     switch (s) {
     case State::FREE:
-        sprite->play("idle");
+        building = false;
+        if (sheep)
+            sprite->play("holding idle");
+        else
+            sprite->play("idle");
         break;
     case State::BUILDING:
         break;
@@ -92,7 +97,7 @@ void Entity::goTo(const Vector2D& pos) {
 
 void Entity::stopMovement() {
     pathToTravel.clear();
-    sprite->play("idle");
+    setState(FREE);
 }
 
 bool Entity::reachedDestination() {
@@ -106,6 +111,14 @@ Vector2D Entity::destination() {
 Struct::Entity Entity::getStructure() {
     const Struct::Pawn p{faction, position, selected};
     return {p};
+}
+
+void Entity::carrySheep(Sheep* s) {
+    sheep = s;
+
+    sheep->setState(FREE);
+
+    Game::RemoveEntity(sheep);
 }
 
 bool Entity::died() {
@@ -125,6 +138,8 @@ void Entity::travel() {
     if (reachedDestination()) {
         if (state == BUILDING)
             sprite->play("build");
+        else if (sheep)
+            sprite->play("holding idle");
         else
             sprite->play("idle");
         return;
@@ -138,8 +153,11 @@ void Entity::travel() {
     }
 
         // rendering movement
+    if (sheep)
+        sprite->play("holding walk");
+    else
+        sprite->play("walk");
 
-    sprite->play("walk");
     if (dest.x < position.x)
         sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
     else sprite->spriteFlip = SDL_FLIP_NONE;

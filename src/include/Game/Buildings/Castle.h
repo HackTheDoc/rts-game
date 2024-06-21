@@ -8,6 +8,8 @@ public:
     int goldStorage;
     int woodStorage;
 
+    Vector2D entry;
+
     Castle(const std::string& faction, const Vector2D& pos);
     ~Castle();
 

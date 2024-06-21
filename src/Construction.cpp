@@ -56,6 +56,7 @@ void Construction::update() {
     if (builder->reachedDestination()) {
         builder->setFlip(SDL_FLIP_NONE);
         level->active = true;
+        builder->building = true;
     }
     else level->active = false;
 

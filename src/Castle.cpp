@@ -9,6 +9,8 @@ Castle::Castle(const std::string& faction, const Vector2D& pos) {
     type = CASTLE;
     
     position = pos;
+    entry = pos + Vector2D{2, 3};
+    std::cout << pos << entry << std::endl;
     
     width = 5;
     height = 4;
@@ -20,6 +22,8 @@ Castle::Castle(const std::string& faction, const Vector2D& pos) {
     foodStorage = 0;
     goldStorage = 0;
     woodStorage = 0;
+
+    addColliders();
 }
 
 Castle::~Castle() {}
@@ -30,16 +34,17 @@ void Castle::update() {
     if (!Cursor::enable) return;
     
     if (Builder::active) return;
-    
-    if (Game::CountSelectedEntities() > 0) return;
 
     if (!Game::cursor.inRect(&rect)) return;
 
-    if (!Window::event.mouseClickLeft()) return;
-
-    Game::SelectBuilding(this);
-
-    Window::event.raise(Event::ID::SELECT_UNITS);
+    if (Game::CountSelectedEntities() == 1 && Window::event.mouseClickRight()) {
+        Entity* e = Game::GetSelectedEntity(0);
+        e->goTo(entry);
+    }
+    else if (Game::CountSelectedEntities() == 0 && Window::event.mouseClickLeft()) {
+        Game::SelectBuilding(this);
+        Window::event.raise(Event::ID::SELECT_UNITS);
+    }
 }
 
 Struct::Building Castle::getStructure() {

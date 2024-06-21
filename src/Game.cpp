@@ -48,6 +48,8 @@ void Game::init() {
     ui = new UI();
     ui->init();
 
+    Cursor::enable = true;
+
     if (Save::New)
         camera.centerOn(playerFaction.castles[0]);
 }

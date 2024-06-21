@@ -38,6 +38,10 @@ void Faction::update() {
     }
 }
 
+void Faction::storeFood(const int amount, Castle* c) {
+    c->foodStorage += amount;
+}
+
 void Faction::storeFood(const int amount, const Vector2D& fromPos) {
     Castle* c = getNearestCastle(fromPos);
 

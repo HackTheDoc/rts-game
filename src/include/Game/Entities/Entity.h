@@ -10,13 +10,15 @@ namespace Struct {
     struct Entity;
 }
 
+class Sheep;
+
 class Entity {
 public:
     enum State {
         FREE,
         BUILDING,
         MINING,
-        CHOPING_WOOD
+        CHOPING_WOOD,
     };
     State state;
 
@@ -42,6 +44,8 @@ public:
 
     EntityCollider* collider;
 
+    bool building;
+
     Entity();
     ~Entity();
 
@@ -63,6 +67,8 @@ public:
 
     virtual Struct::Entity getStructure();
 
+    void carrySheep(Sheep* s);
+
     bool died();
 
 protected:
@@ -71,6 +77,8 @@ protected:
     Sprite* sprite;
 
     std::vector<Vector2D> pathToTravel;
+
+    Sheep* sheep; // sheep carrying
 
     void travel();
     void updateFree();

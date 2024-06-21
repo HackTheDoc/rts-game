@@ -33,6 +33,7 @@ namespace Struct {
         Vector2D pos;
         bool selected;
         Vector2D dest;
+        bool carryingSheep;
     };
 
     struct Tree {

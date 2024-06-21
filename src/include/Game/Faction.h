@@ -28,6 +28,7 @@ public:
 
     void update();
 
+    void storeFood(const int amount, Castle* c);
     void storeFood(const int amount, const Vector2D& fromPos);
     void storeGold(const int amount, const Vector2D& fromPos);
     void storeWood(const int amount, const Vector2D& fromPos);
