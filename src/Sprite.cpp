@@ -27,7 +27,6 @@ void Sprite::init(const std::string& tag, const int numberOfAnimations) {
     }
 
     animated = true;
-    Animation animation;
     for (int i = 0; i < numberOfAnimations; i++) {
         switch (i) {
         case 0: // idle
@@ -40,16 +39,13 @@ void Sprite::init(const std::string& tag, const int numberOfAnimations) {
             loadAnimation_2();
             break;
         case 3: // cutting wood
-            animation = Animation(3, 6);
-            animations.emplace("attack", animation);
+            animations["attack"] = Animation(3, 6);
             break;
         case 4: // holding idle
-            animation = Animation(4, 6);
-            animations.emplace("holding idle", animation);
+            animations["holding idle"] = Animation(4, 6);
             break;
         case 5: // holding walk
-            animation = Animation(5, 6);
-            animations.emplace("holding walk", animation);
+            animations["holding walk"] = Animation(5, 6);
             break;
         default:
             break;
@@ -131,20 +127,15 @@ void Sprite::loadAnimation_0() {
 }
 
 void Sprite::loadAnimation_1() {
-    Animation animation;
-    
     switch (owner->type) {
     case Entity::Type::TREE:
-        animation = Animation(1, 2);
-        animations.emplace("damaged", animation);
+        animations["damaged"] = Animation(1, 2);
         break;
     case Entity::Type::SHEEP:
-        animation = Animation(1, 8);
-        animations.emplace("carried", animation);
+        animations["carried"] = Animation(1, 8);
         break;
     default:
-        animation = Animation(1, 6);
-        animations.emplace("walk", animation);
+        animations["walk"] = Animation(1, 6);
         break;
     }
 }
@@ -154,16 +145,13 @@ void Sprite::loadAnimation_2() {
     
     switch (owner->type) {
     case Entity::Type::TREE:
-        animation = Animation(2, 1);
-        animations.emplace("dead", animation);
+        animations["dead"] = Animation(2, 1);
         break;
     case Entity::Type::SHEEP:
-        animation = Animation(2, 6);
-        animations.emplace("walk", animation);
+        animations["walk"] = Animation(2, 1);
         break;
     default:
-        animation = Animation(2, 6);
-        animations.emplace("build", animation);
+        animations["build"] = Animation(2, 6);
         break;
     }
 }

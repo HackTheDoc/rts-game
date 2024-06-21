@@ -3,6 +3,8 @@
 #include "Manager.h"
 #include "Event.h"
 
+#include <random>
+
 using KeyMap = std::map<Event::ID, SDL_Scancode>;
 
 class Window {
@@ -17,6 +19,8 @@ public:
     static KeyMap controls;
     static Manager* manager;
     static Event event;
+
+    static std::default_random_engine randomEngine;
 
     static float deltaTime;
 

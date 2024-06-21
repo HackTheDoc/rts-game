@@ -40,9 +40,11 @@ void Camera::update() {
     pos.y = Lerp(pos.y, pos.y + inputY * b, c);
 }
 
+
+/// TODO: reactive zoom
 void Camera::applyZoom(const int s) {
-    zoom += s * ZOOM_SPEED;
-    zoom = std::clamp(zoom, ZOOM_MIN, ZOOM_MAX);
+    //zoom += s * ZOOM_SPEED;
+    //zoom = std::clamp(zoom, ZOOM_MIN, ZOOM_MAX);
 }
 
 void Camera::reset() {

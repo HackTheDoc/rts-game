@@ -19,6 +19,8 @@ KeyMap Window::controls{};
 Manager* Window::manager = nullptr;
 Event Window::event;
 
+std::default_random_engine Window::randomEngine;
+
 float Window::deltaTime = 0.0f;
 Uint32 Window::lastTick = 0;
 
@@ -74,6 +76,9 @@ int Window::init() {
     openMainMenu();
 
     lastTick = SDL_GetTicks();
+
+    std::random_device rd;
+    randomEngine.seed(rd());
 
     isRunning = true;
 

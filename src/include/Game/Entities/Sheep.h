@@ -13,6 +13,8 @@ public:
 
     Struct::Entity getStructure() override;
 
+    void removeHunter();
+
 private:
     Entity* hunter;
 

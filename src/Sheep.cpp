@@ -1,8 +1,11 @@
 #include "include/Game/Entities/Sheep.h"
 
+#include "include/Game/Components/Collision.h"
 #include "include/Game/Game.h"
 #include "include/Window.h"
 #include "include/struct.h"
+
+constexpr int MOVEMENT_SPAN = 1;
 
 Sheep::Sheep() {
     faction = "wilderness";
@@ -20,6 +23,8 @@ Sheep::Sheep() {
     sprite->init("sheep", 3);
 
     speed = 2;
+
+    building = false;
 
     hunter = nullptr;
 
@@ -39,8 +44,26 @@ void Sheep::updateSprite() {
 void Sheep::update() {
     Entity::update();
 
+    if (reachedDestination()) {
+        Vector2D dest;
+
+        do {
+            std::uniform_int_distribution<int> dist(-MOVEMENT_SPAN, MOVEMENT_SPAN);
+
+            Vector2D offset{dist(Window::randomEngine), dist(Window::randomEngine)};
+
+            dest = position / Tile::SIZE + offset;
+        } while (!Game::IsAllowedPosition(dest));
+
+        goTo(dest);       
+    }
+
     if (hunter) updateWithHunter();
     else updateWithoutHunter();
+}
+
+void Sheep::removeHunter() {
+    hunter = nullptr;
 }
 
 Struct::Entity Sheep::getStructure() {
@@ -48,14 +71,11 @@ Struct::Entity Sheep::getStructure() {
 }
 
 void Sheep::updateWithHunter() {
-    if (hunter->reachedDestination()) {
-        if (hunter->position == position)
-            hunter->carrySheep(this);
-        else hunter = nullptr;
-    }
-    else if (hunter->destination() * Tile::SIZE != position) {
+    hunter->goTo(position/Tile::SIZE);
+    if (Collision::AABB(hunter, this))
+        hunter->carrySheep(this);
+    else if (hunter->reachedDestination() || hunter->destination() != position / Tile::SIZE)
         hunter = nullptr;
-    }
 }
 
 void Sheep::updateWithoutHunter() {
@@ -72,6 +92,8 @@ void Sheep::updateWithoutHunter() {
     if (!Window::event.mouseClickRight()) return;
 
     hunter = Game::GetSelectedEntity();
+
+    hunter->releaseSheep();
     
     hunter->goTo(position/Tile::SIZE);
 }

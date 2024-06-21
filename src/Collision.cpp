@@ -1,7 +1,5 @@
 #include "include/Game/Components/Collision.h"
 
-#include "include/Game/Components/Collider.h"
-
 #include "include/Game/Game.h"
 
 #include <algorithm>
@@ -17,6 +15,10 @@ bool Collision::AABB(Collider* col, const SDL_Rect& r) {
     return AABB(col->rect, r);
 }
 
+bool Collision::AABB(Entity* e1, Entity* e2) {
+    return AABB(e1->collider->rect, e2->collider->rect);
+}
+
 bool Collision::AABB_STRICT(const SDL_Rect& r1, const SDL_Rect& r2) {
     return  r1.x + r1.w > r2.x &&
             r2.x + r2.w > r1.x &&
@@ -26,6 +28,10 @@ bool Collision::AABB_STRICT(const SDL_Rect& r1, const SDL_Rect& r2) {
 
 bool Collision::AABB_STRICT(Collider* col, const SDL_Rect& r) {
     return AABB_STRICT(col->rect, r);
+}
+
+bool Collision::AABB_STRICT(Entity* e1, Entity* e2) {
+    return AABB_STRICT(e1->collider->rect, e2->collider->rect);
 }
 
 bool Collision::IsValidBuildingPosition(const Vector2D& pos, const Vector2D& size) {

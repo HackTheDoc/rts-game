@@ -98,7 +98,17 @@ void Entity::playAnimation(const std::string& a) {
 }
 
 void Entity::goTo(const Vector2D& pos) {
-    pathToTravel = Game::FindPath(position / Tile::SIZE, pos);
+    Vector2D start = position / Tile::SIZE;
+
+    if (position.x % Tile::SIZE > Tile::SIZE / 2)
+        start.x++;
+    if (position.y % Tile::SIZE > Tile::SIZE / 2)
+        start.y++;
+
+    if (pos == start) return;
+    if (!reachedDestination() && pos == destination()) return;
+
+    pathToTravel = Game::FindPath(start, pos);
 }
 
 void Entity::stopMovement() {
@@ -120,6 +130,8 @@ Struct::Entity Entity::getStructure() {
 }
 
 void Entity::carrySheep(Sheep* s) {
+    if (sheep) return;
+
     sheep = s;
     sheep->playAnimation("carried");
     Game::RemoveEntity(sheep);
@@ -135,6 +147,7 @@ void Entity::consumeSheep() {
 void Entity::releaseSheep() {
     if (!sheep) return;
 
+    sheep->removeHunter();
     sheep->placeAt(position);
     sheep->stopMovement();
     
@@ -176,7 +189,7 @@ void Entity::travel() {
         // rendering movement
     if (sheep)
         sprite->play("holding walk");
-    else
+    else 
         sprite->play("walk");
 
     if (dest.x < position.x)

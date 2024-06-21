@@ -42,7 +42,8 @@ void Pawn::update() {
         Game::ui->show("construction menu");
 
     if (sheep && !building && state != CHOPING_WOOD) {
-        sheep->placeAt(position - Vector2D{0, 2 * Map::TileSize() / 3});
+        const int yOffset = 2 * Map::TileSize() / 3;
+        sheep->placeAt(position - Vector2D{0, yOffset});
         sheep->updateSprite();
 
         Castle* c = Game::playerFaction.getNearestCastle(position);
