@@ -118,6 +118,9 @@ void Sprite::loadAnimation_0() {
     case Entity::Type::TREE:
         animation = Animation(0, 4);
         break;
+    case Entity::Type::SHEEP:
+        animation = Animation(0, 8);
+        break;
     default:
         animation = Animation(0, 6);
         break;

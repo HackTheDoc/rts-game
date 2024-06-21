@@ -64,6 +64,12 @@ namespace serialize {
         var(outfile, t.hp);
     }
 
+    void sheep(std::ofstream& outfile, const Struct::Sheep& s) {
+        var(outfile, Entity::Type::SHEEP);
+        
+        vector2D(outfile, s.pos);
+    }
+
     void entity(std::ofstream& outfile, const Struct::Entity& e) {
         struct EntityVisitor {
             std::ofstream& outfile;
@@ -79,6 +85,9 @@ namespace serialize {
             }
             void operator()(const Struct::Tree& t) {
                 serialize::tree(outfile, t);
+            }
+            void operator()(const Struct::Sheep& s) {
+                serialize::sheep(outfile, s);
             }
         };
 
@@ -283,6 +292,10 @@ namespace deserialize {
         vector2D(infile, t.pos);
         var(infile, t.hp);
     }
+    
+    void sheep(std::ifstream& infile, Struct::Sheep& s) {
+        vector2D(infile, s.pos);
+    }
 
     void entity(std::ifstream& infile, Struct::Entity& e) {
         Entity::Type t{Entity::Type::UNKNOWN};
@@ -299,6 +312,9 @@ namespace deserialize {
             break;
         case Entity::Type::TREE:
             e.e = Struct::Tree{};
+            break;
+        case Entity::Type::SHEEP:
+            e.e = Struct::Sheep{};
             break;
         default:
             break;
@@ -318,6 +334,9 @@ namespace deserialize {
             }
             void operator()(Struct::Tree& t) {
                 deserialize::tree(infile, t);
+            }
+            void operator()(Struct::Sheep& s) {
+                deserialize::sheep(infile, s);
             }
         };
 

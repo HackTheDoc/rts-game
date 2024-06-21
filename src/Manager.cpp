@@ -112,6 +112,7 @@ void Manager::loadGameTextures() {
 
     /* ----- SPRITESHEETS ----- */
 
+    textures["sheep"] = LoadTexture("assets/ressources/food/sheep_spritesheet.png");
     textures["tree"] = LoadTexture("assets/ressources/wood/tree.png");
 
     textures["white pawn"] = LoadTexture("assets/troops/white/pawn.png");

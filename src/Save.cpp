@@ -136,6 +136,11 @@ Struct::Entity Save::CreateTree(const int x, const int y) {
     return {t};
 }
 
+Struct::Entity Save::CreateSheep(const int x, const int y) {
+    const Struct::Sheep s{{x*Tile::SIZE, y*Tile::SIZE}};
+    return {s};
+}
+
     /* ----- BUILDINGS ----- */
 
 /// TODO: change value to 100
@@ -241,6 +246,10 @@ Struct::Map Save::CreateMap_Test() {
             CreateTree(20, 1),
             CreateTree(17, 2),
             CreateTree(19, 2),
+
+            CreateSheep(8, 5),
+            CreateSheep(10, 5),
+            CreateSheep(11, 6),
         },
         .buildings = {
             CreateCastle("white", 2, -2),

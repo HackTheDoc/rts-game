@@ -40,12 +40,17 @@ namespace Struct {
         int hp;
     };
 
+    struct Sheep {
+        Vector2D pos;
+    };
+
     struct Entity {
         std::variant<
             Archer,
             Warrior,
             Pawn,
-            Tree
+            Tree,
+            Sheep
         > e;
     };
 

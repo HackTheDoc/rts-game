@@ -26,6 +26,7 @@ public:
         WARRIOR,
         ARCHER,
         TREE,
+        SHEEP
     };
     Type type;
 

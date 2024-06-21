@@ -221,6 +221,9 @@ void Map::addEntity(const Struct::Entity& e) {
         void operator()(const Struct::Tree& t) {
             map->addTree(t.pos, t.hp);
         }
+        void operator()(const Struct::Sheep& s) {
+            map->addSheep(s.pos);
+        }
     };
 
     EntityVisitor visitor{this};
@@ -297,6 +300,15 @@ Tree* Map::addTree(const Vector2D& pos, const int hp) {
     addEntity(t);
 
     return t;
+}
+
+Sheep* Map::addSheep(const Vector2D& pos) {
+    Sheep* s = new Sheep();
+    s->placeAt(pos);
+
+    addEntity(s);
+
+    return s;
 }
 
 void Map::addBuilding(const Struct::Building& b) {

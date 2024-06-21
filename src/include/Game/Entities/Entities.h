@@ -9,3 +9,5 @@
 #include "Archer.h"
 
 #include "Tree.h"
+
+#include "Sheep.h"

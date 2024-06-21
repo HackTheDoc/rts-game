@@ -54,6 +54,8 @@ private:
 
     static Struct::Entity CreateTree(const int x, const int y);
 
+    static Struct::Entity CreateSheep(const int x, const int y);
+
         /* ----- BUILDINGS ----- */
     
     static Struct::Building CreateCastle(const std::string& faction, const int x, const int y);

@@ -130,7 +130,11 @@ void Game::SelectEntities() {
         
     std::vector<Entity*> newlySelectedEntities = map->getEntitiesInRect(r);
     for (Entity* e :  newlySelectedEntities)
-        if (e->type == Entity::Type::TREE) continue;
+        if (e->type == Entity::Type::TREE ||
+            e->type == Entity::Type::SHEEP
+        ) {
+            continue;
+        } 
         else {
             e->selected = true;
             selectedEntities.push_back(e);
@@ -143,7 +147,11 @@ void Game::SelectEntityAt(const Vector2D* pos) {
 
     std::optional<Entity*> e = map->getEntitiesAt(pos);
     
-    if (e.has_value() && e.value()->type != Entity::Type::TREE && e.value()->state == Entity::State::FREE) {
+    if (e.has_value() && 
+        e.value()->type != Entity::Type::TREE && 
+        e.value()->type != Entity::Type::SHEEP && 
+        e.value()->state == Entity::State::FREE
+    ) {
         e.value()->selected = true;
         selectedEntities.push_back(e.value());
     }
