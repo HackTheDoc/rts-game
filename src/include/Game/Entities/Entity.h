@@ -57,6 +57,7 @@ public:
 
     void setState(const State s);
     void setFlip(const SDL_RendererFlip flip);
+    void playAnimation(const std::string& a);
 
     /// @brief apply pathfinding algo & store path in pathToTravel
     /// @param pos in grid
@@ -68,6 +69,8 @@ public:
     virtual Struct::Entity getStructure();
 
     void carrySheep(Sheep* s);
+    void releaseSheep();
+    void consumeSheep();
 
     bool died();
 

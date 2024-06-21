@@ -31,10 +31,10 @@ Pawn::Pawn(const std::string& f) {
 Pawn::~Pawn() {}
 
 void Pawn::draw() {
-    Entity::draw();
-
     if (sheep && !building && state != CHOPING_WOOD)
-        sheep->draw();
+        sheep->drawSprite();
+
+    Entity::draw();
 }
 
 void Pawn::update() {
@@ -43,13 +43,12 @@ void Pawn::update() {
 
     if (sheep && !building && state != CHOPING_WOOD) {
         sheep->placeAt(position - Vector2D{0, 2 * Map::TileSize() / 3});
-        sheep->update();
+        sheep->updateSprite();
 
         Castle* c = Game::playerFaction.getNearestCastle(position);
         if (c && position == c->entry*Tile::SIZE) {
             Game::playerFaction.storeFood(25, c);
-            sheep->kill();
-            sheep = nullptr;
+            consumeSheep();
         }
     }
 

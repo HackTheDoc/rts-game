@@ -162,6 +162,8 @@ void Tree::updateWithoutLumberjack() {
     lumberjack = Game::GetSelectedEntity();
     
     lumberjack->goTo(entryPosition/Tile::SIZE);
+    
+    lumberjack->releaseSheep();
 
     isLumberjackWorking = false;
 }

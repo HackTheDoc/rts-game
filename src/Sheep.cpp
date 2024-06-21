@@ -7,7 +7,7 @@
 Sheep::Sheep() {
     faction = "wilderness";
 
-    state = FREE;
+    type = SHEEP;
     
     position.Zero();
     
@@ -17,16 +17,24 @@ Sheep::Sheep() {
     collider = new EntityCollider(this);
 
     sprite = new Sprite(this);
-    sprite->init("sheep", 2);
+    sprite->init("sheep", 3);
 
     speed = 2;
 
     hunter = nullptr;
 
-    type = SHEEP;
+    setState(FREE);
 }
 
 Sheep::~Sheep() {}
+
+void Sheep::drawSprite() {
+    sprite->draw();
+}
+
+void Sheep::updateSprite() {
+    sprite->update();
+}
 
 void Sheep::update() {
     Entity::update();

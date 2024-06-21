@@ -138,6 +138,10 @@ void Sprite::loadAnimation_1() {
         animation = Animation(1, 2);
         animations.emplace("damaged", animation);
         break;
+    case Entity::Type::SHEEP:
+        animation = Animation(1, 8);
+        animations.emplace("carried", animation);
+        break;
     default:
         animation = Animation(1, 6);
         animations.emplace("walk", animation);
@@ -152,6 +156,10 @@ void Sprite::loadAnimation_2() {
     case Entity::Type::TREE:
         animation = Animation(2, 1);
         animations.emplace("dead", animation);
+        break;
+    case Entity::Type::SHEEP:
+        animation = Animation(2, 6);
+        animations.emplace("walk", animation);
         break;
     default:
         animation = Animation(2, 6);

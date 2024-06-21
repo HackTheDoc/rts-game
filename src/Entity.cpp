@@ -67,20 +67,22 @@ void Entity::setState(const State s) {
     case State::FREE:
         building = false;
         if (sheep)
-            sprite->play("holding idle");
+            playAnimation("holding idle");
         else
-            sprite->play("idle");
+            playAnimation("idle");
         break;
     case State::BUILDING:
+        selected = false;
+        releaseSheep();
         break;
     case State::MINING:
         Game::ui->hide("construction menu");
         break;
     case State::CHOPING_WOOD:
         Game::ui->hide("construction menu");
-        sprite->play("attack");
         selected = false;
-        sprite->spriteFlip = SDL_FLIP_NONE;
+        playAnimation("attack");
+        setFlip(SDL_FLIP_NONE);
         break;
     default:
         break;
@@ -89,6 +91,10 @@ void Entity::setState(const State s) {
 
 void Entity::setFlip(const SDL_RendererFlip flip) {
     sprite->spriteFlip = flip;
+}
+
+void Entity::playAnimation(const std::string& a) {
+    sprite->play(a);
 }
 
 void Entity::goTo(const Vector2D& pos) {
@@ -115,10 +121,25 @@ Struct::Entity Entity::getStructure() {
 
 void Entity::carrySheep(Sheep* s) {
     sheep = s;
-
-    sheep->setState(FREE);
-
+    sheep->playAnimation("carried");
     Game::RemoveEntity(sheep);
+}
+
+void Entity::consumeSheep() {
+    if (!sheep) return;
+
+    sheep->kill();
+    sheep = nullptr;
+}
+
+void Entity::releaseSheep() {
+    if (!sheep) return;
+
+    sheep->placeAt(position);
+    sheep->stopMovement();
+    
+    Game::AddEntity(sheep);
+    sheep = nullptr;
 }
 
 bool Entity::died() {
@@ -139,9 +160,9 @@ void Entity::travel() {
         if (state == BUILDING)
             sprite->play("build");
         else if (sheep)
-            sprite->play("holding idle");
+            playAnimation("holding idle");
         else
-            sprite->play("idle");
+            playAnimation("idle");
         return;
     }
 
@@ -159,8 +180,8 @@ void Entity::travel() {
         sprite->play("walk");
 
     if (dest.x < position.x)
-        sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
-    else sprite->spriteFlip = SDL_FLIP_NONE;
+        setFlip(SDL_FLIP_HORIZONTAL);
+    else setFlip(SDL_FLIP_NONE);
     
         // applying movement
 

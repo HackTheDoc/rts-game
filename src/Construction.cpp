@@ -92,7 +92,6 @@ void Construction::addBuilder(Entity* b) {
 
     Vector2D pos = (position + Vector2D{0, height-1});
     
-    b->selected = false;
     b->goTo(pos);
     b->setState(Entity::State::BUILDING);
     builder = b;

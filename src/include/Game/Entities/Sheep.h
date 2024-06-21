@@ -7,6 +7,8 @@ public:
     Sheep();
     ~Sheep();
 
+    void drawSprite();
+    void updateSprite();
     void update() override;
 
     Struct::Entity getStructure() override;
