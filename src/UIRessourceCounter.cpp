@@ -19,6 +19,8 @@ UIRessourceCounter::UIRessourceCounter(const std::string& r) {
         ico->setSourceX(64);
         ressource = &Game::playerFaction.gold;
     }
+
+    ico->resize(64*(Window::fullscreen+1));
 }
 
 UIRessourceCounter::~UIRessourceCounter() {}

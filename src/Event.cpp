@@ -297,6 +297,9 @@ void Event::handleGameEvents() {
             if (SDL_GetModState() & KMOD_CTRL)
                 raise(QUIT_GAME);
             break;
+        case SDLK_SPACE:
+            Game::camera.centerOn(Game::playerFaction.getNearestCastle(Game::camera.pos / Tile::SIZE));
+            break;
         default:
             break;
         }    

@@ -37,14 +37,14 @@ void UI::init() {
     
     UIRessourceCounter* goldCounter = new UIRessourceCounter("gold");
     goldCounter->place(
-        UIRessourceCounter::WIDTH + 8*(Window::fullscreen+1),
+        (UIRessourceCounter::WIDTH + 8)*(Window::fullscreen+1),
         0
     );
     add("gold counter", goldCounter);
 
     UIRessourceCounter* woodCounter = new UIRessourceCounter("wood");
     woodCounter->place(
-        UIRessourceCounter::WIDTH*2 + 8*(Window::fullscreen+1),
+        (UIRessourceCounter::WIDTH*2 + 8)*(Window::fullscreen+1),
         0
     );
     add("wood counter", woodCounter);

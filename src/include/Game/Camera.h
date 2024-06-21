@@ -36,4 +36,9 @@ private:
     static const float ZOOM_MARGIN;
     static const float ZOOM_MIN;
     static const float ZOOM_MAX;
+
+    static SDL_Rect NorthRect;
+    static SDL_Rect SouthRect;
+    static SDL_Rect EastRect;
+    static SDL_Rect WeastRect;
 };
