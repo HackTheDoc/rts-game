@@ -128,18 +128,15 @@ void Tree::updateWithLumberjack() {
             level->setCurrentLevel(0);
         }
     }
-    else if (lumberjack->reachedDestination()) {
-        if (lumberjack->position == entryPosition) {
-            lumberjack->setState(Entity::State::CHOPING_WOOD);
-            Game::RemoveEntity(lumberjack);
-            
-            isLumberjackWorking = true;
-            level->setCurrentLevel(0);
-            level->active = true;
+    else if (lumberjack->isAtPos(entryPosition)) {
+        lumberjack->setState(Entity::State::CHOPING_WOOD);
+        Game::RemoveEntity(lumberjack);
+        
+        isLumberjackWorking = true;
+        level->setCurrentLevel(0);
+        level->active = true;
 
-            Game::AddCollider(entryPosition / Tile::SIZE);
-        }
-        else lumberjack = nullptr;
+        Game::AddCollider(entryPosition / Tile::SIZE);
     }
     else if (lumberjack->destination() * Tile::SIZE != entryPosition) {
         lumberjack = nullptr;

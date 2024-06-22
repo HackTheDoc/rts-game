@@ -38,7 +38,7 @@ void Camera::load(const Struct::Camera& c) {
         0,
         0,
         Window::screen.w,
-        10 * Window::screen.h / 100
+        1 * Window::screen.h / 100
     };
 
     SouthRect = {
@@ -51,7 +51,7 @@ void Camera::load(const Struct::Camera& c) {
     WeastRect = {
         0,
         0,
-        10 * Window::screen.w / 100,
+        1 * Window::screen.w / 100,
         Window::screen.h
     };
 
