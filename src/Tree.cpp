@@ -28,7 +28,7 @@ Tree::Tree() {
     lumberjack = nullptr;
     isLumberjackWorking = false;
 
-    level = new UILevelBar(TREE_DAMAGE_SPEED, 0, 128);
+    healthBar = new LevelBar(TREE_DAMAGE_SPEED, 0, 128);
 }
 
 Tree::~Tree() {}
@@ -37,7 +37,6 @@ void Tree::update() {
     sprite->update();
     collider->update();
 
-    
     if (hp == 0) {
         Game::RemoveCollider(position / Map::TileSize() - Vector2D{0,1});
         Game::RemoveCollider(entryPosition / Map::TileSize());
@@ -68,14 +67,14 @@ void Tree::draw() {
 
     if (!isLumberjackWorking) return;
 
-    level->draw();
+    healthBar->draw();
     lumberjack->draw();
 }
 
 void Tree::kill() {
     Entity::kill();
 
-    level->destroy();
+    healthBar->destroy();
 
     if (lumberjack && isLumberjackWorking)
         lumberjack->kill();
@@ -116,16 +115,16 @@ void Tree::updateWithLumberjack() {
 
         lumberjack->update();
 
-        level->update();
-        level->place(
-            collider->rect.x + (collider->rect.w - level->width()) / 2,
+        healthBar->update();
+        healthBar->place(
+            collider->rect.x + (collider->rect.w - healthBar->width()) / 2,
             collider->rect.y + collider->rect.h - Map::TileSize() / 4
         );
         
-        if (level->isFinished()) {
+        if (healthBar->isFinished()) {
             Game::playerFaction.storeWood(TREE_DAMAGE, entryPosition/Tile::SIZE);
             hp -= TREE_DAMAGE;
-            level->setCurrentLevel(0);
+            healthBar->setCurrentLevel(0);
         }
     }
     else if (lumberjack->isAtPos(entryPosition)) {
@@ -133,8 +132,8 @@ void Tree::updateWithLumberjack() {
         Game::RemoveEntity(lumberjack);
         
         isLumberjackWorking = true;
-        level->setCurrentLevel(0);
-        level->active = true;
+        healthBar->setCurrentLevel(0);
+        healthBar->active = true;
 
         Game::AddCollider(entryPosition / Tile::SIZE);
     }

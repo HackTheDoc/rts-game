@@ -1,11 +1,10 @@
-#include <windows.h>
 #include <iostream>
 
 #include "include/Window.h"
 
 Window window;
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+void run_window() {
     const int FPS = 60;
     const int FRAME_DELAY = 1000 / FPS;
 
@@ -31,3 +30,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     exit(EXIT_SUCCESS);
 }
+
+#ifdef _WIN32
+
+#include <windows.h>
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+    run_window();
+    return 0;
+}
+
+#else
+
+int main() {
+    run_window();
+    return 0;
+}
+
+#endif

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../../UI/UILevelBar.h"
-
 #include "Entity.h"
 
 class Tree : public Entity {
@@ -22,8 +20,6 @@ private:
 
     Entity* lumberjack; // bucheron
     bool isLumberjackWorking;
-
-    UILevelBar* level;
 
     void updateWithLumberjack();
     void updateWithoutLumberjack();

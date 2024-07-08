@@ -31,7 +31,7 @@ void UILevelBar::draw() {
 
     Manager::SetViewport(&rect);
 
-    Manager::DrawFilledRect(&levelRect, hue::green);
+    Manager::DrawFilledRect(&levelRect, hue::blur_green);
 
     Manager::SetViewport(nullptr);
 

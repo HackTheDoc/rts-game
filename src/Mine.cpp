@@ -28,7 +28,7 @@ Mine::Mine(const Vector2D& pos) {
 
     texture = Window::manager->getTexture("mine inactive");
 
-    level = new UILevelBar(GOLD_GATHERING_SPEED, 0, 256);
+    level = new LevelBar(GOLD_GATHERING_SPEED, 0, 256);
     
     lbl_capacity = new UILabel();
 

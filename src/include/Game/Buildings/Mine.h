@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../UI/UILevelBar.h"
+#include "../Components/LevelBar.h"
 #include "../../UI/UILabel.h"
 
 #include "Building.h"
@@ -22,7 +22,7 @@ public:
 
 private:
     UILabel* lbl_capacity;
-    UILevelBar* level;
+    LevelBar* level;
 
     int capacity;
 

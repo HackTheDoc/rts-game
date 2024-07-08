@@ -250,6 +250,8 @@ Struct::Map Save::CreateMap_Test() {
             CreateSheep(8, 5),
             CreateSheep(10, 5),
             CreateSheep(11, 6),
+
+            CreateWarrior("red", 10, 5),
         },
         .buildings = {
             CreateCastle("white", 2, -2),

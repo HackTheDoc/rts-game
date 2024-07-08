@@ -4,6 +4,8 @@
 #include "include/Window.h"
 #include "include/struct.h"
 
+int Entity::MAX_HP = 3;
+
 Entity::Entity() {
     selected = false;
 
@@ -23,6 +25,10 @@ Entity::Entity() {
 
     sheep = nullptr;
 
+    hp = MAX_HP;
+    healthBar = new LevelBar(MAX_HP, hp, 160);
+    healthBar->active = false;
+
     type = UNKNOWN;
     setState(FREE);
 }
@@ -40,11 +46,23 @@ void Entity::update() {
         updateFree();
     
     travel();
+
+    if (selected) {
+        healthBar->setCurrentLevel(hp);
+        healthBar->update();
+        healthBar->place(
+            collider->rect.x + (collider->rect.w - healthBar->width()) / 2,
+            collider->rect.y + collider->rect.h + 4*(Window::fullscreen+1)
+        );
+    }
 }
 
 void Entity::draw() {
     sprite->draw();
     collider->draw();
+
+    if (selected)
+        healthBar->draw();
 }
 
 void Entity::kill() {
@@ -54,6 +72,9 @@ void Entity::kill() {
 
     delete collider;
     collider = nullptr;
+
+    healthBar->destroy();
+    healthBar = nullptr;
 }
 
 void Entity::placeAt(const Vector2D& pos) {
@@ -168,6 +189,8 @@ bool Entity::died() {
 }
 
 void Entity::updateFree() {
+    if (faction != Game::playerFaction.name) return;
+
     // check if new path
 
     const Vector2D p = Game::cursor.getPosOnMap();

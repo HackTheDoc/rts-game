@@ -138,6 +138,13 @@ void Game::SelectEntities() {
             continue;
         } 
         else {
+            if (!selectedEntities.empty() && 
+                selectedEntities.front()->faction != e->faction &&
+                e->faction == playerFaction.name
+            ) {
+                ReleaseSelectedEntities();
+            }
+
             e->selected = true;
             selectedEntities.push_back(e);
         }
@@ -145,19 +152,26 @@ void Game::SelectEntities() {
 
 void Game::SelectEntityAt(const Vector2D* pos) {
     if (!Window::event.raised(Event::ID::SELECT_MULTIPLE))
-        Game::ReleaseSelectedEntities();
+        ReleaseSelectedEntities();
+        
+    if (!selectedEntities.empty() && GetSelectedEntity()->faction != playerFaction.name)
+        ReleaseSelectedEntities();
 
     std::optional<Entity*> e = map->getEntitiesAt(pos);
     
-    if (e.has_value() && 
-        e.value()->type != Entity::Type::TREE && 
-        e.value()->type != Entity::Type::SHEEP && 
-        e.value()->state == Entity::State::FREE
+    if (!e.has_value() || 
+        e.value()->type == Entity::Type::TREE || 
+        e.value()->type == Entity::Type::SHEEP || 
+        e.value()->state != Entity::State::FREE
     ) {
-        e.value()->selected = true;
-        selectedEntities.push_back(e.value());
+        return;
     }
 
+    if (e.value()->faction != playerFaction.name)
+        ReleaseSelectedEntities();
+
+    e.value()->selected = true;
+    selectedEntities.push_back(e.value());
 }
 
 void Game::AddUnitsFromBuilding(const int pawnCount, const int warriorCount, const int archerCount) {

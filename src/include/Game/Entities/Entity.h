@@ -5,6 +5,7 @@
 #include "../Components/Vector2D.h"
 #include "../Components/Sprite.h"
 #include "../Components/EntityCollider.h"
+#include "../Components/LevelBar.h"
 
 namespace Struct {
     struct Entity;
@@ -14,6 +15,8 @@ class Sheep;
 
 class Entity {
 public:
+    static int MAX_HP;
+    
     enum State {
         FREE,
         BUILDING,
@@ -83,6 +86,8 @@ protected:
     std::vector<Vector2D> pathToTravel;
 
     Sheep* sheep; // sheep carrying
+
+    LevelBar* healthBar;
 
     void travel();
     void updateFree();
