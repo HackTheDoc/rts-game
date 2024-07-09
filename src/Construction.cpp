@@ -94,7 +94,8 @@ void Construction::addBuilder(Entity* b) {
     
     b->goTo(pos);
     b->setState(Entity::State::BUILDING);
-    builder = b;
+    
+    builder = static_cast<Pawn*>(b);
 
     Game::RemoveEntity(b);
 }
@@ -113,6 +114,6 @@ void Construction::realeaseBuilder() {
     builder = nullptr;
 }
 
-Struct::Building Construction::getStructure() {
-    return {Struct::Construction{faction, position, level->getCurrentLevel(), constructionType, builder->getStructure()}};
+Struct::Object Construction::getStructure() {
+    return Struct::Object{Struct::Construction{faction, position, level->getCurrentLevel(), constructionType, builder->getDirectStructure()}};
 }

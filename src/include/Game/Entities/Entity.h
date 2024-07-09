@@ -2,21 +2,14 @@
 
 #include <vector>
 
-#include "../Components/Vector2D.h"
-#include "../Components/Sprite.h"
-#include "../Components/EntityCollider.h"
-#include "../Components/LevelBar.h"
-
-namespace Struct {
-    struct Entity;
-}
+#include "../Components/Object.h"
 
 class Sheep;
 
-class Entity {
+class Entity : public Object {
 public:
     static int MAX_HP;
-    
+
     enum State {
         FREE,
         BUILDING,
@@ -25,23 +18,10 @@ public:
     };
     State state;
 
-    enum Type {
-        UNKNOWN,
-        PAWN,
-        WARRIOR,
-        ARCHER,
-        TREE,
-        SHEEP
-    };
-    Type type;
-
     // blue, red, yellow, purple, wilderness
     std::string faction;
-    
-    bool selected;
 
-    Vector2D position;
-    int width, height;
+    bool selected;
 
     int hp;
 
@@ -50,11 +30,11 @@ public:
     bool building;
 
     Entity();
-    ~Entity();
+    ~Entity() override;
 
-    virtual void update();
-    virtual void draw();
-    virtual void kill();
+    void update() override;
+    void draw() override;
+    void destroy() override;
 
     void placeAt(const Vector2D& pos);
 
@@ -70,7 +50,7 @@ public:
     bool isAtPos(const Vector2D& pos);
     Vector2D destination();
 
-    virtual Struct::Entity getStructure();
+    Struct::Object getStructure() override;
 
     void carrySheep(Sheep* s);
     void releaseSheep();

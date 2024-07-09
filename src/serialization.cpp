@@ -3,6 +3,11 @@
 #include <iostream>
 
 namespace serialize {
+    template <typename T>
+    void var(std::ofstream& outfile, const T& var) {
+        outfile.write(reinterpret_cast<const char*>(&var), sizeof(T));
+    }
+
     template<typename T1, typename T2>
     void pair(std::ofstream& outfile, const std::pair<T1, T2>& pair) {
         size_t fsize = pair.first.size();
@@ -12,11 +17,6 @@ namespace serialize {
         size_t ssize = pair.second.size();
         var(outfile, ssize);
         outfile.write(pair.second.data(), ssize);
-    }
-
-    template <typename T>
-    void var(std::ofstream& outfile, const T& var) {
-        outfile.write(reinterpret_cast<const char*>(&var), sizeof(T));
     }
 
     void vector2D(std::ofstream& outfile, const Vector2D& v) {
@@ -71,31 +71,6 @@ namespace serialize {
         vector2D(outfile, s.pos);
     }
 
-    void entity(std::ofstream& outfile, const Struct::Entity& e) {
-        struct EntityVisitor {
-            std::ofstream& outfile;
-
-            void operator()(const Struct::Archer& a) {
-                serialize::archer(outfile, a);
-            }
-            void operator()(const Struct::Warrior& w) {
-                serialize::warrior(outfile, w);
-            }
-            void operator()(const Struct::Pawn& p) {
-                serialize::pawn(outfile, p);
-            }
-            void operator()(const Struct::Tree& t) {
-                serialize::tree(outfile, t);
-            }
-            void operator()(const Struct::Sheep& s) {
-                serialize::sheep(outfile, s);
-            }
-        };
-
-        EntityVisitor visitor{outfile};
-        std::visit(visitor, e.e);
-    }
-
     void construction(std::ofstream& outfile, const Struct::Construction& c) {
         var(outfile, Building::Type::CONSTRUCTION);
         
@@ -103,7 +78,7 @@ namespace serialize {
         vector2D(outfile, c.pos);
         var(outfile, c.type);
         var(outfile, c.level);
-        entity(outfile, c.builder);
+        pawn(outfile, c.builder);
     }
     
     void house(std::ofstream& outfile, const Struct::House& h) {
@@ -136,9 +111,29 @@ namespace serialize {
         vector2D(outfile, m.pos);
     }
 
-    void building(std::ofstream& outfile, const Struct::Building& b) {
-        struct BuildingVisitor {
+    void object(std::ofstream& outfile, const Struct::Object& o) {
+        struct ObjectVisitor {
             std::ofstream& outfile;
+
+            void operator()(const Struct::UnknownObject& o) {}
+            void operator()(const Struct::UnknownEntity& e) {}
+            void operator()(const Struct::UnknownBuilding& b) {}
+
+            void operator()(const Struct::Archer& a) {
+                serialize::archer(outfile, a);
+            }
+            void operator()(const Struct::Warrior& w) {
+                serialize::warrior(outfile, w);
+            }
+            void operator()(const Struct::Pawn& p) {
+                serialize::pawn(outfile, p);
+            }
+            void operator()(const Struct::Tree& t) {
+                serialize::tree(outfile, t);
+            }
+            void operator()(const Struct::Sheep& s) {
+                serialize::sheep(outfile, s);
+            }
 
             void operator()(const Struct::Construction& c) {
                 serialize::construction(outfile, c);
@@ -157,8 +152,8 @@ namespace serialize {
             }
         };
 
-        BuildingVisitor visitor{outfile};
-        std::visit(visitor, b.b);
+        ObjectVisitor visitor{outfile};
+        std::visit(visitor, o.o);
     }
 
     void tile(std::ofstream& outfile, const Struct::Tile& t) {
@@ -183,15 +178,10 @@ namespace serialize {
         for (const Struct::Layer& l : m.layers)
             layer(outfile, l);
         
-        size_t esize = m.entities.size();
-        var(outfile, esize);
-        for (const Struct::Entity& e : m.entities)
-            entity(outfile, e);
-        
-        size_t bsize = m.buildings.size();
-        var(outfile, bsize);
-        for (const Struct::Building& b : m.buildings)
-            building(outfile, b);
+        size_t size = m.objects.size();
+        var(outfile, size);
+        for (const Struct::Object& o : m.objects)
+            object(outfile, o);
     }
 
     void camera(std::ofstream& outfile, const Struct::Camera& c) {
@@ -236,6 +226,11 @@ namespace serialize {
 }; // namespace serialize
 
 namespace deserialize {
+    template <typename T>
+    void var(std::ifstream& infile, T& var) {
+        infile.read(reinterpret_cast<char*>(&var), sizeof(T));
+    }
+
     template<typename T1, typename T2>
     void pair(std::ifstream& infile, std::pair<T1, T2>& pair) {
         size_t fsize;
@@ -249,11 +244,6 @@ namespace deserialize {
         std::string secondData(ssize, '\0');
         infile.read(&secondData[0], ssize);
         pair.second = std::move(secondData);
-    }
-
-    template <typename T>
-    void var(std::ifstream& infile, T& var) {
-        infile.read(reinterpret_cast<char*>(&var), sizeof(T));
     }
 
     void vector2D(std::ifstream& infile, Vector2D& v) {
@@ -299,59 +289,15 @@ namespace deserialize {
         vector2D(infile, s.pos);
     }
 
-    void entity(std::ifstream& infile, Struct::Entity& e) {
-        Entity::Type t{Entity::Type::UNKNOWN};
-        var(infile, t);
-        switch (t) {
-        case Entity::Type::ARCHER:
-            e.e = Struct::Archer{};
-            break;
-        case Entity::Type::WARRIOR:
-            e.e = Struct::Warrior{};
-            break;
-        case Entity::Type::PAWN:
-            e.e = Struct::Pawn{};
-            break;
-        case Entity::Type::TREE:
-            e.e = Struct::Tree{};
-            break;
-        case Entity::Type::SHEEP:
-            e.e = Struct::Sheep{};
-            break;
-        default:
-            break;
-        }
-
-        struct EntityVisitor {
-            std::ifstream& infile;
-
-            void operator()(Struct::Archer& a) {
-                deserialize::archer(infile, a);
-            }
-            void operator()(Struct::Warrior& w) {
-                deserialize::warrior(infile, w);
-            }
-            void operator()(Struct::Pawn& p) {
-                deserialize::pawn(infile, p);
-            }
-            void operator()(Struct::Tree& t) {
-                deserialize::tree(infile, t);
-            }
-            void operator()(Struct::Sheep& s) {
-                deserialize::sheep(infile, s);
-            }
-        };
-
-        EntityVisitor visitor{infile};
-        std::visit(visitor, e.e);
-    }
-
     void construction(std::ifstream& infile, Struct::Construction& c) {
         string(infile, c.faction);
         vector2D(infile, c.pos);
         var(infile, c.type);
         var(infile, c.level);
-        entity(infile, c.builder);
+
+        ObjectType t;
+        var(infile, t);
+        pawn(infile, c.builder);
     }
 
     void house(std::ifstream& infile, Struct::House& h) {
@@ -376,31 +322,67 @@ namespace deserialize {
         vector2D(infile, m.pos);
     }
 
-    void building(std::ifstream& infile, Struct::Building& b) {
-        Building::Type t;
+    void object(std::ifstream& infile, Struct::Object& o) {
+        Entity::Type t{Entity::Type::UNKNOWN};
         var(infile, t);
         switch (t) {
+        case Entity::Type::ARCHER:
+            o.o = Struct::Archer{};
+            break;
+        case Entity::Type::WARRIOR:
+            o.o = Struct::Warrior{};
+            break;
+        case Entity::Type::PAWN:
+            o.o = Struct::Pawn{};
+            break;
+        case Entity::Type::TREE:
+            o.o = Struct::Tree{};
+            break;
+        case Entity::Type::SHEEP:
+            o.o = Struct::Sheep{};
+            break;
         case Building::Type::CONSTRUCTION:
-            b.b = Struct::Construction{};
+            o.o = Struct::Construction{};
             break;
         case Building::Type::HOUSE:
-            b.b = Struct::House{};
+            o.o = Struct::House{};
             break;
         case Building::Type::TOWER:
-            b.b = Struct::Tower{};
+            o.o = Struct::Tower{};
             break;
         case Building::Type::CASTLE:
-            b.b = Struct::Castle{};
+            o.o = Struct::Castle{};
             break;
         case Building::Type::MINE:
-            b.b = Struct::Mine{};
+            o.o = Struct::Mine{};
             break;
         default:
+            o.o = Struct::UnknownObject{};
             break;
         }
 
-        struct BuildingVisitor {
+        struct ObjectVisitor {
             std::ifstream& infile;
+
+            void operator()(Struct::UnknownObject& o){}
+            void operator()(Struct::UnknownEntity& e){}
+            void operator()(Struct::UnknownBuilding& b){}
+
+            void operator()(Struct::Archer& a) {
+                deserialize::archer(infile, a);
+            }
+            void operator()(Struct::Warrior& w) {
+                deserialize::warrior(infile, w);
+            }
+            void operator()(Struct::Pawn& p) {
+                deserialize::pawn(infile, p);
+            }
+            void operator()(Struct::Tree& t) {
+                deserialize::tree(infile, t);
+            }
+            void operator()(Struct::Sheep& s) {
+                deserialize::sheep(infile, s);
+            }
 
             void operator()(Struct::Construction& c) {
                 deserialize::construction(infile, c);
@@ -419,8 +401,8 @@ namespace deserialize {
             }
         };
 
-        BuildingVisitor visitor{infile};
-        std::visit(visitor, b.b);
+        ObjectVisitor visitor{infile};
+        std::visit(visitor, o.o);
     }
 
     void tile(std::ifstream& infile, Struct::Tile& t) {
@@ -446,17 +428,11 @@ namespace deserialize {
         for (Struct::Layer& l : m.layers)
             layer(infile, l);
         
-        size_t esize;
-        var(infile, esize);
-        m.entities.resize(esize);
-        for (size_t i = 0; i < esize; i++)
-            entity(infile, m.entities[i]);
-        
-        size_t bsize;
-        var(infile, bsize);
-        m.buildings.resize(bsize);
-        for (size_t i = 0; i < bsize; i++)
-            building(infile, m.buildings[i]);
+        size_t size;
+        var(infile, size);
+        m.objects.resize(size);
+        for (size_t i = 0; i < size; i++)
+            object(infile, m.objects[i]);
     }
 
     void camera(std::ifstream& infile, Struct::Camera& c) {

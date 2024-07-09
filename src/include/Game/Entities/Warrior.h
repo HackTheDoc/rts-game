@@ -5,7 +5,7 @@
 class Warrior : public Entity {
 public:
     Warrior(const std::string& f);
-    ~Warrior();
+    ~Warrior() override;
 
-    Struct::Entity getStructure() override;
+    Struct::Object getStructure() override;
 };

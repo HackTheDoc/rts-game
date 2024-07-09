@@ -22,8 +22,7 @@ enum LayerID {
 namespace Struct {
     struct Map;
     struct Layer;
-    struct Entity;
-    struct Building;
+    struct Object;
 }
 
 class Map {
@@ -51,7 +50,7 @@ public:
 
     void removeBuilding(const Vector2D& pos);
     Construction* addConstruction(const Building::Type type, const std::string& f, const Vector2D& pos, const int clevel = 0);
-    void addConstruction(const Building::Type type, const std::string& f, const Vector2D& pos, const int clevel, const Struct::Entity& builder);
+    void addConstruction(const Building::Type type, const std::string& f, const Vector2D& pos, const int clevel, const Struct::Pawn& builder);
     void addHouse(const std::string& f, const Vector2D& pos);
     void addTower(const std::string& f, const Vector2D& pos);
     void addCastle(const std::string& f, const Vector2D& pos, const int foodStorage = 0, const int goldStorage = 0, const int woodStorage = 0);
@@ -82,6 +81,5 @@ private:
 
     Struct::Layer getLayerStructure(const LayerID lid);
     
-    void addEntity(const Struct::Entity& e);
-    void addBuilding(const Struct::Building& b);
+    void addObject(const Struct::Object& o);
 };

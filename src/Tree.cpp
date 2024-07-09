@@ -14,7 +14,7 @@ Tree::Tree() {
 
     hp = TREE_MAX_HP;
     position.Zero();
-    
+
     width = 384;
     height = 384;
 
@@ -38,21 +38,21 @@ void Tree::update() {
     collider->update();
 
     if (hp == 0) {
-        Game::RemoveCollider(position / Map::TileSize() - Vector2D{0,1});
+        Game::RemoveCollider(position / Map::TileSize() - Vector2D{ 0,1 });
         Game::RemoveCollider(entryPosition / Map::TileSize());
         Game::RemoveCollider(position / Map::TileSize());
         freeLumberjack();
         sprite->play("dead");
         return;
     }
-    
+
     if (lumberjack) updateWithLumberjack();
     else updateWithoutLumberjack();
 
     if (!Cursor::enable) return;
-    
+
     if (Builder::active) return;
-    
+
     if (Game::CountSelectedEntities() != 1) return;
 
     if (!Game::cursor.inRect(&collider->rect)) return;
@@ -71,35 +71,39 @@ void Tree::draw() {
     lumberjack->draw();
 }
 
-void Tree::kill() {
-    Entity::kill();
+void Tree::destroy() {
+    Entity::destroy();
+    
+    delete healthBar;
+    healthBar = nullptr;
 
-    healthBar->destroy();
-
-    if (lumberjack && isLumberjackWorking)
-        lumberjack->kill();
+    if (lumberjack && isLumberjackWorking) {
+        lumberjack->destroy();
+        delete lumberjack;
+        lumberjack = nullptr;
+    }
 }
 
 void Tree::placeAt(const Vector2D& pos) {
     position = pos;
-    entryPosition = pos - Vector2D{Tile::SIZE, 0};
-    
+    entryPosition = pos - Vector2D{ Tile::SIZE, 0 };
+
     Vector2D p = pos / Tile::SIZE;
 
     Game::AddCollider(p);
-    Game::AddCollider(p - Vector2D{0,1});
+    Game::AddCollider(p - Vector2D{ 0,1 });
 }
 
-Struct::Entity Tree::getStructure() {
-    return {Struct::Tree{position, hp}};
+Struct::Object Tree::getStructure() {
+    return Struct::Object{Struct::Tree{position, hp}};
 }
 
 void Tree::freeLumberjack() {
     if (!lumberjack) return;
 
-    if (isLumberjackWorking) {    
+    if (isLumberjackWorking) {
         lumberjack->setState(Entity::State::FREE);
-    
+
         Game::AddEntity(lumberjack);
 
         isLumberjackWorking = false;
@@ -120,9 +124,9 @@ void Tree::updateWithLumberjack() {
             collider->rect.x + (collider->rect.w - healthBar->width()) / 2,
             collider->rect.y + collider->rect.h - Map::TileSize() / 4
         );
-        
+
         if (healthBar->isFinished()) {
-            Game::playerFaction.storeWood(TREE_DAMAGE, entryPosition/Tile::SIZE);
+            Game::playerFaction.storeWood(TREE_DAMAGE, entryPosition / Tile::SIZE);
             hp -= TREE_DAMAGE;
             healthBar->setCurrentLevel(0);
         }
@@ -130,7 +134,7 @@ void Tree::updateWithLumberjack() {
     else if (lumberjack->isAtPos(entryPosition)) {
         lumberjack->setState(Entity::State::CHOPING_WOOD);
         Game::RemoveEntity(lumberjack);
-        
+
         isLumberjackWorking = true;
         healthBar->setCurrentLevel(0);
         healthBar->active = true;
@@ -144,21 +148,21 @@ void Tree::updateWithLumberjack() {
 
 void Tree::updateWithoutLumberjack() {
     sprite->play("idle");
-    
+
     if (Builder::active) return;
 
     if (Game::CountSelectedEntities() != 1) return;
 
     if (Game::GetSelectedEntity()->type != Entity::Type::PAWN) return;
-    
+
     if (!Game::cursor.inRect(&collider->rect)) return;
-    
+
     if (!Window::event.mouseClickRight()) return;
 
     lumberjack = Game::GetSelectedEntity();
-    
-    lumberjack->goTo(entryPosition/Tile::SIZE);
-    
+
+    lumberjack->goTo(entryPosition / Tile::SIZE);
+
     lumberjack->releaseSheep();
 
     isLumberjackWorking = false;

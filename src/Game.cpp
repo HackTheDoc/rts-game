@@ -77,6 +77,8 @@ void Game::render() {
 }
 
 void Game::clean() {
+    std::cout << "clearing game..." << std::endl;
+
     camera.reset();
     cursor.reset();
     
@@ -84,13 +86,21 @@ void Game::clean() {
     delete map;
     map = nullptr;
 
+    std::cout << "-> map destroyed" << std::endl;
+    
     ui->destroy();
     delete ui;
     ui = nullptr;
 
+    std::cout << "-> ui destroyed" << std::endl;
+
     Window::manager->clearGameTextures();
 
+    std::cout << "-> cleared textures" << std::endl;
+
     Manager::SetRenderDrawColor(hue::background);
+
+    std::cout << "game cleared!" << std::endl;
 }
 
 Entity* Game::GetSelectedEntity(const int i) {

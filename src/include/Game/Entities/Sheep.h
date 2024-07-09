@@ -5,13 +5,13 @@
 class Sheep : public Entity {
 public:
     Sheep();
-    ~Sheep();
+    ~Sheep() override;
 
     void drawSprite();
     void updateSprite();
     void update() override;
 
-    Struct::Entity getStructure() override;
+    Struct::Object getStructure() override;
 
     void removeHunter();
 

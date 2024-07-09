@@ -40,6 +40,6 @@ void House::update() {
     Window::event.raise(Event::ID::SELECT_UNITS);
 }
 
-Struct::Building House::getStructure() {
-    return {Struct::House{faction, position}};
+Struct::Object House::getStructure() {
+    return Struct::Object{Struct::House{faction, position}};
 }

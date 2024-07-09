@@ -4,40 +4,24 @@
 #include <string>
 #include <SDL2/SDL.h>
 
-#include "../Components/Vector2D.h"
-
-namespace Struct {
-    struct Building;
-}
+#include "../Components/Object.h"
 
 class Entity;
 
-class Building {
+class Building : public Object {
 public:
-    enum Type {
-        CONSTRUCTION,
-        HOUSE,
-        TOWER,
-        CASTLE,
-        MINE
-    };
-    Type type;
-
-    Vector2D position;
-    int width, height;
-
     Building();
-    ~Building();
+    ~Building() override;
 
-    virtual void update();
-    virtual void draw();
-    virtual void destroy();
+    void update() override;
+    void draw() override;
+    void destroy() override;
 
     Vector2D getPosition();
     int getWidth();
     int getHeight();
 
-    virtual Struct::Building getStructure();
+    Struct::Object getStructure() override;
 
     int freeSpace; // freeSpace for units;
     void addUnit(Entity* u);

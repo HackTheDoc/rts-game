@@ -56,7 +56,7 @@ void Pawn::update() {
     Entity::update();
 }
 
-Struct::Entity Pawn::getStructure() {
+Struct::Pawn Pawn::getDirectStructure() {
     Struct::Pawn p{faction, position, selected, Vector2D{0,0}, false};
     
     if (!reachedDestination() && state == FREE)
@@ -65,5 +65,9 @@ Struct::Entity Pawn::getStructure() {
     if (sheep)
         p.carryingSheep = true;
 
-    return {p};
+    return p;
+}
+
+Struct::Object Pawn::getStructure() {
+    return Struct::Object{getDirectStructure()};
 }

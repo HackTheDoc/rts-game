@@ -10,9 +10,9 @@ Entity::Entity() {
     selected = false;
 
     faction = "wilderness";
-    
+
     position.Zero();
-    
+
     width = 384;
     height = 384;
 
@@ -41,10 +41,10 @@ void Entity::update() {
 
     if (state == CHOPING_WOOD || state == MINING)
         return;
-    
+
     if (state == State::FREE)
         updateFree();
-    
+
     travel();
 
     if (selected) {
@@ -52,7 +52,7 @@ void Entity::update() {
         healthBar->update();
         healthBar->place(
             collider->rect.x + (collider->rect.w - healthBar->width()) / 2,
-            collider->rect.y + collider->rect.h + 4*(Window::fullscreen+1)
+            collider->rect.y + collider->rect.h + 4 * (Window::fullscreen + 1)
         );
     }
 }
@@ -65,7 +65,7 @@ void Entity::draw() {
         healthBar->draw();
 }
 
-void Entity::kill() {
+void Entity::destroy() {
     sprite->destroy();
     delete sprite;
     sprite = nullptr;
@@ -130,9 +130,9 @@ void Entity::goTo(const Vector2D& pos, const bool force) {
     if (pathToTravel.empty()) pathToTravel.push_back(pos);
 
     if (!selected) return;
-    
+
     std::cout << "from" << start << " to " << pos << std::endl;
-    for(auto& coordinate : pathToTravel)
+    for (auto& coordinate : pathToTravel)
         std::cout << "  - " << coordinate << std::endl;
 }
 
@@ -149,9 +149,8 @@ Vector2D Entity::destination() {
     return pathToTravel.front();
 }
 
-Struct::Entity Entity::getStructure() {
-    const Struct::Pawn p{faction, position, selected};
-    return {p};
+Struct::Object Entity::getStructure() {
+    return Struct::Object{Struct::UnknownEntity{}};
 }
 
 void Entity::carrySheep(Sheep* s) {
@@ -169,7 +168,7 @@ void Entity::carrySheep(Sheep* s) {
 void Entity::consumeSheep() {
     if (!sheep) return;
 
-    sheep->kill();
+    sheep->destroy();
     sheep = nullptr;
 }
 
@@ -179,7 +178,7 @@ void Entity::releaseSheep() {
     sheep->removeHunter();
     sheep->placeAt(position);
     sheep->stopMovement();
-    
+
     Game::AddEntity(sheep);
     sheep = nullptr;
 }
@@ -218,17 +217,17 @@ void Entity::travel() {
         return;
     }
 
-        // rendering movement
+    // rendering movement
     if (sheep)
         sprite->play("holding walk");
-    else 
+    else
         sprite->play("walk");
 
     if (dest.x < position.x)
         setFlip(SDL_FLIP_HORIZONTAL);
     else setFlip(SDL_FLIP_NONE);
-    
-        // applying movement
+
+    // applying movement
 
     double d = std::sqrt(double(dist(position, dest)));
     double f = speed / d;

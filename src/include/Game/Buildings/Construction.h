@@ -1,16 +1,16 @@
 #pragma once
 
 #include "Building.h"
-#include "../../UI/UILevelBar.h"
 
 #include <vector>
 
 class Entity;
+class Pawn;
 
 class Construction : public Building {
 public:
     Construction(const Building::Type type, const std::string& faction, const Vector2D& pos, const int lvl = 0);
-    ~Construction();
+    ~Construction() override;
 
     void update() override;
     void draw() override;
@@ -19,11 +19,11 @@ public:
     void addBuilder(Entity* b);
     void realeaseBuilder();
 
-    Struct::Building getStructure() override;
+    Struct::Object getStructure() override;
 
 private:
     Building::Type constructionType;
-    UILevelBar* level;
+    LevelBar* level;
 
-    Entity* builder;
+    Pawn* builder;
 };

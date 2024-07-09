@@ -10,7 +10,7 @@
 using EventID = Event::ID;
 using KeyMap = std::map<Event::ID, SDL_Scancode>;
 using TileType = Tile::Type;
-using BuildingType = Building::Type;
+using ObjectType = Object::Type;
 using EntityState = Entity::State;
 
 namespace Struct {
@@ -45,22 +45,14 @@ namespace Struct {
         Vector2D pos;
     };
 
-    struct Entity {
-        std::variant<
-            Archer,
-            Warrior,
-            Pawn,
-            Tree,
-            Sheep
-        > e;
-    };
-
-    struct Construction {
+    struct UnknownEntity {};
+    
+    struct Construction  {
         std::string faction;
         Vector2D pos;
         int level;
-        BuildingType type;
-        Entity builder;
+        ObjectType type;
+        Pawn builder;
     };
 
     struct House {
@@ -85,14 +77,26 @@ namespace Struct {
         Vector2D pos;
     };
 
-    struct Building {
+    struct UnknownBuilding {};
+
+    struct UnknownObject {};
+
+    struct Object {
         std::variant<
+            UnknownObject,
+            UnknownEntity,
+            UnknownBuilding,
+            Archer,
+            Warrior,
+            Pawn,
+            Tree,
+            Sheep,
             Construction,
             House,
             Tower,
             Castle,
             Mine
-        > b;
+        > o;
     };
 
     struct Tile {
@@ -109,8 +113,7 @@ namespace Struct {
         int width;
         int height;
         std::array<Layer, NUMBER_OF_LAYER> layers;
-        std::vector<Entity> entities;
-        std::vector<Building> buildings;
+        std::vector<Object> objects;
     };
 
     struct Camera {
@@ -135,3 +138,5 @@ namespace Struct {
     };
 
 }; // namespace Struct
+
+using ObjectStructure = Struct::Object;

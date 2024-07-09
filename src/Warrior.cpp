@@ -24,11 +24,11 @@ Warrior::Warrior(const std::string& f) {
 
 Warrior::~Warrior() {}
 
-Struct::Entity Warrior::getStructure() {
+Struct::Object Warrior::getStructure() {
     Struct::Warrior w{faction, position, selected, Vector2D{0,0}};
     
     if (!reachedDestination())
         w.dest = pathToTravel[0];
 
-    return {w};
+    return Struct::Object{w};
 }

@@ -5,15 +5,15 @@
 class Tree : public Entity {
 public:
     Tree();
-    ~Tree();
+    ~Tree() override;
 
     void update() override;
     void draw() override;
-    void kill() override;
-    
+    void destroy() override;
+
     void placeAt(const Vector2D& pos);
 
-    Struct::Entity getStructure() override;
+    Struct::Object getStructure() override;
 
 private:
     Vector2D entryPosition;

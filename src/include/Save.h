@@ -46,21 +46,21 @@ private:
 
         /* ----- ENTITIES ----- */
     
-    static Struct::Entity CreatePawn(const std::string& faction, const int x, const int y);
+    static Struct::Object CreatePawn(const std::string& faction, const int x, const int y);
     
-    static Struct::Entity CreateWarrior(const std::string& faction, const int x, const int y);
+    static Struct::Object CreateWarrior(const std::string& faction, const int x, const int y);
     
-    static Struct::Entity CreateArcher(const std::string& faction, const int x, const int y);
+    static Struct::Object CreateArcher(const std::string& faction, const int x, const int y);
 
-    static Struct::Entity CreateTree(const int x, const int y);
+    static Struct::Object CreateTree(const int x, const int y);
 
-    static Struct::Entity CreateSheep(const int x, const int y);
+    static Struct::Object CreateSheep(const int x, const int y);
 
         /* ----- BUILDINGS ----- */
     
-    static Struct::Building CreateCastle(const std::string& faction, const int x, const int y);
+    static Struct::Object CreateCastle(const std::string& faction, const int x, const int y);
 
-    static Struct::Building CreateMine(const int x, const int y);
+    static Struct::Object CreateMine(const int x, const int y);
 
         /* ----- MAPS ------ */
 

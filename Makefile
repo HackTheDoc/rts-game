@@ -4,8 +4,8 @@
 
 # Compiler settings - Can be customized.
 CC = g++
-CXXFLAGS = -std=c++23 -Wall -Woverloaded-virtual=0
-LDFLAGS = -lmingw32 -lSDL2 -lSDL2_image -lSDL2_ttf 
+CXXFLAGS = -std=c++23 -Wall -Woverloaded-virtual
+LDFLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf 
 
 # Makefile settings - Can be customized.
 APPNAME = build/app

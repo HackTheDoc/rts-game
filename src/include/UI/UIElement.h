@@ -11,6 +11,8 @@ public:
     
     bool shown = true;
 
+    virtual ~UIElement();
+
     virtual void draw();
     virtual void update();
     virtual void destroy();

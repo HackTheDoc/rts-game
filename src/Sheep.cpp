@@ -66,8 +66,8 @@ void Sheep::removeHunter() {
     hunter = nullptr;
 }
 
-Struct::Entity Sheep::getStructure() {
-    return {Struct::Sheep{position}};
+Struct::Object Sheep::getStructure() {
+    return Struct::Object{Struct::Sheep{position}};
 }
 
 Vector2D Sheep::hunterDestination() {

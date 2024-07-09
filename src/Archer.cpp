@@ -26,11 +26,11 @@ Archer::Archer(const std::string& f) {
 
 Archer::~Archer() {}
 
-Struct::Entity Archer::getStructure() {
+Struct::Object Archer::getStructure() {
     Struct::Archer a{faction, position, selected, Vector2D{0,0}};
     
     if (!reachedDestination())
         a.dest = pathToTravel.front();
 
-    return {a};
+    return Struct::Object{a};
 }

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../Components/LevelBar.h"
 #include "../../UI/UILabel.h"
 
 #include "Building.h"
@@ -10,7 +9,7 @@ public:
     static const int MAX_CAPACITY;
 
     Mine(const Vector2D& pos);
-    ~Mine();
+    ~Mine() override;
     
     void update() override;
     void draw() override;
@@ -18,7 +17,7 @@ public:
 
     void freeMiner();
     
-    Struct::Building getStructure() override;
+    Struct::Object getStructure() override;
 
 private:
     UILabel* lbl_capacity;

@@ -5,7 +5,7 @@
 class Tower : public Building {
 public:
     Tower(const std::string& faction, const Vector2D& pos);
-    ~Tower();
+    ~Tower() override;
 
-    Struct::Building getStructure() override;
+    Struct::Object getStructure() override;
 };

@@ -22,6 +22,6 @@ Tower::Tower(const std::string& faction, const Vector2D& pos) {
 
 Tower::~Tower() {}
 
-Struct::Building Tower::getStructure() {
-    return {Struct::Tower{faction, position}};
+Struct::Object Tower::getStructure() {
+    return Struct::Object{Struct::Tower{faction, position}};
 }

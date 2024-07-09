@@ -5,6 +5,7 @@
 #include "include/Game/Game.h"
 #include "include/Game/Components/Collision.h"
 
+#include <queue>
 #include <algorithm>
 
 int Map::TileSize() {
@@ -34,20 +35,17 @@ void Map::init(const Struct::Map& m) {
     map.resize(m_height, {});
     for (int i = 0; i < m_height; i++)
         map[i].resize(m_width, true);
-    
+
     for (Tile* t : layers[LayerID::GRASS])
         map[t->position.y][t->position.x] = false;
 
     for (int y = 0; y < m_height; y++)
         for (int x = 0; x < m_width; x++)
             if (map[y][x])
-                Game::AddCollider(Vector2D{x,y});
+                Game::AddCollider(Vector2D{ x,y });
 
-    for (const Struct::Entity& e : m.entities)
-        addEntity(e);
-
-    for (const Struct::Building& b : m.buildings)
-        addBuilding(b);
+    for (const Struct::Object& o : m.objects)
+        addObject(o);
 
     std::cout << "map initialized" << std::endl;
 }
@@ -71,27 +69,47 @@ void Map::render() {
     renderLayer(LayerID::STONE);
     renderLayer(LayerID::GRASS);
 
+    /// TODO:
+    // creer un vecteur ou une liste triée par ordre croissant des entitées et batiments et les affichés dans l'ordre
+    // ordre croissant des positions y !!
+
+    struct ObjectComparator {
+        bool operator()(const Object* a, const Object* b) {
+            return a->position.y > b->position.y;
+        }
+    };
+    std::priority_queue<Object*, std::vector<Object*>, ObjectComparator> objectQueue;
+
     for (Building* b : buildings)
-        b->draw();
+        objectQueue.push(b);
 
     for (Entity* e : entities)
-        e->draw();
+        objectQueue.push(e);
+
+    while (!objectQueue.empty()) {
+        objectQueue.top()->draw();
+        objectQueue.pop();
+    }
 }
 
 void Map::destroy() {
-    for (Building* b : buildings)
+    for (Building* b : buildings) {
         b->destroy();
+        delete b;
+    }
     buildings.clear();
-
-    for (Entity* e : entities)
-        e->kill();
+    
+    for (Entity* e : entities) {
+        e->destroy();
+        delete e;
+    }
     entities.clear();
 
     destroyLayer(LayerID::FOAM);
     destroyLayer(LayerID::SAND);
     destroyLayer(LayerID::STONE);
     destroyLayer(LayerID::GRASS);
-    
+
     m_name = "undefined";
     m_height = 0;
     m_width = 0;
@@ -108,8 +126,8 @@ int Map::height() {
 bool Map::isTileOccupied(const Vector2D& pos) {
     std::vector<Entity*>::iterator it = std::find_if(entities.begin(), entities.end(), [&pos](Entity* entity) {
         return entity->position == pos;
-    });
-    
+        });
+
     return it != entities.end();
 }
 
@@ -182,15 +200,14 @@ Struct::Map Map::getStructure() {
             getLayerStructure(LayerID::STONE),
             getLayerStructure(LayerID::GRASS)
         },
-        {},
         {}
     };
 
     for (auto e : entities)
-        m.entities.push_back(e->getStructure());
+        m.objects.push_back(e->getStructure());
 
     for (auto B : buildings)
-        m.buildings.push_back(B->getStructure());
+        m.objects.push_back(B->getStructure());
 
     return m;
 }
@@ -198,16 +215,159 @@ Struct::Map Map::getStructure() {
 Struct::Layer Map::getLayerStructure(const LayerID lid) {
     Struct::Layer l;
     l.tiles.resize(layers[lid].size());
-    
+
     for (size_t i = 0; i < layers[lid].size(); i++)
         l.tiles[i] = layers[lid][i]->getStructure();
-    
+
     return l;
 }
 
-void Map::addEntity(const Struct::Entity& e) {
-    struct EntityVisitor {
+void Map::addEntity(Entity* e) {
+    entities.push_back(e);
+}
+
+void Map::removeEntity(Entity* e) {
+    std::vector<Entity*>::iterator it = std::find_if(entities.begin(), entities.end(), [&e](Entity* entity) {
+        return entity == e;
+        });
+
+    if (it == entities.end()) return;
+
+    entities.erase(it);
+}
+
+Pawn* Map::addPawn(const std::string& f, const Vector2D& pos, const bool selected, Vector2D dest, const bool carrySheep) {
+    Pawn* p = new Pawn(f);
+    p->placeAt(pos);
+    p->selected = selected;
+
+    if (!dest.isZero())
+        p->goTo(dest);
+
+    if (carrySheep) {
+        Sheep* s = new Sheep();
+        p->carrySheep(s);
+    }
+
+    addEntity(p);
+
+    if (f == Game::playerFaction.name)
+        Game::playerFaction.pawns.push_back(p);
+
+    return p;
+}
+
+Warrior* Map::addWarrior(const std::string& f, const Vector2D& pos, const bool selected, Vector2D dest) {
+    Warrior* w = new Warrior(f);
+    w->placeAt(pos);
+    w->selected = selected;
+
+    if (!dest.isZero())
+        w->goTo(dest);
+
+    addEntity(w);
+
+    if (f == Game::playerFaction.name)
+        Game::playerFaction.warriors.push_back(w);
+
+    return w;
+}
+
+Archer* Map::addArcher(const std::string& f, const Vector2D& pos, const bool selected, Vector2D dest) {
+    Archer* a = new Archer(f);
+    a->placeAt(pos);
+    a->selected = selected;
+
+    if (!dest.isZero())
+        a->goTo(dest);
+
+    addEntity(a);
+
+    if (f == Game::playerFaction.name)
+        Game::playerFaction.archers.push_back(a);
+
+    return a;
+}
+
+Tree* Map::addTree(const Vector2D& pos, const int hp) {
+    Tree* t = new Tree();
+    t->placeAt(pos);
+    t->hp = hp;
+
+    addEntity(t);
+
+    return t;
+}
+
+Sheep* Map::addSheep(const Vector2D& pos) {
+    Sheep* s = new Sheep();
+    s->placeAt(pos);
+
+    addEntity(s);
+
+    return s;
+}
+
+void Map::removeBuilding(const Vector2D& pos) {
+    std::vector<Building*>::iterator it = std::find_if(buildings.begin(), buildings.end(), [&pos](Building* building) {
+        return building->position == pos;
+        });
+
+    if (it == buildings.end()) return;
+
+    (*it)->destroy();
+    buildings.erase(it);
+}
+
+Construction* Map::addConstruction(const Building::Type type, const std::string& f, const Vector2D& pos, const int clevel) {
+    Construction* c = new Construction(type, f, pos, clevel);
+    buildings.push_back(c);
+    return c;
+}
+
+void Map::addConstruction(const Building::Type type, const std::string& f, const Vector2D& pos, const int clevel, const Struct::Pawn& builder) {
+    Construction* c = new Construction(type, f, pos, clevel);
+
+    addObject(Struct::Object{builder});
+    c->addBuilder(entities.back());
+
+    buildings.push_back(c);
+}
+
+void Map::addHouse(const std::string& f, const Vector2D& pos) {
+    House* h = new House(f, pos);
+    buildings.push_back(h);
+}
+
+void Map::addTower(const std::string& f, const Vector2D& pos) {
+    Tower* t = new Tower(f, pos);
+    buildings.push_back(t);
+}
+
+void Map::addCastle(const std::string& f, const Vector2D& pos, const int foodStorage, const int goldStorage, const int woodStorage) {
+    Castle* c = new Castle(f, pos);
+    c->foodStorage = foodStorage;
+    c->goldStorage = goldStorage;
+    c->woodStorage = woodStorage;
+
+    buildings.push_back(c);
+
+    if (f == Game::playerFaction.name)
+        Game::playerFaction.castles.push_back(c);
+}
+
+void Map::addMine(const Vector2D& pos) {
+    Mine* m = new Mine(pos);
+    buildings.push_back(m);
+}
+
+void Map::addObject(const Struct::Object& o) {
+    struct ObjectVisitor {
         Map* map;
+
+        void operator()(const Struct::UnknownObject& o) {}
+        void operator()(const Struct::UnknownEntity& e) {}
+        void operator()(const Struct::UnknownBuilding& b) {}
 
         void operator()(const Struct::Pawn& p) {
             map->addPawn(p.faction, p.pos, p.selected, p.dest, p.carryingSheep);
@@ -224,101 +384,6 @@ void Map::addEntity(const Struct::Entity& e) {
         void operator()(const Struct::Sheep& s) {
             map->addSheep(s.pos);
         }
-    };
-
-    EntityVisitor visitor{this};
-    std::visit(visitor, e.e);
-}
-
-void Map::addEntity(Entity* e) {
-    entities.push_back(e);
-}
-
-void Map::removeEntity(Entity* e) {
-    std::vector<Entity*>::iterator it = std::find_if(entities.begin(), entities.end(), [&e](Entity* entity) {
-        return entity == e;
-    });
-
-    if (it == entities.end()) return;
-
-    entities.erase(it);
-}
-
-Pawn* Map::addPawn(const std::string& f, const Vector2D& pos, const bool selected, Vector2D dest, const bool carrySheep) {
-    Pawn* p = new Pawn(f);
-    p->placeAt(pos);
-    p->selected = selected;
-    
-    if (!dest.isZero())
-        p->goTo(dest);
-
-    if (carrySheep) {
-        Sheep* s = new Sheep();
-        p->carrySheep(s);
-    }
-    
-    addEntity(p);
-
-    if (f == Game::playerFaction.name)
-        Game::playerFaction.pawns.push_back(p);
-    
-    return p;
-}
-
-Warrior* Map::addWarrior(const std::string& f, const Vector2D& pos, const bool selected, Vector2D dest) {
-    Warrior* w = new Warrior(f);
-    w->placeAt(pos);
-    w->selected = selected;
-    
-    if (!dest.isZero())
-        w->goTo(dest);
-    
-    addEntity(w);
-
-    if (f == Game::playerFaction.name)
-        Game::playerFaction.warriors.push_back(w);
-    
-    return w;
-}
-
-Archer* Map::addArcher(const std::string& f, const Vector2D& pos, const bool selected, Vector2D dest) {
-    Archer* a = new Archer(f);
-    a->placeAt(pos);
-    a->selected = selected;
-    
-    if (!dest.isZero())
-        a->goTo(dest);
-    
-    addEntity(a);
-
-    if (f == Game::playerFaction.name)
-        Game::playerFaction.archers.push_back(a);
-
-    return a;
-}
-
-Tree* Map::addTree(const Vector2D& pos, const int hp) {
-    Tree* t = new Tree();
-    t->placeAt(pos);
-    t->hp = hp;
-    
-    addEntity(t);
-
-    return t;
-}
-
-Sheep* Map::addSheep(const Vector2D& pos) {
-    Sheep* s = new Sheep();
-    s->placeAt(pos);
-
-    addEntity(s);
-
-    return s;
-}
-
-void Map::addBuilding(const Struct::Building& b) {
-    struct BuildingVisitor {
-        Map* map;
 
         void operator()(const Struct::Construction& c) {
             map->addConstruction(c.type, c.faction, c.pos, c.level, c.builder);
@@ -337,59 +402,6 @@ void Map::addBuilding(const Struct::Building& b) {
         }
     };
 
-    BuildingVisitor visitor{this};
-    std::visit(visitor, b.b);
-}
-
-void Map::removeBuilding(const Vector2D& pos) {
-    std::vector<Building*>::iterator it = std::find_if(buildings.begin(), buildings.end(), [&pos](Building* building) {
-        return building->position == pos;
-    });
-
-    if (it == buildings.end()) return;
-
-    (*it)->destroy();
-    buildings.erase(it);
-}
-
-Construction* Map::addConstruction(const Building::Type type, const std::string& f, const Vector2D& pos, const int clevel) {
-    Construction* c = new Construction(type, f, pos, clevel);
-    buildings.push_back(c);
-    return c;
-}
-
-void Map::addConstruction(const Building::Type type, const std::string& f, const Vector2D& pos, const int clevel, const Struct::Entity& builder) {
-    Construction* c = new Construction(type, f, pos, clevel);
-
-    addEntity(builder);
-    c->addBuilder(entities.back());
-
-    buildings.push_back(c);
-}
-
-void Map::addHouse(const std::string& f, const Vector2D& pos) {
-    House* h = new House(f, pos);
-    buildings.push_back(h);
-}
-
-void Map::addTower(const std::string& f, const Vector2D& pos) {
-    Tower* t = new Tower(f, pos);    
-    buildings.push_back(t);
-}
-
-void Map::addCastle(const std::string& f, const Vector2D& pos, const int foodStorage, const int goldStorage, const int woodStorage) {
-    Castle* c = new Castle(f, pos);
-    c->foodStorage = foodStorage;
-    c->goldStorage = goldStorage;
-    c->woodStorage = woodStorage;
-    
-    buildings.push_back(c);
-
-    if (f == Game::playerFaction.name)
-        Game::playerFaction.castles.push_back(c);
-}
-
-void Map::addMine(const Vector2D& pos) {
-    Mine* m = new Mine(pos);
-    buildings.push_back(m);
+    ObjectVisitor visitor{ this };
+    std::visit(visitor, o.o);
 }

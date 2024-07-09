@@ -4,6 +4,8 @@
 
 const int UIElement::MARGIN = 4;
 
+UIElement::~UIElement() {}
+
 void UIElement::draw() {}
 
 void UIElement::update() {}

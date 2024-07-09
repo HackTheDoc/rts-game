@@ -11,9 +11,9 @@ const int Mine::MAX_CAPACITY = 1000;
 
 Mine::Mine(const Vector2D& pos) {
     type = MINE;
-    
+
     position = pos;
-    
+
     width = 3;
     height = 2;
 
@@ -22,14 +22,14 @@ Mine::Mine(const Vector2D& pos) {
     miner = nullptr;
     isMinerWorking = false;
 
-    entryPosition = pos + Vector2D{1,1};
+    entryPosition = pos + Vector2D{ 1,1 };
 
     capacity = MAX_CAPACITY;
 
     texture = Window::manager->getTexture("mine inactive");
 
     level = new LevelBar(GOLD_GATHERING_SPEED, 0, 256);
-    
+
     lbl_capacity = new UILabel();
 
     addColliders();
@@ -48,12 +48,12 @@ void Mine::update() {
     );
 
     if (miner) updateWithMiner();
-    else updateWithoutMiner();    
+    else updateWithoutMiner();
 
     if (!Cursor::enable) return;
-    
+
     if (Builder::active) return;
-    
+
     if (Game::CountSelectedEntities() > 0) return;
 
     if (!Game::cursor.inRect(&rect)) return;
@@ -87,9 +87,9 @@ void Mine::freeMiner() {
         }
 
         miner->placeAt(pos);
-    
+
         miner->setState(Entity::State::FREE);
-    
+
         Game::AddEntity(miner);
 
         isMinerWorking = false;
@@ -100,14 +100,24 @@ void Mine::freeMiner() {
 }
 
 void Mine::destroy() {
-    if (miner && isMinerWorking)
-        miner->kill();
-    
+    if (miner && isMinerWorking) {
+        miner->destroy();
+        delete miner;
+        miner = nullptr;
+    }
+
+    lbl_capacity->destroy();
+    delete lbl_capacity;
+    lbl_capacity = nullptr;
+
+    delete level;
+    level = nullptr;
+
     Building::destroy();
 }
 
-Struct::Building Mine::getStructure() {
-    return {Struct::Mine{position}};
+Struct::Object Mine::getStructure() {
+    return Struct::Object{Struct::Mine{position}};
 }
 
 void Mine::updateWithMiner() {
@@ -119,17 +129,17 @@ void Mine::updateWithMiner() {
             rect.x + (rect.w - level->width()) / 2,
             rect.y + rect.h - Map::TileSize() / 3
         );
-        
+
         if (level->isFinished()) {
             Game::playerFaction.storeGold(GOLD_GATHERING_AMOUNT, entryPosition);
             capacity -= GOLD_GATHERING_AMOUNT;
             level->setCurrentLevel(0);
         }
     }
-    else if (miner->isAtPos(entryPosition*Tile::SIZE)) {
+    else if (miner->isAtPos(entryPosition * Tile::SIZE)) {
         miner->setState(Entity::State::MINING);
         Game::RemoveEntity(miner);
-        
+
         isMinerWorking = true;
         level->setCurrentLevel(0);
         level->active = true;
@@ -141,19 +151,19 @@ void Mine::updateWithMiner() {
 
 void Mine::updateWithoutMiner() {
     texture = Window::manager->getTexture("mine inactive");
-    
+
     if (Builder::active) return;
 
     if (Game::CountSelectedEntities() != 1) return;
 
     if (Game::GetSelectedEntity()->type != Entity::Type::PAWN) return;
-    
+
     if (!Game::cursor.inRect(&rect)) return;
-    
+
     if (!Window::event.mouseClickRight()) return;
 
     miner = Game::GetSelectedEntity();
-    
+
     miner->goTo(entryPosition);
 
     isMinerWorking = false;

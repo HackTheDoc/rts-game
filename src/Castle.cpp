@@ -47,6 +47,6 @@ void Castle::update() {
     }
 }
 
-Struct::Building Castle::getStructure() {
-    return {Struct::Castle{faction, position, foodStorage, goldStorage, woodStorage}};
+Struct::Object Castle::getStructure() {
+    return Struct::Object{Struct::Castle{faction, position, foodStorage, goldStorage, woodStorage}};
 }

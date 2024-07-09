@@ -11,9 +11,9 @@ public:
     Vector2D entry;
 
     Castle(const std::string& faction, const Vector2D& pos);
-    ~Castle();
+    ~Castle() override;
 
     void update() override;
 
-    Struct::Building getStructure() override;
+    Struct::Object getStructure() override;
 };

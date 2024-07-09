@@ -56,8 +56,8 @@ int Building::getHeight() {
     return height * Map::TileSize();
 }
 
-Struct::Building Building::getStructure() {
-    return {Struct::House{faction, position}};
+Struct::Object Building::getStructure() {
+    return Struct::Object{Struct::UnknownBuilding{}};
 }
 
 void Building::addUnit(Entity* u) {

@@ -116,27 +116,27 @@ Struct::Faction Save::CreateFaction(const std::string& name) {
 
     /* ----- ENTITIES ----- */
 
-Struct::Entity Save::CreatePawn(const std::string& faction, const int x, const int y) {
+Struct::Object Save::CreatePawn(const std::string& faction, const int x, const int y) {
     const Struct::Pawn p{faction, {x*Tile::SIZE, y*Tile::SIZE}, false};
     return {p};
 }
 
-Struct::Entity Save::CreateWarrior(const std::string& faction, const int x, const int y) {
+Struct::Object Save::CreateWarrior(const std::string& faction, const int x, const int y) {
     const Struct::Warrior w{faction, {x*Tile::SIZE, y*Tile::SIZE}, false};
     return {w};
 }
 
-Struct::Entity Save::CreateArcher(const std::string& faction, const int x, const int y) {
+Struct::Object Save::CreateArcher(const std::string& faction, const int x, const int y) {
     const Struct::Archer a{faction, {x*Tile::SIZE, y*Tile::SIZE}, false};
     return {a};
 }
 
-Struct::Entity Save::CreateTree(const int x, const int y) {
+Struct::Object Save::CreateTree(const int x, const int y) {
     const Struct::Tree t{{x*Tile::SIZE, y*Tile::SIZE}, 10};
     return {t};
 }
 
-Struct::Entity Save::CreateSheep(const int x, const int y) {
+Struct::Object Save::CreateSheep(const int x, const int y) {
     const Struct::Sheep s{{x*Tile::SIZE, y*Tile::SIZE}};
     return {s};
 }
@@ -144,12 +144,12 @@ Struct::Entity Save::CreateSheep(const int x, const int y) {
     /* ----- BUILDINGS ----- */
 
 /// TODO: change value to 100
-Struct::Building Save::CreateCastle(const std::string& faction, const int x, const int y) {
+Struct::Object Save::CreateCastle(const std::string& faction, const int x, const int y) {
     const Struct::Castle c{faction, {x, y},  500, 500, 500};
     return {c};
 }
 
-Struct::Building Save::CreateMine(const int x, const int y) {
+Struct::Object Save::CreateMine(const int x, const int y) {
     const Struct::Mine m{{x,y}};
     return {m};
 }
@@ -240,7 +240,7 @@ Struct::Map Save::CreateMap_Test() {
                 { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 },
             })
         },
-        .entities = {
+        .objects = {
             CreateTree(16, 1),
             CreateTree(18, 1),
             CreateTree(20, 1),
@@ -252,8 +252,7 @@ Struct::Map Save::CreateMap_Test() {
             CreateSheep(11, 6),
 
             CreateWarrior("red", 10, 5),
-        },
-        .buildings = {
+
             CreateCastle("white", 2, -2),
             CreateMine(18, 6),
         }

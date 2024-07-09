@@ -2,13 +2,18 @@
 
 #include "Entity.h"
 
+namespace Struct {
+    struct Pawn;
+}
+
 class Pawn : public Entity {
 public:
     Pawn(const std::string& f);
-    ~Pawn();
+    ~Pawn() override;
 
     void draw() override;
     void update() override;
 
-    Struct::Entity getStructure() override;
+    Struct::Pawn getDirectStructure();
+    Struct::Object getStructure() override;
 };
