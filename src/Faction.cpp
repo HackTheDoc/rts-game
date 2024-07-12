@@ -4,7 +4,7 @@
 #include "include/Game/Game.h"
 #include "include/struct.h"
 
-std::array<std::array<int, 3>, 3> Faction::RessourceConsumptionOfBuildings = {
+const std::array<std::array<int, 3>, 3> Faction::RessourceConsumptionOfBuildings = {
     std::array<int, 3>{50, 10, 20},
     std::array<int, 3>{25, 50, 100},
     std::array<int, 3>{200, 200, 200}
@@ -67,15 +67,15 @@ void Faction::storeWood(const int amount, const Vector2D& fromPos) {
 }
 
 bool Faction::hasEnoughRessourcesFor(const Building::Type btype) {
-    return  RessourceConsumptionOfBuildings[btype-1][0] <= food &&
-            RessourceConsumptionOfBuildings[btype-1][1] <= gold &&
-            RessourceConsumptionOfBuildings[btype-1][2] <= wood;
+    return  RessourceConsumptionOfBuildings[btype][0] <= food &&
+            RessourceConsumptionOfBuildings[btype][1] <= gold &&
+            RessourceConsumptionOfBuildings[btype][2] <= wood;
 }   
 
 void Faction::consumeRessourcesFor(const Building::Type btype) {
-    consumeFood(RessourceConsumptionOfBuildings[btype-1][0]);
-    consumeGold(RessourceConsumptionOfBuildings[btype-1][1]);
-    consumeWood(RessourceConsumptionOfBuildings[btype-1][2]);
+    consumeFood(RessourceConsumptionOfBuildings[btype][0]);
+    consumeGold(RessourceConsumptionOfBuildings[btype][1]);
+    consumeWood(RessourceConsumptionOfBuildings[btype][2]);
 }
 
 void Faction::consumeFood(int amount) {

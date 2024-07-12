@@ -16,19 +16,19 @@ namespace Struct {
 class Object {
 public:
     enum Type {
-        UNKNOWN,
+        HOUSE,
+        TOWER,
+        CASTLE,
+        CONSTRUCTION,
+        MINE,
 
         PAWN,
         WARRIOR,
         ARCHER,
         TREE,
         SHEEP,
-
-        CONSTRUCTION,
-        HOUSE,
-        TOWER,
-        CASTLE,
-        MINE,
+        
+        UNKNOWN,
     };
     Type type;
 

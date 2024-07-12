@@ -17,7 +17,7 @@ public:
     void draw();
 
 private:
-    static std::array<Vector2D, 4> dimensions; 
+    static const std::array<Vector2D, 3> dimensions; 
     SDL_Texture* texture;
     SDL_Rect rect;
 };

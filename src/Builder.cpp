@@ -7,8 +7,7 @@
 bool Builder::active = false;
 Building::Type Builder::type = Building::Type::HOUSE;
 
-std::array<Vector2D, 4> Builder::dimensions = {
-    Vector2D{0, 0}, // unreachable
+const std::array<Vector2D, 3> Builder::dimensions = {
     Vector2D{2, 3}, // HOUSE
     Vector2D{2, 4}, // TOWER
     Vector2D{5, 4}, // CASTLE

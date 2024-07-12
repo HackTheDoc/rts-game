@@ -69,10 +69,6 @@ void Map::render() {
     renderLayer(LayerID::STONE);
     renderLayer(LayerID::GRASS);
 
-    /// TODO:
-    // creer un vecteur ou une liste triée par ordre croissant des entitées et batiments et les affichés dans l'ordre
-    // ordre croissant des positions y !!
-
     struct ObjectComparator {
         bool operator()(const Object* a, const Object* b) {
             return a->position.y > b->position.y;

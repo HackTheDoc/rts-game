@@ -41,7 +41,7 @@ public:
     Struct::Faction getstructure();
 
 private:
-    static std::array<std::array<int, 3>, 3> RessourceConsumptionOfBuildings;
+    static const std::array<std::array<int, 3>, 3> RessourceConsumptionOfBuildings;
     
     int getNearestCastleIndex(const Vector2D& pos);
 
