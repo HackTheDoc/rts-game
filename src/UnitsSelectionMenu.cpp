@@ -46,7 +46,9 @@ void UnitsSelectionMenu::init() {
 void UnitsSelectionMenu::update() {
     pawnSelector->update();
     warriorSelector->update();
-    archerSelector->update();
+    
+    /// TODO: reactivate when archers will be implemented
+    //archerSelector->update();
 
     lbl->setText("Available: "+std::to_string(avalaible), "h2", hue::font);
     lbl->place(

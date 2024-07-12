@@ -1,9 +1,9 @@
 #include "include/Event.h"
 
+#include "include/WindowStates/UnitsSelectionMenu.h"
 #include "include/Game/Game.h"
 #include "include/Window.h"
-
-#include <iostream>
+#include "include/Save.h"
 
 Event::Event() {}
 
@@ -26,6 +26,9 @@ void Event::handleKeyboardInputs() {
         break;
     case WindowState::Type::GAME:
         handleGameEvents();
+        break;
+    case WindowState::Type::UNITS_SELECTION_MENU:
+        handleUnitsSelectionMenuEvents();
         break;
     case WindowState::Type::PAUSE_MENU:
         handlePauseMenuEvents();
@@ -104,10 +107,13 @@ void Event::raise(const Event::ID id) {
         break;
     
     case RESUME_GAME:
-        //window->resumeGame();
+        window->resumeGame();
         break;
-    case PAUSE:
-        //window->pauseGame();
+    case SAVE_GAME:
+        Save::Update();
+        break;
+    case PAUSE_GAME:
+        window->pauseGame();
         break;
     default:
         break;
@@ -188,6 +194,9 @@ void Event::handleGameEvents() {
         case SDLK_SPACE:
             Game::camera.centerOn(Game::playerFaction.getNearestCastle(Game::camera.pos / Tile::SIZE));
             break;
+        case SDLK_ESCAPE:
+            raise(PAUSE_GAME);
+            break;
         default:
             break;
         }    
@@ -195,5 +204,39 @@ void Event::handleGameEvents() {
 }
 
 void Event::handlePauseMenuEvents() {
-    
+    if (e.type != SDL_KEYUP)
+        return;
+
+    switch (e.key.keysym.sym) {
+    case SDLK_ESCAPE:
+        raise(RESUME_GAME);
+        break;
+    case SDLK_s:
+        if (SDL_GetModState() & KMOD_CTRL)
+            raise(SAVE_GAME);
+        break;
+    case SDLK_q:
+        if (SDL_GetModState() & KMOD_CTRL)
+            raise(QUIT_GAME);
+        break;
+    default:
+        break;
+    }
+}
+
+void Event::handleUnitsSelectionMenuEvents() {
+    if (e.type != SDL_KEYUP) return;
+
+    switch (e.key.keysym.sym) {
+    case SDLK_ESCAPE:
+        UnitsSelectionMenu::pawnSelector->count = 0;
+        UnitsSelectionMenu::warriorSelector->count = 0;
+        UnitsSelectionMenu::archerSelector->count = 0;
+        raise(VALID_UNITS_SELECTION);
+        break;
+    case SDLK_RETURN:
+        raise(VALID_UNITS_SELECTION);
+    default:
+        break;
+    }
 }

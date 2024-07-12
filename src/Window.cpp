@@ -173,6 +173,16 @@ void Window::endUnitsSelection() {
     manager->setCurrentWindowState(WindowState::Type::GAME);
 }
 
+void Window::pauseGame() {
+    manager->addWindowState(WindowState::Type::PAUSE_MENU, new PauseMenu());
+    manager->setCurrentWindowState(WindowState::Type::PAUSE_MENU);
+}
+
+void Window::resumeGame() {
+    manager->removeWindowState(WindowState::Type::PAUSE_MENU);
+    manager->setCurrentWindowState(WindowState::Type::GAME);
+}
+
 void Window::quitGame() {
     if (Save::Auto)
         Save::Update();

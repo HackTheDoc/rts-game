@@ -44,6 +44,9 @@ public:
     void openUnitsSelectionMenu();
     void endUnitsSelection();
 
+    void pauseGame();
+    void resumeGame();
+
     void quitGame();
 
     /* ----- OPTIONS ----- */

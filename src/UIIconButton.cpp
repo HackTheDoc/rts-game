@@ -15,7 +15,7 @@ UIIconButton::UIIconButton(const Event::ID eid, const std::string& iname, const 
 UIIconButton::~UIIconButton() {}
 
 void UIIconButton::draw() {
-    Manager::DrawFilledRect(&rect, hue::card_background);
+    Manager::DrawFilledRect(&rect, hue::ui_background);
     Manager::Draw(texture, &srcRect, &rect);
     Manager::DrawRect(&rect, hue::card_border);
 }

@@ -311,7 +311,7 @@ void Manager::setCurrentWindowState(const WindowState::Type id) {
 }
 
 void Manager::updateCurrentWindowState() {
-    if (currentWindowState > WindowState::Type::GAME)
+    if (currentWindowState > WindowState::Type::GAME + 1)
         windowStates[WindowState::Type::GAME]->update();
     windowStates[currentWindowState]->update();
 }

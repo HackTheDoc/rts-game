@@ -43,7 +43,7 @@ UIUnitSelector::UIUnitSelector(const Entity::Type etype, int* available) {
 UIUnitSelector::~UIUnitSelector() {}
 
 void UIUnitSelector::draw() {
-    Manager::DrawFilledRect(&rect, hue::card_background);
+    Manager::DrawFilledRect(&rect, hue::ui_background);
 
     ico->draw();
     lbl->draw();

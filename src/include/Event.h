@@ -31,8 +31,9 @@ public:
         OPEN_GAME,
         QUIT_GAME,
 
+        SAVE_GAME,
         RESUME_GAME,
-        PAUSE,
+        PAUSE_GAME,
 
         // GAME RELATED
 
@@ -87,6 +88,7 @@ private:
 
     void handleGameEvents();
     void handlePauseMenuEvents();
+    void handleUnitsSelectionMenuEvents();
 };
 
 std::string to_string(const Event::ID eid);
